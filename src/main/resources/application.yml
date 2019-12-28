@@ -1,7 +1,7 @@
 server:
   port: 8080
 
-#数据库连接池
+#脢媒戮脻驴芒脕卢陆脫鲁脴
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,6 +12,6 @@ spring:
 
 tenlent:
   keys:
-    #腾讯的id 与key
-    SecretId: AKIDR6g5RigRsza9QgwzzstLfxIZuHaSg6JT
-    SecretKey: HTakb1QXaXOBvj7ejfWOL5jpgLmzxhCd
+    #脤脷脩露碌脛id 脫毛key
+    SecretId: 
+    SecretKey:
