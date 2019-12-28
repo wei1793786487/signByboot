@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hqgml.sign.mapper.MeetingMapper">
+  <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.Meeting">
+    <!--@mbg.generated generated on Sun Dec 29 00:35:47 CST 2019.-->
+    <!--@Table meeting-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="add_id" jdbcType="INTEGER" property="addId" />
+    <result column="metting_address" jdbcType="VARCHAR" property="mettingAddress" />
+    <result column="meeting_name" jdbcType="VARCHAR" property="meetingName" />
+    <result column="times" jdbcType="VARCHAR" property="times" />
+    <result column="meeting_phone" jdbcType="VARCHAR" property="meetingPhone" />
+    <result column="meeting_number" jdbcType="VARCHAR" property="meetingNumber" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Dec 29 00:35:47 CST 2019.-->
+    id, add_id, metting_address, meeting_name, times, meeting_phone, meeting_number, 
+    uuid
+  </sql>
+</mapper>

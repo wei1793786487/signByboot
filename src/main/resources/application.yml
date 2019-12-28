@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+#数据库连接池
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/meeting2?serverTimezone=UTC
+    password: root
+    username: root
+
+tenlent:
+  keys:
+    #腾讯的id 与key
+    SecretId: AKIDR6g5RigRsza9QgwzzstLfxIZuHaSg6JT
+    SecretKey: HTakb1QXaXOBvj7ejfWOL5jpgLmzxhCd

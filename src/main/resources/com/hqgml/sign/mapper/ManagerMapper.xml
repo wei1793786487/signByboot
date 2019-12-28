@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hqgml.sign.mapper.ManagerMapper">
+  <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.Manager">
+    <!--@mbg.generated generated on Sun Dec 29 00:35:18 CST 2019.-->
+    <!--@Table manager-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="idcard" jdbcType="INTEGER" property="idcard" />
+    <result column="phone" jdbcType="INTEGER" property="phone" />
+    <result column="pswd" jdbcType="VARCHAR" property="pswd" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="lasttime" jdbcType="VARCHAR" property="lasttime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Sun Dec 29 00:35:18 CST 2019.-->
+    id, `name`, sex, idcard, phone, pswd, address, lasttime
+  </sql>
+</mapper>
