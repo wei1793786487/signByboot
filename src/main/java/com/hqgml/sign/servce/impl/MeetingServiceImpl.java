@@ -1,10 +1,10 @@
-package com.hqgml.sign.servce.Impl;
+package com.hqgml.sign.servce.impl;
 
 import com.hqgml.sign.pojo.Meeting;
-import com.hqgml.sign.utlis.Exception.ExceptionEnums;
-import com.hqgml.sign.utlis.Exception.XxException;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
+
 import com.hqgml.sign.mapper.MeetingMapper;
 import com.hqgml.sign.servce.MeetingService;
 
@@ -20,13 +20,8 @@ public class MeetingServiceImpl implements MeetingService {
     @Resource
     private MeetingMapper meetingMapper;
 
-
     public List<Meeting> getAll() {
-        List<Meeting> meetings = meetingMapper.selectAll();
-        if (meetings == null) {
-            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
-        }
-        return meetings;
+        return meetingMapper.selectAll();
     }
 }
 

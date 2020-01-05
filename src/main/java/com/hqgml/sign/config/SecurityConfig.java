@@ -1,6 +1,7 @@
 package com.hqgml.sign.config;
 
-import com.hqgml.sign.servce.UserService;
+import com.hqgml.sign.handler.CustomizeAuthenticationSuccessHandler;
+import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,8 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    //登录成功处理逻辑
     @Autowired
-    private UserService userService;
+    CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
+
+   @Autowired
+   private SysUserService userService;
 
 
     @Autowired
@@ -46,23 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/**").hasAnyRole("USER", "ADMIN")
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .formLogin()
-//                .loginProcessingUrl("/user/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .invalidateHttpSession(true)
-//                .permitAll()
-//                .and()
-//                .cors()
-//                .disable();
-
+        http.cors().and().csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/**").fullyAuthenticated()
+                .and()
+                .formLogin()
+                .permitAll()
+                .successHandler(authenticationSuccessHandler);
 
     }
 }

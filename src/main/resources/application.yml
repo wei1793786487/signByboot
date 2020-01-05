@@ -13,5 +13,12 @@ spring:
 
 tenlent:
   keys:
-    SecretId: AKIDsZ5NYYlQ4X3Rdntq5Nh0CD7ED9xfYk1E
-    SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8
+    SecretId:
+    SecretKey:
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+    com.hqgml.sign.mapper: debug

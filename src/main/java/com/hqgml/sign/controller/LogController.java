@@ -1,7 +1,7 @@
 package com.hqgml.sign.controller;
 
 import com.hqgml.sign.pojo.UserLog;
-import com.hqgml.sign.servce.Impl.UserLogServiceImpl;
+import com.hqgml.sign.servce.impl.UserLogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;

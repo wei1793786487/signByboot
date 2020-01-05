@@ -1,4 +1,4 @@
-package com.hqgml.sign.servce.Impl;
+package com.hqgml.sign.servce.impl;
 
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;

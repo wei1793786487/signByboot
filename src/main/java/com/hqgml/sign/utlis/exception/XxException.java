@@ -1,4 +1,4 @@
-package com.hqgml.sign.utlis.Exception;
+package com.hqgml.sign.utlis.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,5 +13,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class XxException extends RuntimeException {
     private ExceptionEnums exceptionEnums;
-
 }
