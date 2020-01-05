@@ -4,6 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.impl.SysUserServiceImpl;
+import com.hqgml.sign.utlis.CookieUtils;
+import com.hqgml.sign.utlis.JsonWriteUtlis;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +42,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         String now = DateUtil.now();
         userService.updateLastimeByUserName(now, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
-
-        //返回json数据
-        JsonResult result = ResultTool.success();
-        //处理编码方式，防止中文乱码的情况
-        response.setContentType("text/json;charset=utf-8");
-        //塞到HttpServletResponse中返回给前台
-        response.getWriter().write(JSON.toJSONString(result));
+        CookieUtils.setCookie(request,response,"username",sysUser.getUsername());
+        JsonWriteUtlis.success(response);
     }
 }

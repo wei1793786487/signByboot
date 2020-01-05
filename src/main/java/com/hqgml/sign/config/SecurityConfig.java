@@ -19,7 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    //登录成功处理逻辑
+    /**
+     * 成功的处理
+     */
     @Autowired
     CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
 
