@@ -5,9 +5,9 @@ import javax.persistence.*;
 import lombok.Data;
 
 /**
-*@author Devil
-*@date  2019/12/29 0:35
-*/
+ * @author Devil
+ * @date 2020/1/3 20:19
+ */
 @Data
 @Table(name = "meeting")
 public class Meeting implements Serializable {
@@ -25,14 +25,17 @@ public class Meeting implements Serializable {
     @Column(name = "meeting_name")
     private String meetingName;
 
-    @Column(name = "times")
-    private String times;
+    @Column(name = "start_time")
+    private String startTime;
+
+    @Column(name = "end_time")
+    private String endTime;
 
     @Column(name = "meeting_phone")
     private String meetingPhone;
 
-    @Column(name = "meeting_number")
-    private String meetingNumber;
+    @Column(name = "persion_number")
+    private String persionNumber;
 
     @Column(name = "uuid")
     private String uuid;

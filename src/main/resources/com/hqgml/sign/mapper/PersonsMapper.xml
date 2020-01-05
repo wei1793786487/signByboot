@@ -2,17 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hqgml.sign.mapper.PersonsMapper">
   <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.Persons">
-    <!--@mbg.generated generated on Sun Dec 29 00:35:54 CST 2019.-->
+    <!--@mbg.generated generated on Fri Jan 03 20:16:06 CST 2020.-->
     <!--@Table persons-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="mid" jdbcType="VARCHAR" property="mid" />
     <result column="photo_name" jdbcType="VARCHAR" property="photoName" />
     <result column="person_name" jdbcType="VARCHAR" property="personName" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="IsCheck" jdbcType="VARCHAR" property="ischeck" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Sun Dec 29 00:35:54 CST 2019.-->
-    id, mid, photo_name, person_name, add_time, IsCheck
+    <!--@mbg.generated generated on Fri Jan 03 20:16:06 CST 2020.-->
+    id, photo_name, person_name, add_time, IsCheck
   </sql>
 </mapper>

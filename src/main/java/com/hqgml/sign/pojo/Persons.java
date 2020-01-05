@@ -6,9 +6,9 @@ import javax.persistence.*;
 import lombok.Data;
 
 /**
-*@author Devil
-*@date  2019/12/29 0:35
-*/
+ * @author Devil
+ * @date 2020/1/3 20:16
+ */
 @Data
 @Table(name = "persons")
 public class Persons implements Serializable {
@@ -16,9 +16,6 @@ public class Persons implements Serializable {
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")
     private Integer id;
-
-    @Column(name = "mid")
-    private String mid;
 
     @Column(name = "photo_name")
     private String photoName;

@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-#数据库连接池
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -9,9 +8,10 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/meeting2?serverTimezone=UTC
     password: root
     username: root
+    hikari:
+      max-lifetime: 1000000
 
 tenlent:
   keys:
-    #腾讯的id 与key
-    SecretId: AKIDR6g5RigRsza9QgwzzstLfxIZuHaSg6JT
-    SecretKey: HTakb1QXaXOBvj7ejfWOL5jpgLmzxhCd
+    SecretId: AKIDsZ5NYYlQ4X3Rdntq5Nh0CD7ED9xfYk1E
+    SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8

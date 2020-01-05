@@ -4,8 +4,8 @@ import com.hqgml.sign.pojo.Meeting;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
-*@author Devil
-*@date  2019/12/29 0:35
-*/
+ * @author Devil
+ * @date 2020/1/3 20:19
+ */
 public interface MeetingMapper extends Mapper<Meeting> {
 }
