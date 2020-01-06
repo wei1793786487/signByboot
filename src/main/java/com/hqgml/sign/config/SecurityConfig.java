@@ -1,6 +1,6 @@
 package com.hqgml.sign.config;
 
-import com.hqgml.sign.handler.CustomizeAuthenticationSuccessHandler;
+import com.hqgml.sign.handler.*;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +24,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
+    /**
+     * 失败的处理器
+     */
+    @Autowired
+    CustomizeAuthenticationFailureHandler authenticationFailureHandler;
 
-   @Autowired
-   private SysUserService userService;
+    /**
+     * 登出成功的处理器
+     */
+    @Autowired
+    private CustomizeLogoutSuccessHandler logoutSuccessHandler;
+
+    /**
+     * 匿名用户访问无权限资源时的异常
+     */
+    @Autowired
+    CustomizeAuthenticationEntryPoint authenticationEntryPoint;
+
+    /**
+     * 权限拒绝处理逻辑
+     */
+    @Autowired
+    CustomizeAccessDeniedHandler accessDeniedHandler;
+
+
+    /**
+     * 会话失效
+     */
+    @Autowired
+    CustomizeSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+
+    @Autowired
+    private SysUserService userService;
 
 
     @Autowired
@@ -56,11 +87,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
         http.authorizeRequests()
+                .antMatchers("/meeting").hasAnyRole("ADMIN")
                 .antMatchers("/**").fullyAuthenticated()
                 .and()
                 .formLogin()
                 .permitAll()
-                .successHandler(authenticationSuccessHandler);
-
+                //成功的与失败的处理器
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
+                .and().logout()
+                .permitAll()
+                //退出成功
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID","SESSION","username")
+                .and().exceptionHandling().
+                //权限拒绝处理逻辑
+                accessDeniedHandler(accessDeniedHandler).
+                //匿名用户访问无权限资源时的异常处理
+                authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .maximumSessions(1)
+                //同一账号同时登录最大用户数
+                .expiredSessionStrategy(sessionInformationExpiredStrategy);
     }
 }

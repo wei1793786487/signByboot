@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ import java.io.IOException;
  * @date 2020/1/5 16:48
  * 自定义登录的处理的逻辑
  */
-@Service
+@Component
 public class CustomizeAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private SysUserServiceImpl userService;
@@ -43,6 +43,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         userService.updateLastimeByUserName(now, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request,response,"username",sysUser.getUsername());
+
         JsonWriteUtlis.success(response);
     }
 }

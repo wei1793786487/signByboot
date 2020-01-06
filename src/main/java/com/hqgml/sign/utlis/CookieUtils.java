@@ -145,8 +145,12 @@ public final class CookieUtils {
 			if (cookieMaxage > 0){
 
 			}
-//			if (null != request)// 设置域名的cookie
-//				cookie.setDomain(getDomainName(request));
+			if (null != request){
+				/**
+				 * 域名写死
+				 */
+				cookie.setDomain("wukaka.com");
+			}
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
@@ -171,8 +175,12 @@ public final class CookieUtils {
 			if (cookieMaxage > 0){
 				cookie.setMaxAge(cookieMaxage);
 			}
-//			if (null != request)// 设置域名的cookie
-//				cookie.setDomain(getDomainName(request)); 不设域名的cookie实际部署需要
+			if (null != request){
+				/**
+				 * 域名写死
+				 */
+				cookie.setDomain("wukaka.com");
+			}
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
