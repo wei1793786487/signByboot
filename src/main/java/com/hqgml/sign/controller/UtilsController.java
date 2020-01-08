@@ -34,7 +34,7 @@ public class UtilsController  {
 
     @RequestMapping("/verifyCode.jpg")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException{
-
+        String cookie = CookieUtils.getCookieValue(request, "getverid");
         /*禁止缓存*/
         response.setDateHeader("Expires",0);
         response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -46,6 +46,12 @@ public class UtilsController  {
         String uuid = idWorker.nextId()+"";
         redisTemplate.opsForValue().set(uuid,code,5, TimeUnit.MINUTES);
         CookieUtils.setCookie(request,response,"getverid",uuid,60*5);
+        //每次更改删除cookie
+        if (cookie!=null){
+            Boolean isDelete = redisTemplate.delete(cookie);
+            String msg=isDelete ? "成功":"失败";
+            log.info( "删除"+msg+cookie );
+        }
         ServletOutputStream outputStream = response.getOutputStream();
         //ImageIO.write(bufferedImage,"jpg",outputStream);
         getverUtils.outputImage(110,40,outputStream,code);

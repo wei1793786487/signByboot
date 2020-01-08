@@ -1,11 +1,8 @@
 package com.hqgml.sign.handler;
 
 import com.hqgml.sign.utlis.CookieUtils;
-import com.hqgml.sign.utlis.JsonWriteUtlis;
 import com.hqgml.sign.utlis.exception.ValidateCodeException;
-import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Controller;
@@ -21,6 +18,7 @@ import java.io.IOException;
 /**
  * @author Devil
  * @date 2020/1/8 18:31
+ * 验证码校验filter
  */
 @Controller
 public class CustomizeValidateCodeFilter extends OncePerRequestFilter {
@@ -32,12 +30,13 @@ public class CustomizeValidateCodeFilter extends OncePerRequestFilter {
 
     /**
      * 因为过滤器是最后至执行的 所有没有办法注入 只能通过构造函数
-     * @param redisTemplate
-     * @param authenticationFailureHandler
+     *
+     * @param redisTemplate                redis处理
+     * @param authenticationFailureHandler 验证码校验失败处理器
      */
-    public CustomizeValidateCodeFilter(StringRedisTemplate redisTemplate,AuthenticationFailureHandler authenticationFailureHandler) {
+    public CustomizeValidateCodeFilter(StringRedisTemplate redisTemplate, AuthenticationFailureHandler authenticationFailureHandler) {
         this.redisTemplate = redisTemplate;
-        this.authenticationFailureHandler=authenticationFailureHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
     }
 
     private String cookie = null;
@@ -54,7 +53,11 @@ public class CustomizeValidateCodeFilter extends OncePerRequestFilter {
                 authenticationFailureHandler.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
                 return;
             }
-
+        }
+        if (cookie!=null){
+            Boolean isDelete = redisTemplate.delete(cookie);
+            String msg=isDelete ? "成功":"失败";
+            logger.info( "删除"+msg+cookie );
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
 

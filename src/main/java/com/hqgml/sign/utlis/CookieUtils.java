@@ -147,7 +147,7 @@ public final class CookieUtils {
 			}
 			if (null != request){
 				/**
-				 * 域名写死
+				 * 域名写死，正式的是使用下面的方法获取
 				 */
 				cookie.setDomain("wukaka.com");
 			}
