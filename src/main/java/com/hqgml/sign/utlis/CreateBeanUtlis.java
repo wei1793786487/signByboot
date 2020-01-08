@@ -9,14 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
 /**
- * @data 2019/12/13 12:20
  * @author Devil
+ * @data 2019/12/13 12:20
  **/
 
 @Component
@@ -45,6 +46,7 @@ public class CreateBeanUtlis {
 
     /**
      * 获取生成唯一标识
+     *
      * @return
      */
     @Bean
@@ -63,6 +65,7 @@ public class CreateBeanUtlis {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 
 }

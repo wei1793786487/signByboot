@@ -4,11 +4,14 @@ import com.hqgml.sign.handler.*;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Devil
@@ -55,6 +58,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomizeSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
+    /**
+     * redis操作模板
+     */
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+
+    /**
+     * 验证码校验失败处理器
+     */
+    @Autowired
+    private AuthenticationFailureHandler errorFailureHandler;
 
     @Autowired
     private SysUserService userService;
@@ -85,8 +100,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
         http.cors().and().csrf().disable();
-        http.authorizeRequests()
+        http.addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .antMatchers("/verifyCode.jpg").permitAll()
                 .antMatchers("/meeting").hasAnyRole("ADMIN")
                 .antMatchers("/**").fullyAuthenticated()
                 .and()
@@ -99,12 +118,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 //退出成功
                 .logoutSuccessHandler(logoutSuccessHandler)
-                .deleteCookies("JSESSIONID","SESSION","username")
+                .deleteCookies("JSESSIONID", "SESSION", "username")
                 .and().exceptionHandling().
                 //权限拒绝处理逻辑
-                accessDeniedHandler(accessDeniedHandler).
+                        accessDeniedHandler(accessDeniedHandler).
                 //匿名用户访问无权限资源时的异常处理
-                authenticationEntryPoint(authenticationEntryPoint)
+                        authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .sessionManagement()
                 .maximumSessions(1)

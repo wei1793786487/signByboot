@@ -1,6 +1,7 @@
 package com.hqgml.sign.handler;
 
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.exception.ValidateCodeException;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,10 +43,18 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
         } else if (e instanceof InternalAuthenticationServiceException) {
             //用户不存在
             result = ResultTool.fail(ResultCode.USER_ACCOUNT_NOT_EXIST);
-        }else{
+        } else if (e instanceof ValidateCodeException){
+            JsonResult jsonResult=new JsonResult();
+            jsonResult.setCode(400);
+            jsonResult.setErrorMsg(e.getMessage());
+            jsonResult.setSuccess(false);
+            result=jsonResult;
+        }else {
             //其他错误
             result = ResultTool.fail(ResultCode.COMMON_FAIL);
         }
-        JsonWriteUtlis.fail(response,result);
+        JsonWriteUtlis.fail(response, result);
+
     }
 }
+

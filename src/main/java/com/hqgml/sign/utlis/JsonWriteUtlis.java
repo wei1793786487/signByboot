@@ -24,6 +24,7 @@ public class JsonWriteUtlis {
         response.getWriter().write(JSON.toJSONString(result));
     }
     public static void fail(HttpServletResponse response,JsonResult result) throws IOException {
+        response.setStatus(result.getCode());
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(JSON.toJSONString(result));
     }

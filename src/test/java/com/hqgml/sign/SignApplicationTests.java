@@ -1,6 +1,7 @@
 package com.hqgml.sign;
 
 import cn.hutool.core.date.DateUtil;
+import com.hqgml.sign.utlis.getverUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,8 +10,8 @@ class SignApplicationTests {
 
     @Test
     void contextLoads() {
-        String now = DateUtil.now();
-        System.out.println( "时间是"+now);
+        String s = getverUtils.generateVerifyCode(4);
+        System.out.println(s);
     }
 
 }

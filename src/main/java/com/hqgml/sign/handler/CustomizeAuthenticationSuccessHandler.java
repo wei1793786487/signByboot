@@ -43,7 +43,6 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         userService.updateLastimeByUserName(now, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request,response,"username",sysUser.getUsername());
-
         JsonWriteUtlis.success(response);
     }
 }
