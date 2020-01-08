@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 public class RedisConfig {
 
 
+
     @Resource
     private LettuceConnectionFactory lettuceConnectionFactory;
 

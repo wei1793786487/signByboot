@@ -24,6 +24,7 @@ public enum ExceptionEnums {
     LOFIN_ERROR(400,"账号或者密码错误"),
     EMPTY_ERROR(400,"输入项为空"),
     UPDATE_ERROR(500,"更新异常"),
+    MENU_NOT_FIND(404,"菜单没找到"),
     USER_NOT_USER(403,"用户不可用");
     private int code;
     private String Msg;
