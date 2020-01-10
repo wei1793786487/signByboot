@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import com.hqgml.sign.mapper.MeetingMapper;
 import com.hqgml.sign.servce.MeetingService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ import java.util.List;
  * @date 2019/12/31 10:47
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
+
 public class MeetingServiceImpl implements MeetingService {
 
     @Resource
