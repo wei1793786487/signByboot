@@ -24,6 +24,6 @@ public class CustomizeAuthenticationEntryPoint implements AuthenticationEntryPoi
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-      JsonWriteUtlis.fail(httpServletResponse,result);
+      JsonWriteUtlis.fail(httpServletRequest,httpServletResponse,result);
     }
 }

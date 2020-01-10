@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.impl.SysUserServiceImpl;
+import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -33,6 +35,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        HttpSession session = request.getSession();
         /**
          * 通过这个方法可以获取存在与security容器里面的security对象
          * 根据用户名
@@ -40,9 +43,14 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser sysUser = userService.findUserByUserName(userDetails.getUsername());
         String now = DateUtil.now();
+        String address = AddressUtils.GetAddress(request);
         userService.updateLastimeByUserName(now, sysUser.getUsername());
+        session.setAttribute("address", sysUser.getAddress());
+        session.setAttribute("lastaddress", sysUser.getLasttime());
+        userService.updateLastimeByUserName(now, sysUser.getUsername());
+        userService.updateLastAddressByUserName(address, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
-        CookieUtils.setCookie(request,response,"username",sysUser.getUsername());
+        CookieUtils.setCookie(request, response, "username", sysUser.getUsername());
         JsonWriteUtlis.success(response);
     }
 }

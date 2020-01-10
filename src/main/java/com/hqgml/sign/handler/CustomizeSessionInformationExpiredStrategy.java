@@ -10,6 +10,7 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -24,6 +25,8 @@ public class CustomizeSessionInformationExpiredStrategy implements SessionInform
     public void onExpiredSessionDetected(SessionInformationExpiredEvent sessionInformationExpiredEvent) throws IOException, ServletException {
         JsonResult result = ResultTool.fail(ResultCode.USER_ACCOUNT_USE_BY_OTHERS);
         HttpServletResponse httpServletResponse = sessionInformationExpiredEvent.getResponse();
-        JsonWriteUtlis.fail(httpServletResponse,result);
+        HttpServletRequest httpServletRequest= sessionInformationExpiredEvent.getRequest();
+
+        JsonWriteUtlis.fail(httpServletRequest,httpServletResponse,result);
     }
 }

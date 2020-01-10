@@ -1,5 +1,6 @@
 package com.hqgml.sign.handler;
 
+import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class CustomizeLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        CookieUtils.deleteCookie(request,response,"username");
         JsonWriteUtlis.success(response);
     }
 }

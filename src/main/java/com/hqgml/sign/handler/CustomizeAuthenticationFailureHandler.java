@@ -53,7 +53,7 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
             //其他错误
             result = ResultTool.fail(ResultCode.COMMON_FAIL);
         }
-        JsonWriteUtlis.fail(response, result);
+        JsonWriteUtlis.fail(request,response, result);
 
     }
 }

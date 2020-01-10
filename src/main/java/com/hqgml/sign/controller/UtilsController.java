@@ -11,6 +11,7 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.getverUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -61,7 +62,7 @@ public class UtilsController {
         redisTemplate.opsForValue().set(uuid, code, 5, TimeUnit.MINUTES);
         CookieUtils.setCookie(request, response, "getverid", uuid, 60 * 5);
         //每次更改删除cookie
-        if (cookie != null) {
+        if (cookie != null&& StringUtils.equals(cookie,"")) {
             Boolean isDelete = redisTemplate.delete(cookie);
             String msg = isDelete ? "成功" : "失败";
             log.info("删除" + msg + cookie);

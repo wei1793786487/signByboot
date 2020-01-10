@@ -54,7 +54,7 @@ public class CustomizeValidateCodeFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        if (cookie!=null){
+        if (cookie!=null&&StringUtils.equals(cookie,"")){
             Boolean isDelete = redisTemplate.delete(cookie);
             String msg=isDelete ? "成功":"失败";
             logger.info( "删除redis的cookie"+msg+cookie );
