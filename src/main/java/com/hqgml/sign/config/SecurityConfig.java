@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 /**
  * @author Devil
@@ -71,6 +72,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler errorFailureHandler;
 
+
+    @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
+
+
     @Autowired
     private SysUserService userService;
 
@@ -107,13 +114,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/verifyCode.jpg").permitAll()
                 .antMatchers("/meeting").hasAnyRole("ADMIN")
-                .antMatchers("/**").fullyAuthenticated()
+                .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
                 .permitAll()
                 //成功的与失败的处理器
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
+                .and()
+                .rememberMe()//记住我功能
+                .userDetailsService(userService)
+                .tokenRepository(persistentTokenRepository)
+                .tokenValiditySeconds(24 * 60 * 60)
+                .authenticationSuccessHandler(authenticationSuccessHandler)
                 .and().logout()
                 .permitAll()
                 //退出成功

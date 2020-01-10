@@ -5,6 +5,7 @@ server:
       cookie:
         http-only: false
         domain: wukaka.com
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -30,7 +31,6 @@ tenlent:
     SecretId:
     SecretKey:
 
-BaiduAk: 3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY
 
 logging:
   level:

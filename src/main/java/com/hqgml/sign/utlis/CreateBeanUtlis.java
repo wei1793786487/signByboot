@@ -12,7 +12,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 
 /**
@@ -24,6 +29,10 @@ import org.springframework.stereotype.Component;
 @EnableConfigurationProperties(KeyProperties.class)
 @Configuration
 public class CreateBeanUtlis {
+
+
+    @Resource
+    private DataSource dataSource;
 
     @Autowired
     private KeyProperties keyProperties;
@@ -67,5 +76,15 @@ public class CreateBeanUtlis {
     }
 
 
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        //数据源设置
+        tokenRepository.setDataSource(dataSource);
+        //启动的时候创建表，这里只执行一次，第二次就注释掉，否则每次启动都重新创建表
+        //tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
+    }
 
 }

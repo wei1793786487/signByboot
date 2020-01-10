@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,8 +78,8 @@ public class UtilsController {
     @GetMapping("menu")
     @ResponseBody
     public ResponseEntity<Common> loadMeau(HttpServletRequest request) {
-        String username = CookieUtils.getCookieValue(request, "username");
-        SysUser user = userService.findUserByUserName(username);
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SysUser user = userService.findUserByUserName(userDetails.getUsername());
         if (user == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }

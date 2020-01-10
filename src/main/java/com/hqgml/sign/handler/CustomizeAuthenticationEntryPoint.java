@@ -23,6 +23,8 @@ import java.io.IOException;
 public class CustomizeAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+        String message = e.getMessage();
+        System.out.println(message);
         JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
       JsonWriteUtlis.fail(httpServletRequest,httpServletResponse,result);
     }
