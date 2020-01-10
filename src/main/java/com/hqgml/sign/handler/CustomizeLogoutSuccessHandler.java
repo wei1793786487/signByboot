@@ -21,6 +21,7 @@ public class CustomizeLogoutSuccessHandler implements LogoutSuccessHandler {
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CookieUtils.deleteCookie(request,response,"username");
+        CookieUtils.deleteCookie(request,response,"remember");
         JsonWriteUtlis.success(response);
     }
 }

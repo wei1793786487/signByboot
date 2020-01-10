@@ -9,6 +9,8 @@ import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +31,7 @@ import java.io.IOException;
  * 自定义登录的处理的逻辑
  */
 @Component
+@Slf4j
 public class CustomizeAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private SysUserServiceImpl userService;
@@ -35,6 +39,15 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        String rememember = request.getParameter("remember-me");
+        if (StringUtils.isNotBlank(rememember)){
+          log.info("用户选择了记住我");
+            Cookie cookie = new Cookie("remember", "true");
+            cookie.setPath("/");
+            cookie.setDomain("wukaka.com");
+            cookie.setMaxAge(60*60*24*7);
+            response.addCookie(cookie);
+        }
         HttpSession session = request.getSession();
         /**
          * 通过这个方法可以获取存在与security容器里面的security对象

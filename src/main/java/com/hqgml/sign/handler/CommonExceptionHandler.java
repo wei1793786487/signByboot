@@ -34,7 +34,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(CookieTheftException.class)
     public ResponseEntity<ExceptionResult> handleException(CookieTheftException e) {
-        return ResponseEntity.status(2001).body(new ExceptionResult(2001,e.getMessage()));
+        return ResponseEntity.status(2001).body(new ExceptionResult(2001,"用户信息异常"));
     }
 
 

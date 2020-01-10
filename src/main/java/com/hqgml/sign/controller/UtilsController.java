@@ -49,7 +49,7 @@ public class UtilsController {
     @Autowired
     private IdWorker idWorker;
 
-    @RequestMapping("/verifyCode.jpg")
+    @RequestMapping("verifyCode.jpg")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookie = CookieUtils.getCookieValue(request, "getverid");
         /*禁止缓存*/
@@ -89,5 +89,16 @@ public class UtilsController {
         }
         Common common = new Common(menu);
         return ResponseEntity.ok(common);
+    }
+
+    /**
+     * 看看是不是活着
+     * @param request
+     * @return
+     */
+    @GetMapping("isLife")
+    @ResponseBody
+    public ResponseEntity<Void> isLife(HttpServletRequest request) {
+        return ResponseEntity.ok().build();
     }
 }

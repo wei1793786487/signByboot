@@ -125,7 +125,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()//记住我功能
                 .userDetailsService(userService)
                 .tokenRepository(persistentTokenRepository)
-                .tokenValiditySeconds(24 * 60 * 60)
+                .tokenValiditySeconds(24 * 60 * 60*7)
                 .authenticationSuccessHandler(authenticationSuccessHandler)
                 .and().logout()
                 .permitAll()
