@@ -23,7 +23,9 @@ public enum ExceptionEnums {
     NOT_HAVE_AUTHORITY(401,"权限不足"),
     LOFIN_ERROR(400,"账号或者密码错误"),
     EMPTY_ERROR(400,"输入项为空"),
+    PASSWORD_ERROR(400,"密码必须包含字母与数字，且在6到18位之间"),
     UPDATE_ERROR(500,"更新异常"),
+    UPDATEPASSWORD_ERROR(400,"密码错误"),
     MENU_NOT_FIND(404,"菜单没找到"),
     USER_NOT_USER(403,"用户不可用");
     private int code;

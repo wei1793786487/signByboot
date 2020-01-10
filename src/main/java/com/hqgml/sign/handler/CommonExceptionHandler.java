@@ -26,25 +26,25 @@ public class CommonExceptionHandler {
             /**
              * 普通异常
              */
-            return ResponseEntity.status(((XxException) e).getExceptionEnums().getCode()).body(new ExceptionResult(((XxException) e).getExceptionEnums()));
+            return ResponseEntity.status(200).body(new ExceptionResult(((XxException) e).getExceptionEnums()));
         } else if (e instanceof TooManyResultsException) {
             /**
              * 结果集不唯一
              */
-            return ResponseEntity.status(400).body(new ExceptionResult(ExceptionEnums.RESOUT_NOT_ONE));
+            return ResponseEntity.status(200).body(new ExceptionResult(ExceptionEnums.RESOUT_NOT_ONE));
         } else if (e instanceof CookieTheftException) {
             /**
              * remember cookie异常
              */
-            return ResponseEntity.status(2001).body(new ExceptionResult(2001, "用户信息异常"));
+            return ResponseEntity.status(200).body(new ExceptionResult(2001, "用户信息异常"));
         } else if (e instanceof MethodArgumentNotValidException) {
             /**
-             * 参数校验错误
+             * 校异常验
              */
             String message = ((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage();
-            return ResponseEntity.status(400).body(new ExceptionResult(400, message));
+            return ResponseEntity.status(200).body(new ExceptionResult(200, message));
         } else {
-            return ResponseEntity.status(500).body(new ExceptionResult(500, e.getMessage()));
+            return ResponseEntity.status(200).body(new ExceptionResult(500, e.getMessage()));
         }
     }
 

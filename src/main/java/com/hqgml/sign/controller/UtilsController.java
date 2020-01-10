@@ -93,12 +93,12 @@ public class UtilsController {
 
     /**
      * 看看是不是活着
-     * @param request
+     *
      * @return
      */
     @GetMapping("isLife")
     @ResponseBody
-    public ResponseEntity<Void> isLife(HttpServletRequest request) {
+    public ResponseEntity<Void> isLife() {
         return ResponseEntity.ok().build();
     }
 }
