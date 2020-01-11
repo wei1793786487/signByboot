@@ -28,7 +28,6 @@ public class UserController {
     private SysUserService sysUserService;
 
 
-
     @GetMapping("{username}")
     public ResponseEntity<Common> getUserByUsername(@PathVariable("username") String username, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -49,6 +48,13 @@ public class UserController {
         //TODO 这里不知道怎么清楚用户信息，只能让用户修改完密码之后再发一次退出登录请求
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
+        Common common = new Common("更新成功");
+        return ResponseEntity.ok(common);
+    }
+
+    @PutMapping()
+    public ResponseEntity<Common> updateUser(@Valid SysUser sysUser) {
+        sysUserService.updateUser(sysUser);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }

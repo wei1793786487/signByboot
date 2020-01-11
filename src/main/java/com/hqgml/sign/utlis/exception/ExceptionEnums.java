@@ -25,9 +25,15 @@ public enum ExceptionEnums {
     EMPTY_ERROR(400,"输入项为空"),
     PASSWORD_ERROR(400,"密码必须包含字母与数字，且在6到18位之间"),
     UPDATE_ERROR(500,"更新异常"),
+    SERVER_ERROR(500,"服务器异常"),
+    FIlE_IS_NULL(400,"文件为空"),
+    FIlENAME_IS_NULL(400,"文件名为空"),
+    FIlTYPE_IS_ALLOW(400,"该类型文件不允许上传"),
+    USER_NOT_lOGIN(403,"用户未登录"),
     UPDATEPASSWORD_ERROR(400,"密码错误"),
+    UPDATEUSER_ERROR(400,"更新用户出现错误"),
     MENU_NOT_FIND(404,"菜单没找到"),
-    USER_NOT_USER(403,"用户不可用");
+    USER_NOT_USE(403,"用户不可用");
     private int code;
     private String Msg;
 }

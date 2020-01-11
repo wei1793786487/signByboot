@@ -39,4 +39,11 @@ logging:
         SQL: DEBUG
     com.hqgml.sign.mapper: debug
 
-
+fdfs:
+  so-timeout: 1501 # 超时时间
+  connect-timeout: 601 # 连接超时时间
+  thumb-image: # 缩略图
+    width: 295
+    height: 413
+  tracker-list: # tracker地址：你的虚拟机服务器地址+端口（默认是22122）
+  - 49.232.54.164 :22122
