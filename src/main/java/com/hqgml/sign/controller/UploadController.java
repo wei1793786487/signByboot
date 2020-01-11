@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.Random;
+
 
 /**
  * @author Devil
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("upload")
 public class UploadController {
 
+    //TODO 文件上传漏洞，可以没有登录就上传文件，因为文件上传组件没有办法传cookie
 
     @Autowired
     private UploadService uploadService;
@@ -32,7 +34,8 @@ public class UploadController {
     @PostMapping("persion")
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile file) {
         uploadService.uploadPersion(file);
-        Common common=new Common("上传成功");
+        Common common =new Common("上传成功");
         return ResponseEntity.ok(common);
+
     }
 }

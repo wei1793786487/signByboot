@@ -46,5 +46,7 @@ class SignApplicationTests {
         // 获取缩略图路径
         String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
         System.out.println(path);
+
+
     }
 }

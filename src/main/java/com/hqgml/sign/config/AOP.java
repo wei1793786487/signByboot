@@ -18,15 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 public class AOP {
 
-    /**
-     * 上传组件没找到方法传送cooke，所以设置上传为所有人可以访问，但security查找当前用户来
-     * 判断是不是已经登录了
-     */
-    @After("execution(* com.hqgml.sign.controller.UploadController.*(..))")
-    public void isLogin() {
-        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (userDetails==null){
-            throw new XxException(ExceptionEnums.USER_NOT_lOGIN);
-        }
-    }
+//    /**
+//     * 上传组件没找到方法传送cooke，所以设置上传为所有人可以访问，但security查找当前用户来
+//     * 判断是不是已经登录了
+//     */
+//    @After("execution(* com.hqgml.sign.controller.UploadController.*(..))")
+//    public void isLogin() {
+//        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (userDetails==null){
+//            throw new XxException(ExceptionEnums.USER_NOT_lOGIN);
+//        }
+//    }
 }
