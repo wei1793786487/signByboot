@@ -4,6 +4,7 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.ExceptionResult;
 import com.hqgml.sign.utlis.exception.ValidateCodeException;
 import com.hqgml.sign.utlis.exception.XxException;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -43,7 +44,14 @@ public class CommonExceptionHandler {
              */
             String message = ((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage();
             return ResponseEntity.status(200).body(new ExceptionResult(200, message));
+        } else if (e instanceof TencentCloudSDKException) {
+            /**
+             * 腾讯异常
+             */
+            String message = ((TencentCloudSDKException) e).getCause().getMessage();
+            return ResponseEntity.status(200).body(new ExceptionResult(400, message));
         } else {
+
             return ResponseEntity.status(200).body(new ExceptionResult(500, e.getMessage()));
         }
     }

@@ -2,49 +2,74 @@ package com.hqgml.sign.servce.impl;
 
 import com.hqgml.sign.servce.TenlentServices;
 import com.tencentcloudapi.iai.v20180301.IaiClient;
+import com.tencentcloudapi.iai.v20180301.models.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Devil
  * @date 2020/1/12 17:28
  */
+@Slf4j
 public class TenlentServicesImpl implements TenlentServices {
+
     @Autowired
     private IaiClient client;
 
 
     @Override
-    public void createGroup(String groupName, String groupId) {
+    public void createGroup(String groupName, String groupId) throws Exception {
+        String params = "{\"GroupName\":\"" + groupName + "\",\"GroupId\":\"" + groupId + "\"}";
+        CreateGroupRequest req = CreateGroupRequest.fromJsonString(params, CreateGroupRequest.class);
+        CreateGroupResponse resp = client.CreateGroup(req);
+        log.info("创建人员库完成" + resp.getRequestId());
+    }
+
+    @Override
+    public void deleteGroup(String groupId) throws Exception {
+        String params = "{\"GroupId\":\"" + groupId + "\"}";
+        DeleteGroupRequest req = DeleteGroupRequest.fromJsonString(params, DeleteGroupRequest.class);
+        DeleteGroupResponse resp = client.DeleteGroup(req);
+        log.info("创删除人员库完成" + resp.getRequestId());
+    }
+
+    @Override
+    public String getGroup() throws Exception {
+        String params = "{}";
+        GetGroupListRequest req = GetGroupListRequest.fromJsonString(params, GetGroupListRequest.class);
+        GetGroupListResponse resp = client.GetGroupList(req);
+        return GetGroupListRequest.toJsonString(resp);
 
     }
 
     @Override
-    public void deleteGroup(String groupId) {
-
+    public String createPerson(String groupId, String personName, String personId, String url) throws Exception {
+        String params = "{\"GroupId\":\"" + groupId + "\",\"PersonName\":\"" + personName + "\",\"PersonId\":\"" + personId + "\",\"Url\":\"" + url + "\"}";
+        CreatePersonRequest req = CreatePersonRequest.fromJsonString(params, CreatePersonRequest.class);
+        CreatePersonResponse resp = client.CreatePerson(req);
+        return resp.getFaceId();
     }
 
     @Override
-    public void getGroup() {
-
+    public void deletePerson(String personId)  throws Exception{
+        String params = "{\"PersonId\":\""+personId+"\"}";
+        DeletePersonRequest req = DeletePersonRequest.fromJsonString(params, DeletePersonRequest.class);
+        DeletePersonResponse resp = client.DeletePerson(req);
+        log.info("创删除人员"+personId+"完成" + resp.getRequestId());
     }
 
     @Override
-    public void createPerson(String groupId, String personName, String personId, String url) {
-
+    public String getPersonList(String groupId) throws Exception{
+        String params = "{\"GroupId\":\""+groupId+"\"}";
+        GetPersonListRequest req = GetPersonListRequest.fromJsonString(params, GetPersonListRequest.class);
+        GetPersonListResponse resp = client.GetPersonList(req);
+       return  GetPersonListRequest.toJsonString(resp);
     }
 
     @Override
-    public void deletePerson(String personId) {
-
-    }
-
-    @Override
-    public void getPersonList(String groupId) {
-
-    }
-
-    @Override
-    public void search(String groupId, String Image) {
-
+    public SearchPersonsResponse search(String groupId, String image) throws Exception {
+        String params = "{\"GroupIds\":[\""+groupId+"\"],\"Image\":\""+image+"\"}";
+        SearchPersonsRequest req = SearchPersonsRequest.fromJsonString(params, SearchPersonsRequest.class);
+       return client.SearchPersons(req);
     }
 }

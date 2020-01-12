@@ -1,5 +1,7 @@
 package com.hqgml.sign.servce;
 
+import com.tencentcloudapi.iai.v20180301.models.SearchPersonsResponse;
+
 /**
  * @author Devil
  * @date 2020/1/12 17:28
@@ -11,18 +13,18 @@ public interface TenlentServices {
      * @param groupName
      * @param groupId
      */
-    void createGroup(String groupName, String groupId);
+    void createGroup(String groupName, String groupId) throws Exception;
 
     /**
      * 删除组
      * @param groupId
      */
-    void deleteGroup(String groupId);
+    void deleteGroup(String groupId) throws Exception;
 
     /**
      * 获取组
      */
-    void getGroup();
+    String getGroup()throws Exception;
 
     /**
      * 创建人员
@@ -31,26 +33,26 @@ public interface TenlentServices {
      * @param personId
      * @param url
      */
-    void createPerson(String groupId, String personName, String personId, String url);
+    String createPerson(String groupId, String personName, String personId, String url)throws Exception;
 
     /**
      * 删除人员
      * @param personId
      */
-    void deletePerson(String personId);
+    void deletePerson(String personId)throws Exception;
 
     /**
      * 获取人员列表
      * @param groupId
      */
-    void getPersonList(String groupId);
+    String getPersonList(String groupId)throws Exception;
 
     /**
      * 查询
      * @param groupId
-     * @param Image
+     * @param image
      */
-    void search(String groupId, String Image);
+    SearchPersonsResponse search(String groupId, String image)throws Exception;
 }
 
 
