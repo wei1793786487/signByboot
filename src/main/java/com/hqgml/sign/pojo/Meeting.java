@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author Devil
- * @date 2020/1/3 20:19
+ * @date 2020/1/12 13:20
  */
 @Data
 @Table(name = "meeting")
@@ -39,6 +39,9 @@ public class Meeting implements Serializable {
 
     @Column(name = "uuid")
     private String uuid;
+
+    @Column(name = "information")
+    private String information;
 
     private static final long serialVersionUID = 1L;
 }

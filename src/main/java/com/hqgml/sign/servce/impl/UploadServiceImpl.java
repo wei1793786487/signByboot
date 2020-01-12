@@ -1,8 +1,6 @@
 package com.hqgml.sign.servce.impl;
 
-import cn.hutool.core.io.FileUtil;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
-import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.servce.UploadService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
@@ -14,9 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +33,7 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     public String uploadPersion(MultipartFile file) {
-        //大小
+            //大小
         try {
             if (file.getSize() == 0) {
                 throw new XxException(ExceptionEnums.FIlE_IS_NULL);

@@ -15,5 +15,5 @@ public interface UploadService {
      * @param file
      * @return
      */
-    public String uploadPersion(MultipartFile file);
+     String uploadPersion(MultipartFile file);
 }

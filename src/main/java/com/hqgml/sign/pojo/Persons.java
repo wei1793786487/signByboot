@@ -7,7 +7,7 @@ import lombok.Data;
 
 /**
  * @author Devil
- * @date 2020/1/3 20:16
+ * @date 2020/1/12 13:32
  */
 @Data
 @Table(name = "persons")
@@ -16,6 +16,9 @@ public class Persons implements Serializable {
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")
     private Integer id;
+
+    @Column(name = "add_id")
+    private Integer addId;
 
     @Column(name = "photo_name")
     private String photoName;
@@ -26,8 +29,8 @@ public class Persons implements Serializable {
     @Column(name = "add_time")
     private Date addTime;
 
-    @Column(name = "IsCheck")
-    private String ischeck;
+    @Column(name = "phone")
+    private Integer phone;
 
     private static final long serialVersionUID = 1L;
 }

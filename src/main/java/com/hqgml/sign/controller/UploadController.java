@@ -25,7 +25,7 @@ import java.util.Random;
 @RequestMapping("upload")
 public class UploadController {
 
-    //TODO 文件上传漏洞，可以没有登录就上传文件，因为文件上传组件没有办法传cookie
+
 
     @Autowired
     private UploadService uploadService;
