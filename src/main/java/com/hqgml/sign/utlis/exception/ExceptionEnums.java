@@ -18,6 +18,7 @@ public enum ExceptionEnums {
     DELETE_ERROR(500, "删除异常"),
     RESOUT_NOT_ONE(500, "结果集不唯一"),
     USER_ISHAVE(401, "该用户已经存在"),
+    PERSON_EXIST(401, "该姓名人员已经存在"),
     LOG_NOT_FIND(404, "日志未找到"),
     MEETING_NOT_FIND(404, "会议未找到"),
     PSRSON_NOT_FIND(404, "人员未找到"),

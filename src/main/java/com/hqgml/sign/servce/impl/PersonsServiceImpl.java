@@ -1,8 +1,6 @@
 package com.hqgml.sign.servce.impl;
 
 import com.hqgml.sign.pojo.Persons;
-import com.hqgml.sign.utlis.exception.ExceptionEnums;
-import com.hqgml.sign.utlis.exception.XxException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -34,6 +32,11 @@ public class PersonsServiceImpl implements PersonsService {
         if (i!=1){
            log.error("删除异常");
         }
+    }
+
+    @Override
+    public Persons selectByUsername(String username) {
+        return personsMapper.selectOneByPersonName(username);
     }
 }
 

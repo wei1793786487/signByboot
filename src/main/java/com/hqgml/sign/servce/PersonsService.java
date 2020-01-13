@@ -15,7 +15,14 @@ public interface PersonsService {
     void createPersion(Persons persons);
 
 
+    /**
+     * 根据uuid删除
+     * @param uuid
+     */
     void delectByuuid(String uuid);
+
+
+    Persons selectByUsername(String username);
 }
 
 

@@ -14,9 +14,11 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.result.FileUtils;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+import com.tencentcloudapi.tbaas.v20180416.models.BlockByNumberHandlerRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,14 +69,21 @@ public class UploadServiceImpl implements UploadService {
                 if (StringUtils.isBlank(filename)) {
                     throw new XxException(ExceptionEnums.FIlENAME_IS_NULL);
                 }
-                //后缀是否允许
                 String suffix = FileUtils.suffix(multipartFile.getOriginalFilename());
                 String personname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
+                Persons person = personsService.selectByUsername(personname);
 
-                if (filename.length() > 10) {
-                    throw new XxException(ExceptionEnums.PERSON_NAME_IS_TOO_LONG);
+                //数据库是否有人员
+                if (person != null) {
+                    throw new XxException(ExceptionEnums.PERSON_EXIST);
+
                 }
 
+                if (filename.length() > 10) {
+                    throw new XxException(ExceptionEnums.PERSON_EXIST);
+                }
+
+                //后缀是否允许
                 for (String allow : ALLOWS) {
                     if (StringUtils.contains(suffix, allow)) {
                         isAllow = true;
@@ -88,7 +97,6 @@ public class UploadServiceImpl implements UploadService {
                 } else {
                     StorePath storePath = storageClient.uploadFile(multipartFile.getInputStream(), multipartFile.getSize(), suffix, null);
                     log.info("文件上传的路径是" + storePath.getFullPath());
-
                     String uuid = IdUtil.simpleUUID();
                     Persons persons = new Persons();
                     persons.setPersonName(personname);
@@ -123,6 +131,7 @@ public class UploadServiceImpl implements UploadService {
             try {
                 tenlentServices.createPerson(sysUser.getId().toString(), person.getPersonName(), person.getUuid(), "http://www.hqgml.com/" + person.getUrl());
             } catch (TencentCloudSDKException e) {
+                //先对异常进行处理
                 storageClient.deleteFile(person.getUrl());
                 personsService.delectByuuid(person.getUuid());
                 //这里抛出去是因为要丢给springmvc去处理异常；

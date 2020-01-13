@@ -11,5 +11,8 @@ import tk.mybatis.mapper.common.Mapper;
 public interface PersonsMapper extends Mapper<Persons> {
     int deleteByUuid(@Param("uuid")String uuid);
 
+    Persons selectOneByPersonName(@Param("personName")String personName);
+
+
 
 }
