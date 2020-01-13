@@ -1,5 +1,6 @@
 package com.hqgml.sign.servce;
 
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.iai.v20180301.models.SearchPersonsResponse;
 
 /**
@@ -13,13 +14,13 @@ public interface TenlentServices {
      * @param groupName
      * @param groupId
      */
-    void createGroup(String groupName, String groupId) throws Exception;
+    void createGroup(String groupName, String groupId) throws TencentCloudSDKException;
 
     /**
      * 删除组
      * @param groupId
      */
-    void deleteGroup(String groupId) throws Exception;
+    void deleteGroup(String groupId) throws TencentCloudSDKException;
 
     /**
      * 获取组
@@ -33,26 +34,26 @@ public interface TenlentServices {
      * @param personId
      * @param url
      */
-    String createPerson(String groupId, String personName, String personId, String url)throws Exception;
+    String createPerson(String groupId, String personName, String personId, String url) throws TencentCloudSDKException, InterruptedException;
 
     /**
      * 删除人员
      * @param personId
      */
-    void deletePerson(String personId)throws Exception;
+    void deletePerson(String personId)throws TencentCloudSDKException;
 
     /**
      * 获取人员列表
      * @param groupId
      */
-    String getPersonList(String groupId)throws Exception;
+    String getPersonList(String groupId)throws TencentCloudSDKException;
 
     /**
      * 查询
      * @param groupId
      * @param image
      */
-    SearchPersonsResponse search(String groupId, String image)throws Exception;
+    SearchPersonsResponse search(String groupId, String image)throws TencentCloudSDKException;
 }
 
 

@@ -46,7 +46,10 @@ class SignApplicationTests {
         // 获取缩略图路径
         String path = thumbImageConfig.getThumbImagePath(storePath.getPath());
         System.out.println(path);
-
-
+    }
+    @Test
+    public void demo(){
+        String string="abcd123456中文_$,@";
+        System.out.println(string.replaceAll("[^\\u4e00-\\u9fa5]", ""));
     }
 }

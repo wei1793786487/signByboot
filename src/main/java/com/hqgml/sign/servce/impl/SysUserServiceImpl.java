@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,6 +79,12 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public SysUser findUserByUserName(String username) {
+
+        if (username == null) {
+            //如果用户没有传 自动读取security容器里面的用户名
+            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            username = userDetails.getUsername();
+        }
         SysUser User = sysUserMapper.findOneByUsername(username);
         if (User == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);

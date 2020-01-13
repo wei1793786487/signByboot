@@ -48,12 +48,12 @@ public class CommonExceptionHandler {
             /**
              * 腾讯异常
              */
-            String message = ((TencentCloudSDKException) e).getCause().getMessage();
-            return ResponseEntity.status(200).body(new ExceptionResult(400, message));
-        } else {
-
-            return ResponseEntity.status(200).body(new ExceptionResult(500, e.getMessage()));
+            String message = ((TencentCloudSDKException) e).getMessage().toString();
+            //提取返回错误信息里面的中文
+            String replaceAll = message.replaceAll("[^\\u4e00-\\u9fa5]", "");
+            return ResponseEntity.status(200).body(new ExceptionResult(400, replaceAll));
         }
+        return null;
     }
 
 

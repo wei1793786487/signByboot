@@ -1,8 +1,7 @@
 package com.hqgml.sign.servce;
 
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * @author Devil
@@ -15,5 +14,5 @@ public interface UploadService {
      * @param file
      * @return
      */
-     String uploadPersion(MultipartFile file);
+     void uploadPersion(MultipartFile[] file) throws TencentCloudSDKException;
 }

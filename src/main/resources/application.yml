@@ -28,16 +28,16 @@ spring:
 
 tenlent:
   keys:
-    SecretId:
-    SecretKey:
+    SecretId: AKIDsZ5NYYlQ4X3Rdntq5Nh0CD7ED9xfYk1E
+    SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8
 
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-    com.hqgml.sign.mapper: debug
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#    com.hqgml.sign.mapper: debug
 
 fdfs:
   so-timeout: 1501 # 超时时间
