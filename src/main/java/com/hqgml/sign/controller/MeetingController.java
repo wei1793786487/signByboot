@@ -26,7 +26,7 @@ public class MeetingController {
 
         LayUi<Meeting> layUi = new LayUi<>();
         List<Meeting> mall = meetingService.getAll();
-        layUi.setCount(1000);
+        layUi.setCount(1000L);
         layUi.setData(mall);
         return layUi;
     }

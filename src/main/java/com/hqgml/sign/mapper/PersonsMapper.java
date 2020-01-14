@@ -12,5 +12,18 @@ public interface PersonsMapper extends Mapper<Persons> {
 
     Persons selectOneByPersonName(@Param("personName") String personName);
 
-    List<Persons> findAllByAddId(@Param("addId") Integer addId);
+    List<Persons> findAllByAddId(@Param("addId") Integer addId,@Param("personName") String personName);
+
+    int updatePersonNameById(@Param("updatedPersonName")String updatedPersonName,@Param("id")Integer id);
+
+    int deleteById(@Param("id")Integer id);
+
+     Persons selectAllById(@Param("id")Integer id);
+
+
+
+
+
+
+
 }

@@ -18,6 +18,6 @@ public class LayUi<T> {
     }
     private String code;
     private String msg;
-    private Integer count;
+    private Long count;
     private List<T> data;
 }
