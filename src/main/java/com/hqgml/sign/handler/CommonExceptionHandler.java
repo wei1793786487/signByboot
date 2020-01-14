@@ -52,6 +52,10 @@ public class CommonExceptionHandler {
             //提取返回错误信息里面的中文
             String replaceAll = message.replaceAll("[^\\u4e00-\\u9fa5]", "");
             return ResponseEntity.status(200).body(new ExceptionResult(400, replaceAll));
+        }else if (e instanceof CookieTheftException){
+            return ResponseEntity.status(200).body(new ExceptionResult(400, "登录失效"));
+        }else {
+            e.printStackTrace();
         }
         return null;
     }

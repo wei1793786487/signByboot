@@ -1,5 +1,6 @@
 package com.hqgml.sign.servce.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
@@ -14,11 +15,9 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.result.FileUtils;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
-import com.tencentcloudapi.tbaas.v20180416.models.BlockByNumberHandlerRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,7 +70,7 @@ public class UploadServiceImpl implements UploadService {
                 }
                 String suffix = FileUtils.suffix(multipartFile.getOriginalFilename());
                 String personname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
-                Persons person = personsService.selectByUsername(personname);
+                Persons person = personsService.selectOneByUsername(personname);
 
                 //数据库是否有人员
                 if (person != null) {
@@ -79,7 +78,7 @@ public class UploadServiceImpl implements UploadService {
 
                 }
 
-                if (filename.length() > 10) {
+                if (personname.length() > 10) {
                     throw new XxException(ExceptionEnums.PERSON_EXIST);
                 }
 
@@ -101,6 +100,7 @@ public class UploadServiceImpl implements UploadService {
                     Persons persons = new Persons();
                     persons.setPersonName(personname);
                     persons.setUrl(storePath.getFullPath());
+                    persons.setAddTime(DateUtil.now());
                     persons.setAddId(sysUser.getId());
                     persons.setUuid(uuid);
                     //创建人员

@@ -13,6 +13,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/meeting2?serverTimezone=UTC
     password: root
     username: root
+#    解决返回时间晚8小时问题
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
 
   redis:
     database: 0 #索引
@@ -44,3 +49,5 @@ fdfs:
   connect-timeout: 601 # 连接超时时间
   tracker-list: # tracker地址：你的虚拟机服务器地址+端口（默认是22122）
   - 49.232.54.164 :22122
+
+

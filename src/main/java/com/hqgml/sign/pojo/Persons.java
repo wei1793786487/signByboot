@@ -1,13 +1,12 @@
 package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
 
 /**
  * @author Devil
- * @date 2020/1/13 11:09
+ * @date 2020/1/14 17:09
  */
 @Data
 @Table(name = "persons")
@@ -27,7 +26,7 @@ public class Persons implements Serializable {
     private String personName;
 
     @Column(name = "add_time")
-    private Date addTime;
+    private String addTime;
 
     @Column(name = "uuid")
     private String uuid;
