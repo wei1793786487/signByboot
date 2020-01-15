@@ -58,7 +58,7 @@ public class TenlentServicesImpl implements TenlentServices {
         String params = "{\"PersonId\":\"" + personId + "\"}";
         DeletePersonRequest req = DeletePersonRequest.fromJsonString(params, DeletePersonRequest.class);
         DeletePersonResponse resp = client.DeletePerson(req);
-        log.info("创删除人员" + personId + "完成" + resp.getRequestId());
+        log.info("删除人员" + personId + "完成,人员id为" + resp.getRequestId());
     }
 
     @Override

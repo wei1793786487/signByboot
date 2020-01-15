@@ -6,6 +6,7 @@ import com.hqgml.sign.servce.PersonsService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -51,13 +52,12 @@ public class PersonController {
         return ResponseEntity.ok(common);
     }
 
-
     @DeleteMapping
     public ResponseEntity<Common> deleteByIds(@RequestParam("ids[]") Integer[] ids) throws TencentCloudSDKException {
 
         personsService.delectByids(ids);
-        Common common = new Common(null);
-        return ResponseEntity.ok(null);
+        Common common = new Common("删除完成");
+        return ResponseEntity.ok(common);
     }
 }
 

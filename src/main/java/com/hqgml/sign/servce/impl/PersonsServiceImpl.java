@@ -22,6 +22,7 @@ import com.hqgml.sign.servce.PersonsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -94,16 +95,19 @@ public class PersonsServiceImpl implements PersonsService {
 
     @Override
     public void delectByids(Integer[] ids) throws TencentCloudSDKException {
+
         for (Integer id : ids) {
+            Persons persons = selectById(id);
+            storageClient.deleteFile(persons.getUrl());
+            log.info("删除服务器图片信息");
+
+            tenlentServices.deletePerson(persons.getUuid());
+            log.info("删除腾讯云");
+
             int isdelect = personsMapper.deleteById(id);
             if (isdelect != 1) {
                 log.error("数据库删除id为" + id + "失败");
             }
-            Persons persons = selectById(id);
-            storageClient.deleteFile(persons.getUrl());
-            log.info("删除服务器图片信息");
-            tenlentServices.deletePerson(persons.getUuid());
-            log.info("删除腾讯云");
         }
     }
 
