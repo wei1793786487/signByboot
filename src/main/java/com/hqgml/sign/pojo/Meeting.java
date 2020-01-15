@@ -2,6 +2,9 @@ package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
 import lombok.Data;
 
 /**
@@ -19,17 +22,22 @@ public class Meeting implements Serializable {
     @Column(name = "add_id")
     private Integer addId;
 
+    @NotNull
     @Column(name = "metting_address")
     private String mettingAddress;
 
+    @NotNull
     @Column(name = "meeting_name")
     private String meetingName;
 
+    @NotNull
     @Column(name = "start_time")
     private String startTime;
 
+    @NotNull
     @Column(name = "end_time")
     private String endTime;
+
 
     @Column(name = "meeting_phone")
     private String meetingPhone;

@@ -21,6 +21,7 @@ public enum ExceptionEnums {
     PERSON_NOT_FIND(400, "无人员信息"),
     PERSON_EXIST(401, "该姓名人员已经存在"),
     LOG_NOT_FIND(404, "日志未找到"),
+    MEETING_ADD_ERROR(400, "会议添加异常"),
     MEETING_NOT_FIND(404, "会议未找到"),
     PSRSON_NOT_FIND(404, "人员未找到"),
     NOT_HAVE_AUTHORITY(401,"权限不足"),
