@@ -2,10 +2,12 @@ package com.hqgml.sign.controller;
 
 import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.PersonsService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,15 +41,13 @@ public class PersonController {
     }
 
     /**
-     * 修改用户姓名
      *
-     * @param personName
-     * @param id
+     * @param persons
      * @return
      */
     @PutMapping
-    public ResponseEntity<Common> updatePersonNameById(@RequestParam("personName") String personName, @RequestParam("id") int id) {
-        personsService.updatePersonNameById(personName, id);
+    public ResponseEntity<Common> updatePersonNameById(Persons persons){
+       personsService.updatePersonById(persons);
         Common common = new Common(null);
         return ResponseEntity.ok(common);
     }

@@ -25,6 +25,7 @@ public enum ExceptionEnums {
     MEETING_NOT_FIND(404, "会议未找到"),
     PSRSON_NOT_FIND(404, "人员未找到"),
     NOT_HAVE_AUTHORITY(401,"权限不足"),
+     PARAMETER_ERROT(400,"参数错误"),
     LOFIN_ERROR(400,"账号或者密码错误"),
     EMPTY_ERROR(400,"输入项为空"),
     PASSWORD_ERROR(400,"密码必须包含字母与数字，且在6到18位之间"),

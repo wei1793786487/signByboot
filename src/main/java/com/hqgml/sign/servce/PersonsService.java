@@ -3,6 +3,7 @@ package com.hqgml.sign.servce;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -39,7 +40,6 @@ public interface PersonsService {
     /**
      * 查看所属用户的所有人员
      *
-     *
      * @param s
      * @param page
      * @param limit
@@ -48,13 +48,15 @@ public interface PersonsService {
      */
     LayUi selectAllByusername(String s, Integer page, Integer limit, String username);
 
-    void updatePersonNameById(String personName,Integer id);
+    void updatePersonById(Persons persons);
 
 
     void delectByids(Integer[] ids) throws TencentCloudSDKException;
 
-   Persons selectById(Integer id);
+    Persons selectById(Integer id);
 }
+
+
 
 
 

@@ -13,9 +13,12 @@ import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
@@ -85,12 +88,13 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public void updatePersonNameById(String personName, Integer id) {
-        int i = personsMapper.updatePersonNameById(personName, id);
-        if (i != 1) {
-            log.error("更新姓名异常");
+    public void updatePersonById(@Valid Persons persons) {
+        //这个接口只允许修改手机号以及姓名，不可以修改其他的所以使用@Valid来约束
+        int update = personsMapper.updateByPrimaryKey(persons);
+        if (update != 1) {
             throw new XxException(ExceptionEnums.UPDATE_ERROR);
         }
+
     }
 
     @Override
@@ -120,6 +124,8 @@ public class PersonsServiceImpl implements PersonsService {
         return persons;
     }
 }
+
+
 
 
 

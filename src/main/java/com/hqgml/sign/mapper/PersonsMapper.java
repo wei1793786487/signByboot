@@ -5,25 +5,16 @@ import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mappe
 
 /**
  * @author Devil
- * @date 2020/1/14 17:09
+ * @date 2020/1/16 23:08
  */
 public interface PersonsMapper extends Mapper<Persons> {
     int deleteByUuid(@Param("uuid") String uuid);
 
     Persons selectOneByPersonName(@Param("personName") String personName);
 
-    List<Persons> findAllByAddId(@Param("addId") Integer addId,@Param("personName") String personName);
+    List<Persons> findAllByAddId(@Param("addId") Integer addId, @Param("personName") String personName);
 
-    int updatePersonNameById(@Param("updatedPersonName")String updatedPersonName,@Param("id")Integer id);
+    int deleteById(@Param("id") Integer id);
 
-    int deleteById(@Param("id")Integer id);
-
-     Persons selectAllById(@Param("id")Integer id);
-
-
-
-
-
-
-
+    Persons selectAllById(@Param("id") Integer id);
 }
