@@ -128,7 +128,12 @@
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
-
+        <!--xml文件读取-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

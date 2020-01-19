@@ -8,6 +8,7 @@ import cn.hutool.poi.excel.ExcelUtil;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
+import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.MeetingPersion;
 import com.hqgml.sign.pojo.Persons;
@@ -21,7 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.ls.LSInput;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +58,10 @@ public class UploadServiceImpl implements UploadService {
     private MeetingService meetingService;
 
     @Autowired
-    MeetingPersionMapper meetingPersionMapper;
+    private MeetingPersionMapper meetingPersionMapper;
+
+    @Autowired
+    private PersonsMapper personsMapper;
 
 
     private final static List<String> ALLOWS = Arrays.asList("jpg", "png", "JPEG", "xls", "xlsx");
@@ -63,6 +69,7 @@ public class UploadServiceImpl implements UploadService {
 
     /**
      * 人员添加
+     *
      * @param file
      * @throws TencentCloudSDKException
      */
@@ -159,12 +166,14 @@ public class UploadServiceImpl implements UploadService {
     }
 
     /**
-     * 添加会议
+     * 将人员添加进会员
+     *
      * @param file
      */
     @Override
-    public void uploadPersionMeeting(MultipartFile file) {
+    public List<String> uploadPersionMeeting(MultipartFile file) {
         ExcelReader reader;
+        List<String> list = new ArrayList<>();
         if (file.getSize() == 0) {
             throw new XxException(ExceptionEnums.FIlE_IS_NULL);
         }
@@ -180,19 +189,12 @@ public class UploadServiceImpl implements UploadService {
         //获取会议的名字获取会议的信息
         Meeting meeting = meetingService.findMeetingByName(meetingname);
 
-        //后缀是否允许
-        for (String allow : ALLOWS) {
-            if (StringUtils.contains(suffix, allow)) {
-                isAllow = true;
-            }
-        }
-        if (!isAllow) {
-            throw new XxException(ExceptionEnums.FIlTYPE_IS_ALLOW);
-        }
+
         try {
             //读取表格数据
-          reader=ExcelUtil.getReader(file.getInputStream());
+            reader = ExcelUtil.getReader(file.getInputStream());
         } catch (IOException e) {
+            e.printStackTrace();
             log.error("读取失败，文件内容出错，{}", file.getOriginalFilename());
             throw new XxException(ExceptionEnums.READ_ERROR);
         }
@@ -200,21 +202,24 @@ public class UploadServiceImpl implements UploadService {
         for (Map<String, Object> map : maps) {
             String person = (String) map.get("姓名");
 
-            Persons persons = personsService.selectByName(person);
-
+            Persons persons = personsMapper.selectOneByPersonName(person);
+            if (persons == null) {
+                list.add(person + "人员不存在");
+            }
             MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(meeting.getId(), persons.getId());
-            if (one!=null){
-                throw new XxException(ExceptionEnums.PERSON_IS_HAVE);
-            }else {
+            if (one != null) {
+                list.add(person + "已存在该会议");
+            } else {
                 //添加
-                MeetingPersion meetingPersion=new MeetingPersion();
+                MeetingPersion meetingPersion = new MeetingPersion();
                 meetingPersion.setMid(meeting.getId());
                 meetingPersion.setPid(persons.getId());
                 meetingPersionMapper.insert(meetingPersion);
+                list.add(person+"添加成功");
             }
 
-
         }
+        return list;
     }
 
 

@@ -3,6 +3,8 @@ package com.hqgml.sign.servce;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
 
+import java.util.List;
+
 /**
  * @author Devil
  * @date 2019/12/31 10:47
@@ -18,7 +20,7 @@ public interface MeetingService {
 
     void deleteMeeting(Integer[] ids);
 
-    void addMeetingPeople(Integer mid, Integer[] pids);
+    List<String> addMeetingPeople(Integer mid, Integer[] pids);
 
     Meeting findMeetingByName(String meetingname);
 }

@@ -1,17 +1,16 @@
 package com.hqgml.sign.servce.impl;
 
-import cn.hutool.core.net.NetUtil;
 import cn.hutool.core.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
+import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,9 +18,9 @@ import javax.annotation.Resource;
 import com.hqgml.sign.mapper.MeetingMapper;
 import com.hqgml.sign.servce.MeetingService;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-import sun.security.provider.MD2;
+import org.w3c.dom.ls.LSInput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,6 +45,9 @@ public class MeetingServiceImpl implements MeetingService {
     @Resource
     private PersonsService personsService;
 
+
+    @Resource
+    private PersonsMapper personsMapper;
 
     @Override
     public void addMeeting(Meeting meeting) {
@@ -97,28 +99,43 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public void addMeetingPeople(Integer mid, Integer[] pids) {
+    public List<String> addMeetingPeople(Integer mid, Integer[] pids) {
+        List<String > list=new ArrayList<>();
+
         Meeting meeting = meetingMapper.findOneById(mid);
         if (meeting == null) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         for (Integer pid : pids) {
             //这里面已经处理了person为null的情况
-            personsService.selectById(pid);
+            Persons per = personsMapper.selectAllById(pid);
+            if (per==null){
+                list.add("人员不存在");
+            }else {
+                MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(mid, pid);
+                if (one != null) {
+                    log.error("{}，人员以及存在该会议");
+                    Persons persons = personsService.selectById(pid);
+                    list.add(persons.getPersonName()+"已经存在该会议");
+                }else {
+                    MeetingPersion meetingPersion = new MeetingPersion();
+                    meetingPersion.setMid(mid);
+                    meetingPersion.setPid(pid);
+                    meetingPersion.setIscheck(0);
+                    int insert = meetingPersionMapper.insert(meetingPersion);
+                    if (insert != 1) {
+                        log.error("添加异常");
+                        Persons persons = personsService.selectById(pid);
+                        list.add(persons.getPersonName()+"添加异常");
+                    }else {
+                        list.add(per.getPersonName()+"添加成功");
+                    }
+                }
 
-            MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(mid, pid);
-            if (one != null) {
-                throw new XxException(ExceptionEnums.PERSON_IS_HAVE);
             }
-            MeetingPersion meetingPersion = new MeetingPersion();
-            meetingPersion.setMid(mid);
-            meetingPersion.setPid(pid);
-            meetingPersion.setIscheck(0);
-            int insert = meetingPersionMapper.insert(meetingPersion);
-            if (insert != 1) {
 
-            }
         }
+        return list;
 
     }
 

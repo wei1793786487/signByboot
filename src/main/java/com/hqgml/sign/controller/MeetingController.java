@@ -59,8 +59,9 @@ public class MeetingController {
     @PostMapping("person")
     public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid, @RequestParam("pids") Integer[] pids, HttpServletRequest request) {
 
-        meetingService.addMeetingPeople(mid, pids);
-        Common common=new Common("添加成功");
-        return ResponseEntity.ok(common);
+        List<String> message = meetingService.addMeetingPeople(mid, pids);
+        return ResponseEntity.ok(new Common(message));
+
+
     }
 }

@@ -13,10 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -34,7 +31,7 @@ public class UploadController {
     private UploadService uploadService;
 
 
-    @PostMapping("persion")
+    @PostMapping("person")
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
         uploadService.uploadPersion(files);
         Common common =new Common("上传成功");
@@ -42,11 +39,11 @@ public class UploadController {
 
     }
 
-    @PostMapping("persionMeeting")
+    @PostMapping("personMeeting")
     public ResponseEntity<Common> uploadPersionMeeting(@RequestParam(value = "file") MultipartFile file ) throws Exception {
-        uploadService.uploadPersionMeeting(file);
-        Common common =new Common("上传成功");
-        return ResponseEntity.ok(common);
+        List<String> message = uploadService.uploadPersionMeeting(file);
+        return ResponseEntity.ok(new Common(message));
+
 
     }
 }
