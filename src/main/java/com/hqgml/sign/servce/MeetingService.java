@@ -17,6 +17,10 @@ public interface MeetingService {
 
 
     void deleteMeeting(Integer[] ids);
+
+    void addMeetingPeople(Integer mid, Integer[] pids);
+
+    Meeting findMeetingByName(String meetingname);
 }
 
 

@@ -3,14 +3,16 @@ package com.hqgml.sign.servce.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.hqgml.sign.mapper.MeetingPersionMapper;
+import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.pojo.MeetingPersion;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
-import com.hqgml.sign.servce.PersonsService;
-import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.servce.TenlentServices;
-import com.hqgml.sign.servce.UploadService;
+import com.hqgml.sign.servce.*;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.result.FileUtils;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -48,9 +51,21 @@ public class UploadServiceImpl implements UploadService {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private MeetingService meetingService;
+
+    @Autowired
+    MeetingPersionMapper meetingPersionMapper;
+
+
     private final static List<String> ALLOWS = Arrays.asList("jpg", "png", "JPEG", "xls", "xlsx");
     private Boolean isAllow = false;
 
+    /**
+     * 人员添加
+     * @param file
+     * @throws TencentCloudSDKException
+     */
     @Override
     public void uploadPersion(MultipartFile[] file) throws TencentCloudSDKException {
         SysUser sysUser = sysUserService.findUserByUserName(null);
@@ -141,6 +156,65 @@ public class UploadServiceImpl implements UploadService {
             }
         }
 
+    }
+
+    /**
+     * 添加会议
+     * @param file
+     */
+    @Override
+    public void uploadPersionMeeting(MultipartFile file) {
+        ExcelReader reader;
+        if (file.getSize() == 0) {
+            throw new XxException(ExceptionEnums.FIlE_IS_NULL);
+        }
+        String filename = file.getOriginalFilename();
+
+
+        //空白名
+        if (StringUtils.isBlank(filename)) {
+            throw new XxException(ExceptionEnums.FIlENAME_IS_NULL);
+        }
+        String suffix = FileUtils.suffix(file.getOriginalFilename());
+        String meetingname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
+        //获取会议的名字获取会议的信息
+        Meeting meeting = meetingService.findMeetingByName(meetingname);
+
+        //后缀是否允许
+        for (String allow : ALLOWS) {
+            if (StringUtils.contains(suffix, allow)) {
+                isAllow = true;
+            }
+        }
+        if (!isAllow) {
+            throw new XxException(ExceptionEnums.FIlTYPE_IS_ALLOW);
+        }
+        try {
+            //读取表格数据
+          reader=ExcelUtil.getReader(file.getInputStream());
+        } catch (IOException e) {
+            log.error("读取失败，文件内容出错，{}", file.getOriginalFilename());
+            throw new XxException(ExceptionEnums.READ_ERROR);
+        }
+        List<Map<String, Object>> maps = reader.readAll();
+        for (Map<String, Object> map : maps) {
+            String person = (String) map.get("姓名");
+
+            Persons persons = personsService.selectByName(person);
+
+            MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(meeting.getId(), persons.getId());
+            if (one!=null){
+                throw new XxException(ExceptionEnums.PERSON_IS_HAVE);
+            }else {
+                //添加
+                MeetingPersion meetingPersion=new MeetingPersion();
+                meetingPersion.setMid(meeting.getId());
+                meetingPersion.setPid(persons.getId());
+                meetingPersionMapper.insert(meetingPersion);
+            }
+
+
+        }
     }
 
 

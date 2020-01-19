@@ -10,9 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UploadService {
 
     /**
-     * 文件上传
+     * 文件人员上传
      * @param file
-     * @return
      */
      void uploadPersion(MultipartFile[] file) throws TencentCloudSDKException;
+
+    /**
+     * 上传会议人员
+     * @param file
+     */
+    void uploadPersionMeeting(MultipartFile file);
 }

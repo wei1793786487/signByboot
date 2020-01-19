@@ -36,8 +36,15 @@ public class UploadController {
 
     @PostMapping("persion")
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
-
         uploadService.uploadPersion(files);
+        Common common =new Common("上传成功");
+        return ResponseEntity.ok(common);
+
+    }
+
+    @PostMapping("persionMeeting")
+    public ResponseEntity<Common> uploadPersionMeeting(@RequestParam(value = "file") MultipartFile file ) throws Exception {
+        uploadService.uploadPersionMeeting(file);
         Common common =new Common("上传成功");
         return ResponseEntity.ok(common);
 

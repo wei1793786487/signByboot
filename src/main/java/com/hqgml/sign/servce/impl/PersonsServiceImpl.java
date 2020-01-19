@@ -39,11 +39,12 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private PersonsMapper personsMapper;
 
-    @Autowired
+    @Resource
     private FastFileStorageClient storageClient;
 
-    @Autowired
+    @Resource
     private TenlentServices tenlentServices;
+
     @Resource
     private SysUserService userService;
 
@@ -98,7 +99,7 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public void delectByids(Integer[] ids) throws TencentCloudSDKException {
+    public void deleteByids(Integer[] ids) throws TencentCloudSDKException {
 
         for (Integer id : ids) {
             Persons persons = selectById(id);
@@ -120,6 +121,15 @@ public class PersonsServiceImpl implements PersonsService {
         Persons persons = personsMapper.selectAllById(id);
         if (persons == null) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
+        }
+        return persons;
+    }
+
+    @Override
+    public Persons selectByName(String name) {
+        Persons persons = personsMapper.selectOneByPersonName(name);
+        if (persons==null){
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return persons;
     }

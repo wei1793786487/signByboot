@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -29,7 +31,7 @@ public class MeetingController {
         return ResponseEntity.ok(common);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<LayUi> getAllByUser(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
@@ -48,11 +50,17 @@ public class MeetingController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids){
+    public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
         meetingService.deleteMeeting(ids);
-        Common common=new Common("删除成功");
+        Common common = new Common("删除成功");
         return ResponseEntity.ok(common);
     }
 
+    @PostMapping("person")
+    public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid, @RequestParam("pids") Integer[] pids, HttpServletRequest request) {
 
+        meetingService.addMeetingPeople(mid, pids);
+        Common common=new Common("添加成功");
+        return ResponseEntity.ok(common);
+    }
 }

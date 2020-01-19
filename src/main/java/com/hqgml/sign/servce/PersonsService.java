@@ -51,9 +51,11 @@ public interface PersonsService {
     void updatePersonById(Persons persons);
 
 
-    void delectByids(Integer[] ids) throws TencentCloudSDKException;
+    void deleteByids(Integer[] ids) throws TencentCloudSDKException;
 
     Persons selectById(Integer id);
+
+    Persons selectByName(String name);
 }
 
 
