@@ -23,6 +23,13 @@ public interface MeetingService {
     List<String> addMeetingPeople(Integer mid, Integer[] pids);
 
     Meeting findMeetingByName(String meetingname);
+
+    /**
+     * 将本账号所属的所有人员添加进该会议
+     * @param mid
+     * @return
+     */
+    List<String> addMeetingAllPeople(Integer mid);
 }
 
 

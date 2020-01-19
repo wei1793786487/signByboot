@@ -148,6 +148,33 @@ public class MeetingServiceImpl implements MeetingService {
         return oneByMeetingName;
     }
 
+    @Override
+    public List<String> addMeetingAllPeople(Integer mid) {
+        List<String > list=new ArrayList<>();
+
+        Meeting meeting = meetingMapper.findOneById(mid);
+        if (meeting == null) {
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
+        }
+        SysUser user = sysUserService.findUserByUserName(null);
+        List<Persons> persons = personsMapper.findAllByAddId(user.getId(),null);
+        for (Persons person : persons) {
+            MeetingPersion meetingPersion = new MeetingPersion();
+            meetingPersion.setMid(mid);
+            meetingPersion.setPid(person.getId());
+            meetingPersion.setIscheck(0);
+
+            int insert = meetingPersionMapper.insert(meetingPersion);
+            if (insert != 1) {
+                log.error("添加异常");
+                list.add(person.getPersonName()+"添加异常");
+            }else {
+                list.add(person.getPersonName()+"添加成功");
+            }
+        }
+        return list;
+    }
+
 
 }
 

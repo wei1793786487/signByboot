@@ -4,6 +4,7 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.impl.MeetingServiceImpl;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,11 @@ public class MeetingController {
     @Resource
     private MeetingServiceImpl meetingService;
 
-
+    /**
+     * 添加会议
+     * @param meeting
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Common> addMeeting(@Valid Meeting meeting) {
         meetingService.addMeeting(meeting);
@@ -31,6 +36,15 @@ public class MeetingController {
         return ResponseEntity.ok(common);
     }
 
+
+    /**
+     * 查询会议
+     * @param username
+     * @param page
+     * @param limit
+     * @param meetingName
+     * @return
+     */
     @GetMapping
     public ResponseEntity<LayUi> getAllByUser(
             @RequestParam(name = "username", required = false) String username,
@@ -42,6 +56,11 @@ public class MeetingController {
         return ResponseEntity.ok(data);
     }
 
+    /**
+     * 修改会议
+     * @param meeting
+     * @return
+     */
     @PutMapping
     public ResponseEntity<Common> update(@Valid Meeting meeting) {
         meetingService.updateMeeting(meeting);
@@ -49,6 +68,11 @@ public class MeetingController {
         return ResponseEntity.ok(common);
     }
 
+    /**
+     * 删除所选会议
+     * @param ids
+     * @return
+     */
     @DeleteMapping
     public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
         meetingService.deleteMeeting(ids);
@@ -56,12 +80,38 @@ public class MeetingController {
         return ResponseEntity.ok(common);
     }
 
+    /**
+     * 添加选择的人员进入会议
+     * @param mid
+     * @param pids
+     * @return
+     */
     @PostMapping("person")
-    public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid, @RequestParam("pids") Integer[] pids, HttpServletRequest request) {
-
+    public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid, @RequestParam("pids") Integer[] pids) {
         List<String> message = meetingService.addMeetingPeople(mid, pids);
         return ResponseEntity.ok(new Common(message));
+    }
+
+    /**
+     * 将该用户下所有人员添加进会议
+     * @param mid
+     * @return
+     */
+    @PostMapping("addAll")
+    public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid) {
+        List<String> message = meetingService.addMeetingAllPeople(mid);
+        return ResponseEntity.ok(new Common(message));
+    }
 
 
+    /**
+     * 查询签到情况
+     * @param mid
+     * @return
+     */
+    @GetMapping("{mid}")
+    public ResponseEntity<Common> selectSignPerson(@PathVariable("mid") Integer mid) {
+        //todo 已经获取的mid  需要查询签到的相关
+        return ResponseEntity.ok(new Common(null));
     }
 }
