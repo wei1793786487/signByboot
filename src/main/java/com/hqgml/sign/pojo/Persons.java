@@ -41,5 +41,9 @@ public class Persons implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+
+    @Transient
+    private Integer isCheck;
+
     private static final long serialVersionUID = 1L;
 }

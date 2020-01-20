@@ -1,8 +1,11 @@
 package com.hqgml.sign.controller;
 
+import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.servce.MeetingService;
+import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.impl.MeetingServiceImpl;
 import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +25,12 @@ import java.util.Map;
 @RequestMapping("meeting")
 public class MeetingController {
     @Resource
-    private MeetingServiceImpl meetingService;
+    private MeetingService meetingService;
+
 
     /**
      * 添加会议
+     *
      * @param meeting
      * @return
      */
@@ -39,6 +44,7 @@ public class MeetingController {
 
     /**
      * 查询会议
+     *
      * @param username
      * @param page
      * @param limit
@@ -58,6 +64,7 @@ public class MeetingController {
 
     /**
      * 修改会议
+     *
      * @param meeting
      * @return
      */
@@ -70,6 +77,7 @@ public class MeetingController {
 
     /**
      * 删除所选会议
+     *
      * @param ids
      * @return
      */
@@ -82,6 +90,7 @@ public class MeetingController {
 
     /**
      * 添加选择的人员进入会议
+     *
      * @param mid
      * @param pids
      * @return
@@ -94,6 +103,7 @@ public class MeetingController {
 
     /**
      * 将该用户下所有人员添加进会议
+     *
      * @param mid
      * @return
      */
@@ -104,14 +114,5 @@ public class MeetingController {
     }
 
 
-    /**
-     * 查询签到情况
-     * @param mid
-     * @return
-     */
-    @GetMapping("{mid}")
-    public ResponseEntity<Common> selectSignPerson(@PathVariable("mid") Integer mid) {
-        //todo 已经获取的mid  需要查询签到的相关
-        return ResponseEntity.ok(new Common(null));
-    }
+
 }

@@ -4,6 +4,8 @@ package com.hqgml.sign;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.hqgml.sign.mapper.PersonsMapper;
+import com.hqgml.sign.pojo.Persons;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +13,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 @SpringBootTest
 class SignApplicationTests {
 
 
+    @Autowired
+    private PersonsMapper personsMapper;
     @Autowired
     private FastFileStorageClient storageClient;
 
@@ -52,4 +57,8 @@ class SignApplicationTests {
         String string="abcd123456中文_$,@";
         System.out.println(string.replaceAll("[^\\u4e00-\\u9fa5]", ""));
     }
+
+
+
+
 }

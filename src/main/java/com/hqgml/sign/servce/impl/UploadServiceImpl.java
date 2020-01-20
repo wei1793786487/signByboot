@@ -114,7 +114,7 @@ public class UploadServiceImpl implements UploadService {
                     throw new XxException(ExceptionEnums.FIlTYPE_IS_ALLOW);
                 }
                 if (StringUtils.equals(suffix, "zip")) {
-                    //TODO 为zip的操作
+                    //TODO 为zip的操作，暂时不做完成
                 } else {
                     StorePath storePath = storageClient.uploadFile(multipartFile.getInputStream(), multipartFile.getSize(), suffix, null);
                     log.info("文件上传的路径是" + storePath.getFullPath());

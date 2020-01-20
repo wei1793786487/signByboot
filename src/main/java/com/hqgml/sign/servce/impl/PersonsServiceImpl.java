@@ -12,20 +12,16 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Devil
@@ -128,10 +124,27 @@ public class PersonsServiceImpl implements PersonsService {
     @Override
     public Persons selectByName(String name) {
         Persons persons = personsMapper.selectOneByPersonName(name);
-        if (persons==null){
+        if (persons == null) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return persons;
+    }
+
+
+    @Override
+    public LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName) {
+        List<Persons> checkPerson = personsMapper.findCheckPerson(mid,personName);
+        if (checkPerson == null) {
+            log.error("未找到人员");
+            throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
+        }
+        PageHelper.startPage(page, limit);
+
+        PageInfo<Persons> brandPageInfo = new PageInfo<>(checkPerson);
+        LayUi<Persons> layUi = new LayUi<>();
+        layUi.setCount(brandPageInfo.getTotal());
+        layUi.setData(checkPerson);
+        return layUi;
     }
 }
 

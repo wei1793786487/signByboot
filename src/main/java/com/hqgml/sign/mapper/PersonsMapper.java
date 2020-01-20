@@ -1,7 +1,8 @@
 package com.hqgml.sign.mapper;
 
 import com.hqgml.sign.pojo.Persons;
-import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;import java.util.List;
 
 /**
  * @author Devil
@@ -20,5 +21,13 @@ public interface PersonsMapper extends Mapper<Persons> {
 
     List<Persons> selectByPersonName(@Param("personName")String personName);
 
+    /**
+     * 查询签到情况
+     * @param mid
+     * @param personName
+     * @return
+     */
+
+    List<Persons> findCheckPerson(@Param("mid") Integer mid,@Param("personName") String personName);
 
 }
