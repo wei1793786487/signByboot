@@ -222,6 +222,56 @@ public class UploadServiceImpl implements UploadService {
         return list;
     }
 
+    @Override
+    public List<String> uploadPhone(MultipartFile file) {
+        String reg="^[1][3,4,5,7,8][0-9]{9}$";
+        ExcelReader reader;
+        List<String> list = new ArrayList<>();
+        if (file.getSize() == 0) {
+            throw new XxException(ExceptionEnums.FIlE_IS_NULL);
+        }
+        String filename = file.getOriginalFilename();
+
+        //空白名
+        if (StringUtils.isBlank(filename)) {
+            throw new XxException(ExceptionEnums.FIlENAME_IS_NULL);
+        }
+        String suffix = FileUtils.suffix(file.getOriginalFilename());
+        String meetingname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
+
+        try {
+            //读取表格数据
+            reader = ExcelUtil.getReader(file.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("读取失败，文件内容出错，{}", file.getOriginalFilename());
+            throw new XxException(ExceptionEnums.READ_ERROR);
+        }
+        List<Map<String, Object>> maps = reader.readAll();
+        for (Map<String, Object> map : maps) {
+            String personname = (String) map.get("姓名");
+            Long _phone = (Long) map.get("电话");
+            String phone=_phone+"";
+            Persons person = personsMapper.selectOneByPersonName(personname);
+            if (person == null) {
+                list.add(personname + "人员不存在");
+            }else {
+                boolean isphone = phone.matches(reg);
+                if (!isphone) {
+                    list.add(personname + "电话不符合格式");
+                } else {
+                    Persons persons=new Persons();
+                    persons.setPhone(phone);
+                    persons.setId(person.getId());
+                    personsService.updatePersonById(persons);
+                    list.add(personname+"添加手机成功");
+                }
+            }
+
+        }
+        return list;
+    }
+
 
 }
 

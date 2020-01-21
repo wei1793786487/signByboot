@@ -1,6 +1,7 @@
 package com.hqgml.sign.controller;
 
 import com.hqgml.sign.pojo.Common;
+import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -31,6 +33,7 @@ public class UploadController {
     private UploadService uploadService;
 
 
+
     @PostMapping("person")
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
         uploadService.uploadPersion(files);
@@ -44,6 +47,12 @@ public class UploadController {
         List<String> message = uploadService.uploadPersionMeeting(file);
         return ResponseEntity.ok(new Common(message));
 
+    }
+
+    @PostMapping("Phone")
+    public ResponseEntity<Common> uploadPhone(@RequestParam(value = "file") MultipartFile file ) throws Exception {
+        List<String> message = uploadService.uploadPhone(file);
+        return ResponseEntity.ok(new Common(message));
 
     }
 }

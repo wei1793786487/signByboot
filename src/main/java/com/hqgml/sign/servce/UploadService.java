@@ -22,4 +22,11 @@ public interface UploadService {
      * @param file
      */
     List<String> uploadPersionMeeting(MultipartFile file);
+
+    /**
+     * 联系方式的上传
+     * @param file
+     * @return
+     */
+    List<String> uploadPhone(MultipartFile file);
 }

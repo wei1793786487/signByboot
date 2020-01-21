@@ -91,7 +91,7 @@ public class PersonsServiceImpl implements PersonsService {
     @Override
     public void updatePersonById(@Valid Persons persons) {
         //这个接口只允许修改手机号以及姓名，不可以修改其他的所以使用@Valid来约束
-        int update = personsMapper.updateByPrimaryKey(persons);
+        int update = personsMapper.updateByPrimaryKeySelective(persons);
         if (update != 1) {
             throw new XxException(ExceptionEnums.UPDATE_ERROR);
         }
