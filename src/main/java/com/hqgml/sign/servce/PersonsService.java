@@ -75,7 +75,7 @@ public interface PersonsService {
     Persons selectByName(String name);
 
 
-   LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName);
+
 }
 
 

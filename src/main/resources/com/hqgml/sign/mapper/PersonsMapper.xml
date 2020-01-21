@@ -76,8 +76,11 @@
 
     <select id="findCheckPerson" resultMap="BaseResultMap">
         SELECT p.*,mp.`IsCheck`FROM persons p,meeting_persion mp WHERE p.id = mp.pid AND mp.`mid`=#{mid}
-        <if test="personName != null">
+        <if test="personName != null and personName != ''">
             and person_name like concat('%', #{personName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="isCheck != null">
+            and IsCheck=#{isCheck,jdbcType=INTEGER}
         </if>
 
     </select>

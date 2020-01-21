@@ -3,6 +3,7 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
@@ -43,6 +44,9 @@ public class PersonsServiceImpl implements PersonsService {
 
     @Resource
     private SysUserService userService;
+
+     @Resource
+     private MeetingPersionMapper meetingPersionMapper;
 
 
     @Override
@@ -131,21 +135,11 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
 
-    @Override
-    public LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName) {
-        List<Persons> checkPerson = personsMapper.findCheckPerson(mid,personName);
-        if (checkPerson == null) {
-            log.error("未找到人员");
-            throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
-        }
-        PageHelper.startPage(page, limit);
 
-        PageInfo<Persons> brandPageInfo = new PageInfo<>(checkPerson);
-        LayUi<Persons> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(checkPerson);
-        return layUi;
-    }
+
+
+
+
 }
 
 

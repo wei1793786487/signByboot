@@ -39,7 +39,7 @@ public class PersonController {
     }
 
     /**
-     *
+     *  更新人员信息
      * @param persons
      * @return
      */
@@ -50,30 +50,24 @@ public class PersonController {
         return ResponseEntity.ok(common);
     }
 
+    /**
+     * 人员库中删除该人员
+     * @param ids
+     * @return
+     * @throws TencentCloudSDKException
+     */
     @DeleteMapping
     public ResponseEntity<Common> deleteByIds(@RequestParam("ids[]") Integer[] ids) throws TencentCloudSDKException {
-
         personsService.deleteByids(ids);
         Common common = new Common("删除完成");
         return ResponseEntity.ok(common);
     }
 
 
-    /**
-     * 查询签到情况
-     *
-     * @param mid
-     * @return
-     */
-    @GetMapping("{mid}")
-    public ResponseEntity<LayUi> selectSignPerson(
-            @PathVariable("mid") Integer mid,
-            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
-            @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
-            @RequestParam(name = "personName", required = false) String personName
-    ) {
-        LayUi layUi = personsService.selectCheck(mid, page, limit,personName);
-        return ResponseEntity.ok(layUi);
-    }
+
+
+
+
+
 }
 

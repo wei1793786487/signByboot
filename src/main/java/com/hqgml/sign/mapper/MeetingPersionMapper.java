@@ -15,5 +15,11 @@ public interface MeetingPersionMapper extends Mapper<MeetingPersion> {
 MeetingPersion selectOneByMidAndPid(@Param("mid")Integer mid,@Param("pid")Integer pid);
 
 
+ int updateIscheckByMidAndPid(@Param("updatedIscheck")Integer updatedIscheck,@Param("mid")Integer mid,@Param("pid")Integer pid);
+
+
+ int deleteByMidAndPid(@Param("mid")Integer mid,@Param("pid")Integer pid);
+
+
 
 }

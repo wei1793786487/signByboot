@@ -25,9 +25,10 @@ public interface PersonsMapper extends Mapper<Persons> {
      * 查询签到情况
      * @param mid
      * @param personName
+     * @param isCheck
      * @return
      */
 
-    List<Persons> findCheckPerson(@Param("mid") Integer mid,@Param("personName") String personName);
+    List<Persons> findCheckPerson(@Param("mid") Integer mid, @Param("personName") String personName, @Param("isCheck") Integer isCheck);
 
 }
