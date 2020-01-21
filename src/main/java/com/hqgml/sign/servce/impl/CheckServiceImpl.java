@@ -67,4 +67,16 @@ public class CheckServiceImpl implements CheckServices {
             throw new XxException(ExceptionEnums.DELETE_ERROR);
         }
     }
+
+    @Override
+    public Integer countCheck(Integer isCheck,Integer mid) {
+
+        Integer integer = meetingPersionMapper.countByIscheckAndMid(isCheck, mid);
+        if (integer<0){
+            throw new XxException(ExceptionEnums.SELECT_ERROR);
+        }
+        return integer;
+    }
+
+
 }

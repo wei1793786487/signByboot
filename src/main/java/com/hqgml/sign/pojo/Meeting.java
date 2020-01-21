@@ -38,18 +38,17 @@ public class Meeting implements Serializable {
     @Column(name = "end_time")
     private String endTime;
 
-
     @Column(name = "meeting_phone")
     private String meetingPhone;
-
-    @Column(name = "persion_number")
-    private String persionNumber;
 
     @Column(name = "uuid")
     private String uuid;
 
     @Column(name = "information")
     private String information;
+
+    @Transient
+    private Integer persionNumber;
 
     private static final long serialVersionUID = 1L;
 }

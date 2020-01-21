@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -64,5 +66,15 @@ public class CheckController {
     public ResponseEntity<Common> deleteCheckPserson(@RequestParam("pid") Integer pid, @RequestParam("mid") Integer mid) {
         checkServices.deletePerson(mid, pid);
         return ResponseEntity.ok(new Common("删除成功"));
+    }
+
+    @GetMapping
+    public ResponseEntity<Common> findCheckNumber(@RequestParam("mid") Integer mid){
+        Integer checkNumber=checkServices.countCheck(1,mid);
+        Integer UncheckNumber=checkServices.countCheck(0,mid);
+        Map<String,Integer> number=new HashMap<>();
+        number.put("checkNumber",checkNumber);
+        number.put("uncheckNumber",UncheckNumber);
+        return ResponseEntity.ok(new Common(number));
     }
 }

@@ -36,6 +36,7 @@ public enum ExceptionEnums {
     FIlE_IS_NULL(400, "文件为空"),
     PERSON_NAME_IS_TOO_LONG(400, "文件名字过长"),
     FIlENAME_IS_NULL(400, "文件名为空"),
+    SELECT_ERROR(400, "查询异常"),
     FIlTYPE_IS_ALLOW(400, "该类型文件不允许上传"),
     USER_NOT_lOGIN(403, "用户未登录"),
     UPDATEPASSWORD_ERROR(400, "密码错误"),

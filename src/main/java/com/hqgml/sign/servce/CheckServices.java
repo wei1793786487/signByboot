@@ -33,4 +33,13 @@ public interface CheckServices {
      * @param pid
      */
     void deletePerson(Integer mid, Integer pid);
+
+    /**
+     * 查看某会议签到用与未签到人数
+     * @param mid
+     * @param isCheck 签到情况
+     * @return
+     */
+    Integer countCheck(Integer isCheck,Integer mid);
+
 }

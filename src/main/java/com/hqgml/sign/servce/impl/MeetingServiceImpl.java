@@ -55,7 +55,6 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.setAddId(sysUser.getId());
         String uuid = IdUtil.simpleUUID();
         meeting.setUuid(uuid);
-        meeting.setPersionNumber("0");
         int insert = meetingMapper.insert(meeting);
         if (insert != 1) {
             throw new XxException(ExceptionEnums.MEETING_ADD_ERROR);

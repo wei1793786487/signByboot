@@ -20,6 +20,11 @@ MeetingPersion selectOneByMidAndPid(@Param("mid")Integer mid,@Param("pid")Intege
 
  int deleteByMidAndPid(@Param("mid")Integer mid,@Param("pid")Integer pid);
 
+ Integer countByMid(@Param("mid")Integer mid);
+
+
+ Integer countByIscheckAndMid(@Param("ischeck")Integer ischeck,@Param("mid")Integer mid);
+
 
 
 }
