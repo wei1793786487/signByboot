@@ -4,6 +4,7 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.PersonsService;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +22,12 @@ public class PersonController {
     private PersonsService personsService;
 
     /**
-     * 查询当前用户下所有的信息
+     * 查询当前用户下所有人员的信息
      *
      * @return
      */
     @GetMapping
+    @ControllerLog(describe = "查看人员信息")
     public ResponseEntity<LayUi> findAllByUserNname(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
@@ -44,6 +46,7 @@ public class PersonController {
      * @return
      */
     @PutMapping
+    @ControllerLog(describe = "更新人员信息")
     public ResponseEntity<Common> updatePersonNameById(Persons persons){
        personsService.updatePersonById(persons);
         Common common = new Common(null);
@@ -57,6 +60,7 @@ public class PersonController {
      * @throws TencentCloudSDKException
      */
     @DeleteMapping
+    @ControllerLog(describe = "人员库删除人员")
     public ResponseEntity<Common> deleteByIds(@RequestParam("ids[]") Integer[] ids) throws TencentCloudSDKException {
         personsService.deleteByids(ids);
         Common common = new Common("删除完成");

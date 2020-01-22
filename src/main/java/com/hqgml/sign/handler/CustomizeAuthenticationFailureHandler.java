@@ -1,6 +1,7 @@
 package com.hqgml.sign.handler;
 
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.exception.ValidateCodeException;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
@@ -22,6 +23,7 @@ import java.io.IOException;
  */
 @Component
 public class CustomizeAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    @ServiceLog(describe = "登录异常")
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
         JsonResult result = null;

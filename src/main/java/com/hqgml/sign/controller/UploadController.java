@@ -3,6 +3,7 @@ package com.hqgml.sign.controller;
 import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.UploadService;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,8 +34,15 @@ public class UploadController {
     private UploadService uploadService;
 
 
-
+    /**
+     * 批量上传人员
+     * @param files
+     * @return
+     * @throws Exception
+     */
     @PostMapping("person")
+    @ControllerLog(describe = "批量上传人员")
+
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
         uploadService.uploadPersion(files);
         Common common =new Common("上传成功");
@@ -42,14 +50,30 @@ public class UploadController {
 
     }
 
+    /**
+     * 将人员添加进会议
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping("personMeeting")
+    @ControllerLog(describe = "批量添加人员到会议")
+
     public ResponseEntity<Common> uploadPersionMeeting(@RequestParam(value = "file") MultipartFile file ) throws Exception {
         List<String> message = uploadService.uploadPersionMeeting(file);
         return ResponseEntity.ok(new Common(message));
 
     }
 
+    /**
+     * 批量添加手机号
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping("Phone")
+    @ControllerLog(describe = "批量为人员添加手机号")
+
     public ResponseEntity<Common> uploadPhone(@RequestParam(value = "file") MultipartFile file ) throws Exception {
         List<String> message = uploadService.uploadPhone(file);
         return ResponseEntity.ok(new Common(message));

@@ -2,6 +2,8 @@ package com.hqgml.sign.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
+import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
@@ -23,6 +25,8 @@ import java.io.IOException;
 public class CustomizeAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
+    @ServiceLog(describe = "访问未经允许资源")
+
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
         JsonResult result = ResultTool.fail(ResultCode.NO_PERMISSION);

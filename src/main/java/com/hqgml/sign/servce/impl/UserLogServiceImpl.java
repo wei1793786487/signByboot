@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
-*@author Devil
-*@date  2019/12/31 10:48
-*/
+ * @author Devil
+ * @date 2019/12/31 10:48
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 
-public class UserLogServiceImpl implements UserLogService{
+public class UserLogServiceImpl implements UserLogService {
 
     @Resource
     private UserLogMapper userLogMapper;
@@ -26,13 +26,21 @@ public class UserLogServiceImpl implements UserLogService{
 
     /**
      * 查询所有日志
+     *
      * @return
      */
-    public List<UserLog> findAll(){
+    public List<UserLog> findAll() {
         List<UserLog> userLogs = userLogMapper.selectAll();
-        if (userLogs==null){
-            throw  new XxException(ExceptionEnums.LOG_NOT_FIND);
+        if (userLogs == null) {
+            throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
         return userLogs;
     }
+
+    @Override
+    public void insertLog(UserLog userLog) {
+        userLogMapper.insert(userLog);
+    }
 }
+
+

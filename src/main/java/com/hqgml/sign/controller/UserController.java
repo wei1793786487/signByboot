@@ -4,6 +4,7 @@ import cn.hutool.http.HttpUtil;
 import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.SysUserService;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,12 @@ public class UserController {
     private SysUserService sysUserService;
 
 
+    /**
+     * 获取用户上次的参数
+     * @param username
+     * @param request
+     * @return
+     */
     @GetMapping("{username}")
     public ResponseEntity<Common> getUserByUsername(@PathVariable("username") String username, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -44,6 +51,7 @@ public class UserController {
     }
 
     @PutMapping("password")
+    @ControllerLog(describe = "修改密码")
     public ResponseEntity<Common> updatePassword(@RequestParam("old_password") String oldPassword, @RequestParam("new_password") String newPassword) {
         //TODO 这里不知道怎么清楚用户信息，只能让用户修改完密码之后再发一次退出登录请求
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -53,6 +61,8 @@ public class UserController {
     }
 
     @PutMapping()
+    @ControllerLog(describe = "更新用户信息")
+
     public ResponseEntity<Common> updateUser(@Valid SysUser sysUser) {
         sysUserService.updateUser(sysUser);
         Common common = new Common("更新成功");

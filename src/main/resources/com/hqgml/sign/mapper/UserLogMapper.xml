@@ -2,17 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hqgml.sign.mapper.UserLogMapper">
   <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.UserLog">
-    <!--@mbg.generated generated on Tue Dec 31 10:48:04 CST 2019.-->
+    <!--@mbg.generated generated on Wed Jan 22 18:39:47 CST 2020.-->
     <!--@Table user_log-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="requestType" jdbcType="VARCHAR" property="requesttype" />
+    <result column="requestParam" jdbcType="LONGVARCHAR" property="requestparam" />
+    <result column="user" jdbcType="VARCHAR" property="user" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
-    <result column="action" jdbcType="VARCHAR" property="action" />
-    <result column="sql" jdbcType="VARCHAR" property="sql" />
-    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="ipInfo" jdbcType="VARCHAR" property="ipinfo" />
+    <result column="time" jdbcType="INTEGER" property="time" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated generated on Tue Dec 31 10:48:04 CST 2019.-->
-    id, `uid`, ip, `action`, `sql`, `time`
+    <!--@mbg.generated generated on Wed Jan 22 18:39:47 CST 2020.-->
+    id, `name`, `type`, url, requestType, requestParam, `user`, ip, ipInfo, `time`, create_time
   </sql>
 </mapper>

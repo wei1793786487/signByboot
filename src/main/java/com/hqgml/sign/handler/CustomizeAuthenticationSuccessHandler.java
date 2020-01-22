@@ -7,6 +7,7 @@ import com.hqgml.sign.servce.impl.SysUserServiceImpl;
 import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,11 @@ import java.io.IOException;
 @Component
 @Slf4j
 public class CustomizeAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
     @Autowired
     private SysUserServiceImpl userService;
 
+    @ServiceLog(describe = "用户登录")
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

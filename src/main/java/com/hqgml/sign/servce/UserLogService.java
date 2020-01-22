@@ -1,10 +1,18 @@
 package com.hqgml.sign.servce;
 
-    /**
-*@author Devil
-*@date  2019/12/31 10:48
-*/
-public interface UserLogService{
+import com.hqgml.sign.pojo.UserLog;
 
+/**
+ * @author Devil
+ * @date 2019/12/31 10:48
+ */
+public interface UserLogService {
+
+    /**
+     * 日志保存
+     */
+    void insertLog(UserLog userLog);
 
 }
+
+
