@@ -2,6 +2,7 @@ package com.hqgml.sign.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
@@ -22,8 +23,8 @@ import java.io.IOException;
  */
 @Component
 public class CustomizeAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    @ServiceLog(describe = "访问非共享资源")
 
+    @ControllerLog(describe = "访问非共享资源")
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         String message = e.getMessage();

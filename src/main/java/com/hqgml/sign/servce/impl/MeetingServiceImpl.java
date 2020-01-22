@@ -113,7 +113,7 @@ public class MeetingServiceImpl implements MeetingService {
             }else {
                 MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(mid, pid);
                 if (one != null) {
-                    log.error("{}，人员以及存在该会议");
+                    log.error("{}，人员以存在该会议",pid);
                     Persons persons = personsService.selectById(pid);
                     list.add(persons.getPersonName()+"已经存在该会议");
                 }else {

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;
@@ -12,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Devil
- * @date 2020/1/22 18:39
+ * @date 2020/1/22 19:19
  */
 @Data
 @Table(name = "user_log")
@@ -25,10 +26,6 @@ public class UserLog implements Serializable {
     @Column(name = "`name`")
     private String name;
 
-    /**
-     * 0为有异常
-     * 1为无异常
-     */
     @Column(name = "`type`")
     private Integer type;
 
@@ -41,6 +38,7 @@ public class UserLog implements Serializable {
     @Column(name = "requestParam")
     private String requestparam;
 
+    @Null
     @Column(name = "`user`")
     private String user;
 
@@ -57,7 +55,6 @@ public class UserLog implements Serializable {
     private Date createTime;
 
     private static final long serialVersionUID = 1L;
-
     /**
      * 设置请求参数
      * @param paramMap

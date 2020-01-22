@@ -2,6 +2,7 @@ package com.hqgml.sign.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
@@ -22,7 +23,7 @@ import java.io.IOException;
  */
 @Component
 public class CustomizeSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
-    @ServiceLog(describe = "会话失效")
+    @ControllerLog(describe = "会话失效")
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent sessionInformationExpiredEvent) throws IOException, ServletException {

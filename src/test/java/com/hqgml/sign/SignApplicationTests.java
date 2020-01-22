@@ -4,8 +4,10 @@ package com.hqgml.sign;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.hqgml.sign.controller.LogController;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.pojo.Persons;
+import com.hqgml.sign.servce.UserLogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +28,9 @@ class SignApplicationTests {
 
     @Autowired
     private ThumbImageConfig thumbImageConfig;
+
+    @Autowired
+    private LogController logController;
     @Test
     public void testUpload() throws FileNotFoundException {
         // 要上传的文件
@@ -56,6 +61,12 @@ class SignApplicationTests {
     public void demo(){
         String string="abcd123456中文_$,@";
         System.out.println(string.replaceAll("[^\\u4e00-\\u9fa5]", ""));
+    }
+
+
+    @Test
+    public void log(){
+       logController.selectByUserName(null,null,null);
     }
 
 

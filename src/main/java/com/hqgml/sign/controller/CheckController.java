@@ -54,7 +54,6 @@ public class CheckController {
      */
     @PutMapping("{isCheck}/{mid}")
     @ControllerLog(describe = "修改签到状态")
-
     public ResponseEntity<Common> chanceCheck(@PathVariable("mid") Integer mid, @PathVariable("isCheck") Integer check, @RequestParam("ids[]") Integer[] ids) {
         checkServices.updateCheck(mid, check, ids);
         return ResponseEntity.ok(new Common("修改完成"));
@@ -68,7 +67,6 @@ public class CheckController {
      */
     @DeleteMapping
     @ControllerLog(describe = "删除会议人员")
-
     public ResponseEntity<Common> deleteCheckPserson(@RequestParam("pid") Integer pid, @RequestParam("mid") Integer mid) {
         checkServices.deletePerson(mid, pid);
         return ResponseEntity.ok(new Common("删除成功"));

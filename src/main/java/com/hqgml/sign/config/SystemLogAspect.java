@@ -79,8 +79,15 @@ public class SystemLogAspect {
     @After("controllerAspect()")
     public void after(JoinPoint joinPoint){
         try {
+            String username;
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = userDetails.getUsername();
+
+            if (userDetails==null){
+                username="未登录";
+            }else {
+                username = userDetails.getUsername();
+
+            }
             if (null != username) {
 
                UserLog tbLog=new UserLog();

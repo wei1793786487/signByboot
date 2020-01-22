@@ -7,6 +7,7 @@ import com.hqgml.sign.servce.impl.SysUserServiceImpl;
 import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.JsonWriteUtlis;
+import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.annotation.ServiceLog;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
@@ -38,8 +39,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     @Autowired
     private SysUserServiceImpl userService;
 
-    @ServiceLog(describe = "用户登录")
-
+    @ControllerLog(describe = "用户登录")
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String rememember = request.getParameter("remember-me");

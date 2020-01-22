@@ -1,5 +1,6 @@
 package com.hqgml.sign.servce;
 
+import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.UserLog;
 
 /**
@@ -13,6 +14,23 @@ public interface UserLogService {
      */
     void insertLog(UserLog userLog);
 
+
+    /**
+     *
+     * @param username
+     * @param serch
+     * @param page
+     * @param limit
+     * @return
+     */
+    LayUi selectLog(String username,String serch, Integer page, Integer limit);
+
+    /**
+     *
+     * @param ids
+     */
+    void deleteLog(Integer[] ids);
 }
+
 
 
