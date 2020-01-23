@@ -124,6 +124,16 @@ public class MeetingController {
         return ResponseEntity.ok(new Common(message));
     }
 
+    /**
+     * 查询用户信息
+     * @param uuid
+     * @return
+     */
+    @GetMapping("/information/{uuid}")
+    public ResponseEntity<Common> selectMeetingByuuid(@PathVariable("uuid") String uuid) {
+        Meeting meeting = meetingService.selectByuuid(uuid);
+        return ResponseEntity.ok(new Common(meeting));
+    }
 
 
 }
