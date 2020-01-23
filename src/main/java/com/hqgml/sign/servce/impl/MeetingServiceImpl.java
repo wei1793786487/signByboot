@@ -174,6 +174,15 @@ public class MeetingServiceImpl implements MeetingService {
         return list;
     }
 
+    @Override
+    public Meeting selectByuuid(String uuid) {
+        Meeting oneByUuid = meetingMapper.findOneByUuid(uuid);
+        if (oneByUuid==null){
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
+        }
+        return oneByUuid;
+    }
+
 
 }
 

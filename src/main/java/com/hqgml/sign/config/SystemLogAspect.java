@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.Map;
 
 /**
  * Spring AOP实现日志管理
+ *
  * @author Exrickx
  */
 @SuppressWarnings("all")
@@ -31,14 +33,14 @@ import java.util.Map;
 @Component
 public class SystemLogAspect {
 
-    private Logger log= LoggerFactory.getLogger(SystemLogAspect.class);
+    private Logger log = LoggerFactory.getLogger(SystemLogAspect.class);
 
     private static final ThreadLocal<Date> beginTimeThreadLocal = new NamedThreadLocal<Date>("ThreadLocal beginTime");
 
     @Autowired
     private UserLogService userLogService;
 
-    @Autowired(required=false)
+    @Autowired(required = false)
     private HttpServletRequest request;
 
     /**
@@ -60,37 +62,42 @@ public class SystemLogAspect {
 
     /**
      * 前置通知 (在方法执行之前返回)用于拦截Controller层记录用户的操作的开始时间
+     *
      * @param joinPoint 切点
      * @throws InterruptedException
      */
     @Before("controllerAspect()")
-    public void doBefore(JoinPoint joinPoint) throws InterruptedException{
+    public void doBefore(JoinPoint joinPoint) throws InterruptedException {
 
         //线程绑定变量（该数据只有当前请求的线程可见）
-        Date beginTime=new Date();
+        Date beginTime = new Date();
         beginTimeThreadLocal.set(beginTime);
     }
 
 
     /**
      * 后置通知(在方法执行之后返回) 用于拦截Controller层操作
+     *
      * @param joinPoint 切点
      */
     @After("controllerAspect()")
-    public void after(JoinPoint joinPoint){
+    public void after(JoinPoint joinPoint) {
         try {
             String username;
-            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-            if (userDetails==null){
-                username="未登录";
-            }else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                User userDetails = (User) authentication.getPrincipal();
                 username = userDetails.getUsername();
 
+            } else {
+                username = "未登录";
+
             }
+
+
             if (null != username) {
 
-               UserLog tbLog=new UserLog();
+                UserLog tbLog = new UserLog();
                 //日志标题
                 tbLog.setName(getControllerMethodDescription(joinPoint));
                 //日志类型
@@ -100,7 +107,7 @@ public class SystemLogAspect {
                 //请求方式
                 tbLog.setRequesttype(request.getMethod());
                 //请求参数
-                Map<String,String[]> logParams = request.getParameterMap();
+                Map<String, String[]> logParams = request.getParameterMap();
                 tbLog.setMapToParams(logParams);
 
                 //请求用户
@@ -120,7 +127,7 @@ public class SystemLogAspect {
                 tbLog.setCreateTime(logStartTime);
 
                 //调用线程保存至数据库
-                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(tbLog,userLogService));
+                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(tbLog, userLogService));
             }
         } catch (Exception e) {
             log.error("AOP后置通知异常", e);
@@ -129,19 +136,27 @@ public class SystemLogAspect {
 
     /**
      * 异常通知 用于拦截service层记录异常日志
+     *
      * @param joinPoint
      * @param e
      */
-    @AfterThrowing(pointcut="serviceAspect()", throwing="e")
+    @AfterThrowing(pointcut = "serviceAspect()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
-
+        String username;
         try {
-            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = userDetails.getUsername();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                User userDetails = (User) authentication.getPrincipal();
+                username = userDetails.getUsername();
+
+            } else {
+                username = "未登录";
+
+            }
 
             if (null != username) {
 
-                UserLog tbLog=new UserLog();
+                UserLog tbLog = new UserLog();
                 //日志标题
                 tbLog.setName(getControllerMethodDescription(joinPoint));
                 //日志类型
@@ -151,7 +166,7 @@ public class SystemLogAspect {
                 //请求方式
                 tbLog.setRequesttype(request.getMethod());
                 //请求参数
-                Map<String,String[]> logParams = request.getParameterMap();
+                Map<String, String[]> logParams = request.getParameterMap();
                 tbLog.setMapToParams(logParams);
 
                 //请求用户
@@ -171,7 +186,7 @@ public class SystemLogAspect {
                 tbLog.setCreateTime(logStartTime);
 
                 //调用线程保存至数据库
-                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(tbLog,userLogService));
+                ThreadPoolUtil.getPool().execute(new SaveSystemLogThread(tbLog, userLogService));
             }
         } catch (Exception e1) {
             log.error("AOP异常通知异常", e1);
@@ -186,9 +201,9 @@ public class SystemLogAspect {
         private UserLog userLog;
         private UserLogService userLogService;
 
-        public SaveSystemLogThread(UserLog userLog,  UserLogService userLogService ) {
-            this.userLog=userLog;
-            this.userLogService=userLogService;
+        public SaveSystemLogThread(UserLog userLog, UserLogService userLogService) {
+            this.userLog = userLog;
+            this.userLogService = userLogService;
         }
 
         @Override
@@ -199,11 +214,12 @@ public class SystemLogAspect {
 
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
+     *
      * @param joinPoint 切点
      * @return 方法描述
      * @throws Exception
      */
-    public static String getControllerMethodDescription(JoinPoint joinPoint) throws Exception{
+    public static String getControllerMethodDescription(JoinPoint joinPoint) throws Exception {
         //获取目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
         //获取方法名
@@ -217,12 +233,12 @@ public class SystemLogAspect {
 
         String description = "";
 
-        for(Method method : methods) {
-            if(!method.getName().equals(methodName)) {
+        for (Method method : methods) {
+            if (!method.getName().equals(methodName)) {
                 continue;
             }
             Class[] clazzs = method.getParameterTypes();
-            if(clazzs.length != arguments.length) {
+            if (clazzs.length != arguments.length) {
                 //比较方法中参数个数与从切点中获取的参数个数是否相同，原因是方法可以重载哦
                 continue;
             }
@@ -233,11 +249,12 @@ public class SystemLogAspect {
 
     /**
      * 获取注解中对方法的描述信息 用于Service层注解
+     *
      * @param joinPoint 切点
      * @return 方法描述
      * @throws Exception
      */
-    public static String getServiceMethodDescription(JoinPoint joinPoint) throws Exception{
+    public static String getServiceMethodDescription(JoinPoint joinPoint) throws Exception {
         //获取目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
         //获取方法名
@@ -251,12 +268,12 @@ public class SystemLogAspect {
 
         String description = "";
 
-        for(Method method : methods) {
-            if(!method.getName().equals(methodName)) {
+        for (Method method : methods) {
+            if (!method.getName().equals(methodName)) {
                 continue;
             }
             Class[] clazzs = method.getParameterTypes();
-            if(clazzs.length != arguments.length) {
+            if (clazzs.length != arguments.length) {
                 //比较方法中参数个数与从切点中获取的参数个数是否相同，原因是方法可以重载哦
                 continue;
             }

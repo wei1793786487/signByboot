@@ -8,11 +8,14 @@ import com.hqgml.sign.utlis.annotation.ControllerLog;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -52,10 +55,15 @@ public class UserController {
 
     @PutMapping("password")
     @ControllerLog(describe = "修改密码")
-    public ResponseEntity<Common> updatePassword(@RequestParam("old_password") String oldPassword, @RequestParam("new_password") String newPassword) {
-        //TODO 这里不知道怎么清楚用户信息，只能让用户修改完密码之后再发一次退出登录请求
-        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<Common> updatePassword(
+            @RequestParam("old_password") String oldPassword,
+            @RequestParam("new_password") String newPassword,
+            HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) auth.getPrincipal();
         sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
+        //清除用户信息
+        new SecurityContextLogoutHandler().logout(request, response, auth);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }

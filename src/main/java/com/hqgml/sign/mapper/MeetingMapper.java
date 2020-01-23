@@ -20,5 +20,10 @@ public interface MeetingMapper extends Mapper<Meeting> {
 
     Meeting findOneByMeetingName(@Param("meetingName") String meetingName);
 
+    Meeting findOneByUuid(@Param("uuid")String uuid);
+
+
+
+
 
 }

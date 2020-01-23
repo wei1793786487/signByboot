@@ -3,16 +3,18 @@ package com.hqgml.sign.utlis;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.hqgml.sign.config.KeyProperties;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.stereotype.Component;
+;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -84,5 +86,40 @@ public class AddressUtils {
         }
         return ip;
     }
+
+
+
+    public  static  String getCoordinate(){
+     String parm="http://api.map.baidu.com/place/v2/suggestion?query=日照职业技术学院&region=日照&city_limit=true&output=json&ak=3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
+        return HttpUtil.get(parm);
+    }
+
+
+
+
+
+    private static Boolean polygonJudgment(String xys, Double lng, Double lat) {
+        String[] strings = xys.split(",");
+        Coordinate[] coordinates = new Coordinate[strings.length / 2];
+        try {
+            for (int i = 0; i < strings.length; i += 2) {
+                coordinates[i / 2] = new Coordinate(Double.parseDouble(strings[i]), Double.parseDouble(strings[i + 1]));
+            }
+            GeometryFactory factory = new GeometryFactory();
+            if (coordinates.length > 3) {
+                LinearRing shell = factory.createLinearRing(coordinates);
+                Polygon polygon = factory.createPolygon(shell, null);
+                if (polygon.contains(factory.createPoint(new Coordinate(lng, lat)))) {
+                    return true;
+                }
+            }
+        } catch (Exception ignored) {
+            return false;
+        }
+        return false;
+    }
+
+
+
 
 }

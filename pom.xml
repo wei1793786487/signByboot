@@ -84,6 +84,14 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--地点坐标-->
+        <dependency>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+            <version>1.13</version>
+        </dependency>
+
+
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>

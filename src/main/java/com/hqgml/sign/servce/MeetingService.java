@@ -30,6 +30,13 @@ public interface MeetingService {
      * @return
      */
     List<String> addMeetingAllPeople(Integer mid);
+
+    /**
+     * 根据uuid查询单个用户
+     * @param uuid
+     * @return
+     */
+    Meeting selectByuuid(String uuid);
 }
 
 
