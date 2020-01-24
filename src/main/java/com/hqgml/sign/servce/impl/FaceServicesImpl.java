@@ -2,8 +2,12 @@ package com.hqgml.sign.servce.impl;
 
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.pojo.MeetingPersion;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.*;
+import com.hqgml.sign.utlis.TimeUtils;
+import com.hqgml.sign.utlis.exception.ExceptionEnums;
+import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.iai.v20180301.models.Candidate;
 import com.tencentcloudapi.iai.v20180301.models.Result;
@@ -50,6 +54,12 @@ public class FaceServicesImpl implements FaceService {
         SearchPersonsResponse search;
         Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
 
+        boolean isBetwoon = TimeUtils.hourMinuteBetween(meeting.getStartTime(), meeting.getEndTime());
+
+        if (!isBetwoon){
+            throw new XxException(ExceptionEnums.TIME_ERROR);
+        }
+
         try {
             search = tenlentService.search(meeting.getAddId().toString(), img);
         } catch (TencentCloudSDKException e) {
@@ -70,12 +80,16 @@ public class FaceServicesImpl implements FaceService {
                 String personId = candidate.getPersonId();
                 Persons persons = personsService.selectByUuid(personId);
 
-                int isupdata = meetingPersionMapper.updateIscheckByMidAndPid(1, Integer.parseInt(mid), persons.getId());
-
-                if (isupdata == 1) {
-                    information.put("message", persons.getPersonName() + "签到成功");
-                } else {
-                    information.put("message", "服务器异常");
+                MeetingPersion meetingPersion = meetingPersionMapper.selectOneByMidAndPid(Integer.parseInt(mid), persons.getId());
+                if (meetingPersion.getIscheck()==1){
+                    information.put("message", "您已经签到过滤");
+                }else {
+                    int isupdata = meetingPersionMapper.updateIscheckByMidAndPid(1, Integer.parseInt(mid), persons.getId());
+                    if (isupdata == 1) {
+                        information.put("message", persons.getPersonName() + "签到成功");
+                    } else {
+                        information.put("message", "服务器异常");
+                    }
                 }
 
             } else {

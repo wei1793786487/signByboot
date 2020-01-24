@@ -25,6 +25,7 @@ public enum ExceptionEnums {
     LOG_NOT_FIND(404, "日志未找到"),
     MEETING_ADD_ERROR(400, "会议添加异常"),
     MEETING_NOT_FIND(404, "会议未找到"),
+    TIME_ERROR(404, "不在签到时间段内"),
     PSRSON_NOT_FIND(404, "人员未找到"),
     NOT_HAVE_AUTHORITY(401, "权限不足"),
     PARAMETER_ERROT(400, "参数错误"),
