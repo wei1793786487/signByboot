@@ -22,9 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.ls.LSInput;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +47,7 @@ public class UploadServiceImpl implements UploadService {
     private PersonsService personsService;
 
     @Autowired
-    private TenlentServices tenlentServices;
+    private TenlentService tenlentServices;
 
     @Autowired
     private SysUserService sysUserService;

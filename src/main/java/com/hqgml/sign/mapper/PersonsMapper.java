@@ -40,6 +40,9 @@ public interface PersonsMapper extends Mapper<Persons> {
    List<Persons> selectAllByMid(@Param("mid") Integer mid);
 
 
+   Persons selectOneByUuid(@Param("uuid")String uuid);
+
+
 
 
 

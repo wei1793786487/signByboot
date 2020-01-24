@@ -8,7 +8,7 @@ import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.servce.TenlentServices;
+import com.hqgml.sign.servce.TenlentService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
@@ -40,7 +40,7 @@ public class PersonsServiceImpl implements PersonsService {
     private FastFileStorageClient storageClient;
 
     @Resource
-    private TenlentServices tenlentServices;
+    private TenlentService tenlentServices;
 
     @Resource
     private SysUserService userService;
@@ -134,10 +134,14 @@ public class PersonsServiceImpl implements PersonsService {
         return persons;
     }
 
-
-
-
-
+    @Override
+    public Persons selectByUuid(String uuid) {
+        Persons persons = personsMapper.selectOneByUuid(uuid);
+        if (persons==null){
+            throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
+        }
+        return persons;
+    }
 
 
 }

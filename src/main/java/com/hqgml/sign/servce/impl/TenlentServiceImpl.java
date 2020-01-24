@@ -1,6 +1,6 @@
 package com.hqgml.sign.servce.impl;
 
-import com.hqgml.sign.servce.TenlentServices;
+import com.hqgml.sign.servce.TenlentService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.iai.v20180301.IaiClient;
 import com.tencentcloudapi.iai.v20180301.models.*;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class TenlentServicesImpl implements TenlentServices {
+public class TenlentServiceImpl implements TenlentService {
 
     @Autowired
     private IaiClient client;
@@ -71,7 +71,7 @@ public class TenlentServicesImpl implements TenlentServices {
 
     @Override
     public SearchPersonsResponse search(String groupId, String image) throws TencentCloudSDKException {
-        String params = "{\"GroupIds\":[\"" + groupId + "\"],\"Image\":\"" + image + "\"}";
+        String params = "{\"GroupIds\":[\""+groupId+"\"],\"Image\":\""+image+"\",\"MaxPersonNum\":1}";
         SearchPersonsRequest req = SearchPersonsRequest.fromJsonString(params, SearchPersonsRequest.class);
         return client.SearchPersons(req);
     }

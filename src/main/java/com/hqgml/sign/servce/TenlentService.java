@@ -7,7 +7,7 @@ import com.tencentcloudapi.iai.v20180301.models.SearchPersonsResponse;
  * @author Devil
  * @date 2020/1/12 17:28
  */
-public interface TenlentServices {
+public interface TenlentService {
 
     /**
      * 创建组

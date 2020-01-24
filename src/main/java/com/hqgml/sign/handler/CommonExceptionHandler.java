@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -54,9 +55,18 @@ public class CommonExceptionHandler {
         } else if (e instanceof CookieTheftException) {
             return ResponseEntity.status(200).body(new ExceptionResult(400, "登录失效"));
         } else if (e instanceof BindException) {
-            //数字格式化异常
+            /**
+             *  数字格式化异常
+             */
             return ResponseEntity.status(200).body(new ExceptionResult(400, "请输入数字类型"));
-        } else {
+        } else if (e instanceof MissingServletRequestParameterException){
+            /**
+             * 参数缺少的处理
+             */
+            String parm = ((MissingServletRequestParameterException) e).getParameterName();
+            return ResponseEntity.status(200).body(new ExceptionResult(400, "确少必要的参数"+parm));
+        }
+        else {
             e.printStackTrace();
         }
         return null;

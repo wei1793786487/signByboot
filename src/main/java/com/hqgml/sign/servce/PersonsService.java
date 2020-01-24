@@ -75,7 +75,12 @@ public interface PersonsService {
     Persons selectByName(String name);
 
 
-
+    /**
+     * 根据uuid查询用户
+     * @param uuid
+     * @return
+     */
+    Persons selectByUuid(String uuid);
 }
 
 
