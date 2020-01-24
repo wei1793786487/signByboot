@@ -78,7 +78,7 @@ public class PersonsServiceImpl implements PersonsService {
 
         PageHelper.startPage(page, limit);
         List<Persons> persons = personsMapper.findAllByAddId(sysUser.getId(), personName);
-        if (persons == null) {
+        if (persons == null||persons.size()==0) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }
         PageInfo<Persons> brandPageInfo = new PageInfo<>(persons);
@@ -118,7 +118,7 @@ public class PersonsServiceImpl implements PersonsService {
 
     @Override
     public Persons selectById(Integer id) {
-        Persons persons = personsMapper.selectAllById(id);
+        Persons persons = personsMapper.selectById(id);
         if (persons == null) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }

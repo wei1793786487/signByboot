@@ -7,7 +7,6 @@ import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.ThreadPoolUtil;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.annotation.ServiceLog;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
@@ -83,24 +82,17 @@ public class SystemLogAspect {
      */
     @After("controllerAspect()")
     public void after(JoinPoint joinPoint) {
+        String username;
+
         try {
-            String username;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication!=null){
-                String principal = (String) authentication.getPrincipal();
-
-                //判断是不未登录人员
-                if (StringUtils.equalsIgnoreCase(principal,"anonymousUser")){
-                    username="未认证用户访问资源";
-                }else {
-                    User userDetails = (User) authentication.getPrincipal();
-                    username = userDetails.getUsername();
-                }
+            if(authentication!=null){
+                User userDetails = (User) authentication.getPrincipal();
+                username = userDetails.getUsername();
             }else {
-                username="未登录";
+                username="";
+                return;
             }
-
-
 
             if (null != username) {
 
@@ -152,21 +144,8 @@ public class SystemLogAspect {
         try {
             String username;
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication!=null){
-                String principal = (String) authentication.getPrincipal();
-
-                //判断是不未登录人员
-                if (StringUtils.equalsIgnoreCase(principal,"anonymousUser")){
-                    username="未认证用户访问资源";
-                    return;
-                }else {
-                    User userDetails = (User) authentication.getPrincipal();
-                    username = userDetails.getUsername();
-                }
-            }else {
-                username="未登录";
-            }
-
+            User userDetails = (User) authentication.getPrincipal();
+            username = userDetails.getUsername();
 
             if (null != username) {
 

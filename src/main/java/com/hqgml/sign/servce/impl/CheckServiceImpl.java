@@ -33,7 +33,7 @@ public class CheckServiceImpl implements CheckServices {
     public LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName, Integer isCheck) {
         PageHelper.startPage(page, limit);
         List<Persons> checkPerson = personsMapper.findCheckPerson(mid, personName,isCheck);
-        if (checkPerson == null) {
+        if (checkPerson == null||checkPerson.size()==0) {
             log.error("未找到人员");
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }

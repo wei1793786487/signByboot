@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<Common> getUserByUsername(@PathVariable("username") String username, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String lasttime = (String) session.getAttribute("lasttime");
-        String lastaddress = (String) session.getAttribute("lastaddress");
+        String lastaddress = (String) session.getAttribute("address");
         SysUser user = sysUserService.findUserByUserName(username);
         if (lastaddress != null && lasttime != null) {
             log.debug("设置上次登录的时间与地点");

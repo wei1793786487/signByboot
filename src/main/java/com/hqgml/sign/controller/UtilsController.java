@@ -4,6 +4,7 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.Menu;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MenuService;
+import com.hqgml.sign.servce.MsgServices;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.IdWorker;
@@ -19,9 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import sun.security.provider.MD2;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +48,10 @@ public class UtilsController {
 
     @Autowired
     private IdWorker idWorker;
+
+    @Autowired
+
+    private MsgServices msgServices;
 
     @RequestMapping("verifyCode.jpg")
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -77,7 +81,7 @@ public class UtilsController {
 
     @GetMapping("menu")
     @ResponseBody
-    public ResponseEntity<Common> loadMeau(HttpServletRequest request) {
+    public ResponseEntity<Common> loadMeau() {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser user = userService.findUserByUserName(userDetails.getUsername());
         if (user == null) {
@@ -100,5 +104,32 @@ public class UtilsController {
     @ResponseBody
     public ResponseEntity<Void> isLife() {
         return ResponseEntity.ok().build();
+    }
+
+
+
+    /**
+     * 群发通知消息
+     *
+     * @return
+     */
+    @GetMapping("sendMassage")
+    @ResponseBody
+    public ResponseEntity<Common> sendMassage(@RequestParam("mid") Integer mid) {
+        msgServices.sendMsgAllMeeting(mid);
+        return ResponseEntity.ok(new Common("发送完成"));
+    }
+
+
+    /**
+     * 单发迟到消息
+     *
+     * @return
+     */
+    @GetMapping("sendOneMassage")
+    @ResponseBody
+    public ResponseEntity<Common> sendOneMassage(@RequestParam("mid") Integer mid,@RequestParam("pid") Integer pid) {
+        msgServices.sendMsgOneMeeting(mid,pid);
+        return ResponseEntity.ok(new Common("发送完成"));
     }
 }

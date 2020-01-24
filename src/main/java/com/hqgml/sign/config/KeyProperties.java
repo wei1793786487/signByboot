@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "tenlent.keys")
 @Data
 public class KeyProperties {
-    private String SecretId;
-    private String SecretKey;
+    private String secretId;
+    private String secretKey;
+    private Integer appId;
+    private String appKey;
 }

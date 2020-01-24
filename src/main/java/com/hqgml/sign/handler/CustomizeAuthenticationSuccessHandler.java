@@ -62,8 +62,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         String address = AddressUtils.GetAddress(request);
         userService.updateLastimeByUserName(now, sysUser.getUsername());
         session.setAttribute("address", sysUser.getAddress());
-        session.setAttribute("lastaddress", sysUser.getLasttime());
-        userService.updateLastimeByUserName(now, sysUser.getUsername());
+        session.setAttribute("lasttime", sysUser.getLasttime());
         userService.updateLastAddressByUserName(address, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request, response, "username", sysUser.getUsername());

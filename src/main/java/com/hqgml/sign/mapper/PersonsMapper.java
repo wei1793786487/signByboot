@@ -17,7 +17,7 @@ public interface PersonsMapper extends Mapper<Persons> {
 
     int deleteById(@Param("id") Integer id);
 
-    Persons selectAllById(@Param("id") Integer id);
+    Persons selectById(@Param("id") Integer id);
 
     List<Persons> selectByPersonName(@Param("personName")String personName);
 
@@ -30,5 +30,18 @@ public interface PersonsMapper extends Mapper<Persons> {
      */
 
     List<Persons> findCheckPerson(@Param("mid") Integer mid, @Param("personName") String personName, @Param("isCheck") Integer isCheck);
+
+    /**
+     * 查询属于某个会议的所以人员信息
+     * @param mid
+     * @return
+     */
+
+   List<Persons> selectAllByMid(@Param("mid") Integer mid);
+
+
+
+
+
 
 }

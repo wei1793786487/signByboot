@@ -37,6 +37,8 @@ public interface MeetingService {
      * @return
      */
     Meeting selectByuuid(String uuid);
+
+    Meeting selectById(Integer id);
 }
 
 

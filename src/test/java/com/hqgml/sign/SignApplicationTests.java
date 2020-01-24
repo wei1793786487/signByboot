@@ -1,23 +1,27 @@
 package com.hqgml.sign;
 
 
+import com.github.qcloudsms.SmsSingleSenderResult;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.fdfs.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.controller.LogController;
 import com.hqgml.sign.mapper.PersonsMapper;
-import com.hqgml.sign.pojo.Persons;
-import com.hqgml.sign.servce.UserLogService;
+import com.hqgml.sign.config.MsgProperties;
+import com.hqgml.sign.servce.MsgServices;
+import com.hqgml.sign.utlis.IdWorker;
+import com.hqgml.sign.utlis.MsgUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 @SpringBootTest
+@EnableConfigurationProperties(MsgProperties.class)
 class SignApplicationTests {
 
 
@@ -26,8 +30,19 @@ class SignApplicationTests {
     @Autowired
     private FastFileStorageClient storageClient;
 
+
     @Autowired
     private ThumbImageConfig thumbImageConfig;
+
+
+    @Autowired
+    private MsgServices msgServices;
+
+    @Autowired
+    MsgUtils msgUtils;
+
+    @Autowired
+    IdWorker idWorker;
 
     @Autowired
     private LogController logController;
@@ -65,10 +80,18 @@ class SignApplicationTests {
 
 
     @Test
-    public void log(){
-       logController.selectByUserName(null,null,null);
+
+    public void de1mo(){
+        String[] parm={"ada","adda"};
+        SmsSingleSenderResult smsSingleSenderResult = msgUtils.sendOneNotice("15762323410", parm);
+        System.out.println(smsSingleSenderResult.result);
     }
 
+    @Test
+    void  demoa(){
+        Long l = idWorker.nextId();
+        System.out.println(idWorker.nextId());
+    }
 
 
 

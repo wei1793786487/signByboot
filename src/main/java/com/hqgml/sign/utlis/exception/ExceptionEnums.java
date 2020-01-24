@@ -20,6 +20,7 @@ public enum ExceptionEnums {
     USER_ISHAVE(401, "该用户已经存在"),
     READ_ERROR(400, "读取文件异常"),
     PERSON_NOT_FIND(400, "无人员信息"),
+    PHONE_NOT_FIND(400, "无电话信息"),
     PERSON_EXIST(401, "该姓名人员已经存在"),
     LOG_NOT_FIND(404, "日志未找到"),
     MEETING_ADD_ERROR(400, "会议添加异常"),

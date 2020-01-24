@@ -18,7 +18,6 @@ import javax.annotation.Resource;
 import com.hqgml.sign.mapper.MeetingMapper;
 import com.hqgml.sign.servce.MeetingService;
 import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.ls.LSInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +70,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
         PageHelper.startPage(page, limit);
         List<Meeting> meetings = meetingMapper.selectAllByAddId(sysUser.getId(), meetingName);
-        if (meetings == null) {
+        if (meetings == null||meetings.size()==0) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         PageInfo<Meeting> brandPageInfo = new PageInfo<>(meetings);
@@ -107,7 +106,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
         for (Integer pid : pids) {
             //这里面已经处理了person为null的情况
-            Persons per = personsMapper.selectAllById(pid);
+            Persons per = personsMapper.selectById(pid);
             if (per==null){
                 list.add("人员不存在");
             }else {
@@ -181,6 +180,15 @@ public class MeetingServiceImpl implements MeetingService {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return oneByUuid;
+    }
+
+    @Override
+    public Meeting selectById(Integer id) {
+        Meeting meeting = meetingMapper.selectById(id);
+        if (meeting==null){
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
+        }
+        return meeting;
     }
 
 

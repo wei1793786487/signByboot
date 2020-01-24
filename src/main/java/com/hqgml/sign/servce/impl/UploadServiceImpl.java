@@ -124,6 +124,7 @@ public class UploadServiceImpl implements UploadService {
                     persons.setUrl(storePath.getFullPath());
                     persons.setAddTime(DateUtil.now());
                     persons.setAddId(sysUser.getId());
+                    persons.setPhone("");
                     persons.setUuid(uuid);
                     //创建人员
                     personsService.createPersion(persons);

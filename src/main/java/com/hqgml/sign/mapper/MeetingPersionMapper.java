@@ -27,4 +27,6 @@ MeetingPersion selectOneByMidAndPid(@Param("mid")Integer mid,@Param("pid")Intege
 
 
 
+
+
 }

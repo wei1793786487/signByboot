@@ -40,7 +40,7 @@ public class UserLogServiceImpl implements UserLogService {
      */
     public List<UserLog> findAll() {
         List<UserLog> userLogs = userLogMapper.selectAll();
-        if (userLogs == null) {
+        if (userLogs == null||userLogs.size()==0) {
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
         return userLogs;
@@ -55,7 +55,7 @@ public class UserLogServiceImpl implements UserLogService {
     public LayUi selectLog(String username, String serch, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         List<UserLog> userLogs = userLogMapper.selectByUser(username, serch);
-        if (userLogs == null) {
+        if (userLogs == null||userLogs.size()==0) {
             log.error("日志未找到");
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
