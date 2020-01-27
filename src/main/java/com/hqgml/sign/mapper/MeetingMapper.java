@@ -23,7 +23,9 @@ public interface MeetingMapper extends Mapper<Meeting> {
     Meeting findOneByUuid(@Param("uuid")String uuid);
 
 
-  Meeting selectById(@Param("id")Integer id);
+    Meeting selectById(@Param("id")Integer id);
+
+   Integer count();
 
 
 

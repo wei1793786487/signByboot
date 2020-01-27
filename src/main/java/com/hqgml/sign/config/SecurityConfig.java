@@ -115,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/verifyCode.jpg").permitAll()
                 .antMatchers("/meeting/information/**").permitAll()
                 .antMatchers("/face/search").permitAll()
-                .antMatchers("/meeting").hasAnyRole("ADMIN")
+                .antMatchers("/meeting").hasAnyRole("ADMIN","USER")
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()

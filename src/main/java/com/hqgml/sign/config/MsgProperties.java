@@ -1,18 +1,9 @@
 package com.hqgml.sign.config;
 
-import com.hqgml.sign.config.KeyProperties;
-import com.hqgml.sign.utlis.MsgUtils;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Properties;
 
 /**
  * @author Devil

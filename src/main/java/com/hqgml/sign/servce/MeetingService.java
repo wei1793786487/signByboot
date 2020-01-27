@@ -39,6 +39,12 @@ public interface MeetingService {
     Meeting selectByuuid(String uuid);
 
     Meeting selectById(Integer id);
+
+    /**
+     * 获取总数量
+     * @return
+     */
+    Integer slectCount();
 }
 
 

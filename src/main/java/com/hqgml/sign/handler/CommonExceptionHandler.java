@@ -58,6 +58,7 @@ public class CommonExceptionHandler {
             /**
              *  数字格式化异常
              */
+            e.printStackTrace();
             return ResponseEntity.status(200).body(new ExceptionResult(400, "请输入数字类型"));
         } else if (e instanceof MissingServletRequestParameterException){
             /**

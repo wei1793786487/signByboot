@@ -39,10 +39,18 @@ public interface PersonsMapper extends Mapper<Persons> {
 
    List<Persons> selectAllByMid(@Param("mid") Integer mid);
 
-
+    /**
+     * 根据uuid查询单个
+     * @param uuid
+     * @return
+     */
    Persons selectOneByUuid(@Param("uuid")String uuid);
 
-
+    /**
+     * 查询总数量
+     * @return
+     */
+    Integer count();
 
 
 

@@ -81,6 +81,13 @@ public interface PersonsService {
      * @return
      */
     Persons selectByUuid(String uuid);
+
+
+    /**
+     * 查询总的数量
+     * @return
+     */
+    Integer selectCount();
 }
 
 

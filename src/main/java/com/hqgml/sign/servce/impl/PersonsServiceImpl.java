@@ -143,6 +143,12 @@ public class PersonsServiceImpl implements PersonsService {
         return persons;
     }
 
+    @Override
+    public Integer selectCount() {
+
+        return personsMapper.count();
+    }
+
 
 }
 

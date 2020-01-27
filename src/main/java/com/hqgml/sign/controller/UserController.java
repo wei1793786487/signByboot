@@ -2,22 +2,31 @@ package com.hqgml.sign.controller;
 
 import cn.hutool.http.HttpUtil;
 import com.hqgml.sign.pojo.Common;
+import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.servce.MeetingService;
+import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
+import com.hqgml.sign.utlis.exception.ExceptionEnums;
+import com.hqgml.sign.utlis.exception.XxException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collection;
 
 /**
  * @author Devil
@@ -31,6 +40,13 @@ public class UserController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Resource
+    private MeetingService meetingService;
+
+
+    @Resource
+
+    private PersonsService personsService;
 
     /**
      * 获取用户上次的参数
@@ -44,6 +60,13 @@ public class UserController {
         String lasttime = (String) session.getAttribute("lasttime");
         String lastaddress = (String) session.getAttribute("address");
         SysUser user = sysUserService.findUserByUserName(username);
+        //如果是超管，那么就获取所有的会议以及人员的数量
+        if (StringUtils.equals("ROLE_ADMIN",user.getRole())){
+            Integer mCount = meetingService.slectCount();
+            Integer pCount = personsService.selectCount();
+            user.setMeetingcount(mCount);
+            user.setPersoncount(pCount);
+        }
         if (lastaddress != null && lasttime != null) {
             log.debug("设置上次登录的时间与地点");
             user.setAddress(lastaddress);
@@ -70,10 +93,42 @@ public class UserController {
 
     @PutMapping()
     @ControllerLog(describe = "更新用户信息")
+    public ResponseEntity<Common> updateUser(SysUser sysUser) {
+         boolean isSuper=false;
+        //判断更新用户是不是当前存在的用户，防止恶意请求
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Collection<GrantedAuthority> authorities = userDetails.getAuthorities();
+        for (GrantedAuthority authority : authorities) {
+            if (StringUtils.contains(authority.getAuthority(),"ADMIN")){
+                isSuper=true;
+            }
+        }
+        if (!isSuper&&!userDetails.getUsername().equals(sysUser.getUsername())){
+            throw new XxException(ExceptionEnums.INSUFFICIENT_AUTHORITY);
+        }
 
-    public ResponseEntity<Common> updateUser(@Valid SysUser sysUser) {
         sysUserService.updateUser(sysUser);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
+    }
+
+
+    @GetMapping("isHave")
+    @ControllerLog(describe = "查看用户是否存在")
+    public ResponseEntity<Common> updateUser(@RequestParam("username") String username) {
+        try {
+            sysUserService.findUserByUserName(username);
+            throw new XxException(ExceptionEnums.USER_ISHAVE);
+        } catch (XxException e) {
+           //如果抛异常了就是没有用户
+            if (e.getExceptionEnums()==ExceptionEnums.USER_NOT_FIND){
+                Common common = new Common("用户不存在");
+                return ResponseEntity.ok(common);
+            }else {
+                throw e;
+            }
+
+        }
+
     }
 }

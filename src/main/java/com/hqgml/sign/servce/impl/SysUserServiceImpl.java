@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import com.hqgml.sign.mapper.SysUserMapper;
 import com.hqgml.sign.servce.SysUserService;
@@ -88,7 +89,6 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser User = sysUserMapper.findOneByUsername(username);
         if (User == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
-
         }
         return User;
     }
@@ -161,7 +161,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param sysUser
      */
     @Override
-    public void updateUser(SysUser sysUser) {
+    public void updateUser( @Valid SysUser sysUser) {
         if (sysUser == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
@@ -169,6 +169,11 @@ public class SysUserServiceImpl implements SysUserService {
         if (isupdate != 1) {
             throw new XxException(ExceptionEnums.UPDATEUSER_ERROR);
         }
+    }
+
+    @Override
+    public void insertUser(SysUser sysUser) {
+
     }
 }
 

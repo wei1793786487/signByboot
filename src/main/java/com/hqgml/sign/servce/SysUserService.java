@@ -46,5 +46,12 @@ public interface SysUserService extends UserDetailsService {
      * @param sysUser
      */
      void updateUser(SysUser sysUser);
+
+
+    /**
+     * 新增用户
+     * @param sysUser
+     */
+    void insertUser(SysUser sysUser);
 }
 

@@ -5,19 +5,13 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.MeetingService;
-import com.hqgml.sign.servce.PersonsService;
-import com.hqgml.sign.servce.impl.MeetingServiceImpl;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
-
 /**
  * @author Devil
  * @date 2019/12/31 23:08

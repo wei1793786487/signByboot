@@ -191,6 +191,12 @@ public class MeetingServiceImpl implements MeetingService {
         return meeting;
     }
 
+    @Override
+    public Integer slectCount() {
+        Integer count = meetingMapper.count();
+        return count;
+    }
+
 
 }
 
