@@ -1,6 +1,8 @@
 package com.hqgml.sign.servce;
 
+import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.SysUser;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -14,7 +16,7 @@ public interface SysUserService extends UserDetailsService {
      *
      * @return
      */
-     SysUser findUserByUserName(String username);
+    SysUser findUserByUserName(String username);
 
     /**
      * 根据用户名更新时间
@@ -22,7 +24,7 @@ public interface SysUserService extends UserDetailsService {
      * @param lasttime
      * @param username
      */
-     void updateLastimeByUserName(String lasttime, String username);
+    void updateLastimeByUserName(String lasttime, String username);
 
     /**
      * 根据用户名更新时间
@@ -30,28 +32,37 @@ public interface SysUserService extends UserDetailsService {
      * @param address
      * @param username
      */
-     void updateLastAddressByUserName(String address, String username);
+    void updateLastAddressByUserName(String address, String username);
 
     /**
      * 更新密码
+     *
      * @param oldPassword
      * @param newPassword
      * @param userName
      */
-     void updateUserPasswordByUserName(String oldPassword,String newPassword, String userName);
+    void updateUserPasswordByUserName(String oldPassword, String newPassword, String userName);
 
 
     /**
      * 更新用户
+     *
      * @param sysUser
      */
-     void updateUser(SysUser sysUser);
+    void updateUser(SysUser sysUser);
 
 
     /**
      * 新增用户
+     *
      * @param sysUser
      */
-    void insertUser(SysUser sysUser);
+    void insertUser(SysUser sysUser) throws TencentCloudSDKException;
+
+    /**
+     * 查找所有用户
+     */
+    LayUi<SysUser> findUserList(Integer page, Integer limit, String search);
 }
+
 

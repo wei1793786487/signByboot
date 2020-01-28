@@ -1,8 +1,14 @@
 package com.hqgml.sign.servce.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.UserLog;
+import com.hqgml.sign.servce.TenlentService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +27,7 @@ import javax.validation.Valid;
 import com.hqgml.sign.mapper.SysUserMapper;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
@@ -40,8 +47,11 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 
-    @Autowired
+    @Resource
     private PasswordEncoder passwordEncode;
+
+    @Resource
+    private TenlentService tenlentService;
 
     /**
      * spring security的认证的方法
@@ -161,7 +171,7 @@ public class SysUserServiceImpl implements SysUserService {
      * @param sysUser
      */
     @Override
-    public void updateUser( @Valid SysUser sysUser) {
+    public void updateUser(@Valid SysUser sysUser) {
         if (sysUser == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
@@ -171,9 +181,36 @@ public class SysUserServiceImpl implements SysUserService {
         }
     }
 
+    /**
+     * 插入用户
+     *
+     * @param sysUser
+     */
     @Override
-    public void insertUser(SysUser sysUser) {
+    public void insertUser(SysUser sysUser) throws TencentCloudSDKException {
+        sysUser.setPassword(passwordEncode.encode(sysUser.getPassword()));
+        int insert = sysUserMapper.insertSelective(sysUser);
+        //新建用户组
+        tenlentService.createGroup(sysUser.getId().toString(),sysUser.getId().toString());
+        if (insert != 1) {
+            throw new XxException(ExceptionEnums.INSERT_ERROR);
+        }
+    }
 
+    @Override
+    public LayUi<SysUser> findUserList(Integer page, Integer limit, String search) {
+        PageHelper.startPage(page, limit);
+        List<SysUser> sysUsers = sysUserMapper.selectAllUser();
+
+        if (sysUsers==null||sysUsers.size()==0){
+            throw new XxException(ExceptionEnums.USER_NOT_FIND);
+        }
+        PageInfo<SysUser> brandPageInfo = new PageInfo<>(sysUsers);
+        LayUi<SysUser> layUi = new LayUi<>();
+        layUi.setCount(brandPageInfo.getTotal());
+        layUi.setData(sysUsers);
+        return layUi;
     }
 }
+
 

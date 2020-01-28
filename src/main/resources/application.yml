@@ -45,12 +45,13 @@ tenlent:
 
 
 
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: DEBUG
-#    com.hqgml.sign.mapper: debug
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+    com.hqgml.sign.mapper: debug
 
 fdfs:
   so-timeout: 1501 # 超时时间

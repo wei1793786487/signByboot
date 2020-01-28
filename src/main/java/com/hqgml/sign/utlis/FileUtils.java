@@ -1,4 +1,4 @@
-package com.hqgml.sign.utlis.result;
+package com.hqgml.sign.utlis;
 
 /**
  * @author Devil

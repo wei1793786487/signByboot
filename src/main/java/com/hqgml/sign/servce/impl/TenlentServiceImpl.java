@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @author Devil
  * @date 2020/1/12 17:28
@@ -16,13 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class TenlentServiceImpl implements TenlentService {
 
-    @Autowired
+    @Resource
     private IaiClient client;
 
 
     @Override
     public void createGroup(String groupName, String groupId) throws TencentCloudSDKException {
-        String params = "{\"GroupName\":\"" + groupName + "\",\"GroupId\":\"" + groupId + "\"}";
+        String params = "{\"GroupName\":\""+groupName+"\",\"GroupId\":\""+groupId+"\",\"FaceModelVersion\":\"3.0\"}";
         CreateGroupRequest req = CreateGroupRequest.fromJsonString(params, CreateGroupRequest.class);
         CreateGroupResponse resp = client.CreateGroup(req);
         log.info("创建人员库完成" + resp.getRequestId());

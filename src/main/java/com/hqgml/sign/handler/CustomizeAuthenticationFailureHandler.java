@@ -7,6 +7,7 @@ import com.hqgml.sign.utlis.exception.ValidateCodeException;
 import com.hqgml.sign.utlis.result.enums.ResultCode;
 import com.hqgml.sign.utlis.result.pojo.JsonResult;
 import com.hqgml.sign.utlis.result.utils.ResultTool;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

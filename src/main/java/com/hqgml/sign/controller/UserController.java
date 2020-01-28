@@ -2,18 +2,22 @@ package com.hqgml.sign.controller;
 
 import cn.hutool.http.HttpUtil;
 import com.hqgml.sign.pojo.Common;
+import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.SysUserService;
+import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -86,6 +90,8 @@ public class UserController {
         User userDetails = (User) auth.getPrincipal();
         sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
         //清除用户信息
+        CookieUtils.deleteCookie(request,response,"username");
+        CookieUtils.deleteCookie(request,response,"remember");
         new SecurityContextLogoutHandler().logout(request, response, auth);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
@@ -129,6 +135,25 @@ public class UserController {
             }
 
         }
+    }
+
+
+    @Secured("ROLE_ADMIN")
+    @PostMapping
+    @ControllerLog(describe = "新建用户")
+    public ResponseEntity<Common> insertUser(@Valid SysUser sysUser) throws TencentCloudSDKException {
+        sysUserService.insertUser(sysUser);
+        Common common = new Common("新建成功");
+        return ResponseEntity.ok(common);
 
     }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping()
+    @ControllerLog(describe = "查看所有用户")
+    public LayUi<SysUser> selectAll(Integer page, Integer limit, String search) {
+      return sysUserService.findUserList(page,limit,search);
+    }
+
+
 }

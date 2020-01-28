@@ -16,7 +16,7 @@ import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.*;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
-import com.hqgml.sign.utlis.result.FileUtils;
+import com.hqgml.sign.utlis.FileUtils;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
