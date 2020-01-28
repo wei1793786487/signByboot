@@ -200,7 +200,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public LayUi<SysUser> findUserList(Integer page, Integer limit, String search) {
         PageHelper.startPage(page, limit);
-        List<SysUser> sysUsers = sysUserMapper.selectAllUser();
+        List<SysUser> sysUsers = sysUserMapper.selectAllUser(search);
 
         if (sysUsers==null||sysUsers.size()==0){
             throw new XxException(ExceptionEnums.USER_NOT_FIND);

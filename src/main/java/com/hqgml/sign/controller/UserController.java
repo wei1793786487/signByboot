@@ -156,4 +156,12 @@ public class UserController {
     }
 
 
+//    @Secured("ROLE_ADMIN")
+//    @GetMapping()
+//    @ControllerLog(describe = "查看所有用户")
+//    public LayUi<SysUser> delete( String search) {
+//        return sysUserService.findUserList(search);
+//    }
+
+
 }

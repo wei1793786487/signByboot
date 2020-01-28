@@ -18,7 +18,7 @@ public interface SysUserMapper extends Mapper<SysUser> {
 
     int updatePasswordByUsername(@Param("updatedPassword") String updatedPassword, @Param("username") String username);
 
-    List<SysUser> selectAllUser();
+    List<SysUser> selectAllUser(@Param("search")String search);
 
 
 

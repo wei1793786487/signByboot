@@ -33,8 +33,12 @@ public class AddressUtils {
         if ("0:0:0:0:0:0:0:1".equals(ipAddress) || "127.0.0.1".equals(ipAddress)) {
             ipAddress = "";
         }
-        //将ip地址发送至百度地图接口获取json
-        ip_json = HttpUtil.get("http://api.map.baidu.com/location/ip?ip=" + ipAddress + "&ak=" + ak);
+        try {
+            //将ip地址发送至百度地图接口获取json
+            ip_json = HttpUtil.get("http://api.map.baidu.com/location/ip?ip=" + ipAddress + "&ak=" + ak);
+        } catch (Exception e) {
+            return "获取失败";
+        }
         //解析json获取物理地址
         if (ip_json != null) {
             JSONObject city = JSON.parseObject(ip_json);

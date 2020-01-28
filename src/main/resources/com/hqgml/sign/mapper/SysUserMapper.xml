@@ -56,6 +56,17 @@
     select
     <include refid="Base_Column_List"/>
     from sys_user
+    <where>
+      <if test="search != null and search != '' ">
+         username like concat('%', #{search,jdbcType=VARCHAR},'%')
+        or sex like concat('%', #{search,jdbcType=VARCHAR},'%')
+        or phone like concat('%', #{search,jdbcType=VARCHAR},'%')
+        or address like concat('%', #{search,jdbcType=VARCHAR},'%')
+        or lasttime like concat('%', #{search,jdbcType=VARCHAR},'%')
+        or role like concat('%', #{search,jdbcType=VARCHAR},'%')
+      </if>
+    </where>
+
   </select>
 
 

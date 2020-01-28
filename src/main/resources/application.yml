@@ -38,13 +38,9 @@ tenlent:
 #    签名
     sign: hqgml
 #      通知全体
-    sendAllTemplateId: 527157
+    sendAllTemplateId: 527457
 #      通知单个
     sendOneTemplateId: 527160
-
-
-
-
 
 logging:
   level:
