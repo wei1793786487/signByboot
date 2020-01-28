@@ -80,6 +80,14 @@ public class UserController {
         return ResponseEntity.ok(common);
     }
 
+    /**
+     * 修改密码
+     * @param oldPassword
+     * @param newPassword
+     * @param request
+     * @param response
+     * @return
+     */
     @PutMapping("password")
     @ControllerLog(describe = "修改密码")
     public ResponseEntity<Common> updatePassword(
@@ -97,6 +105,11 @@ public class UserController {
         return ResponseEntity.ok(common);
     }
 
+    /**
+     * 更新用户信息
+     * @param sysUser
+     * @return
+     */
     @PutMapping()
     @ControllerLog(describe = "更新用户信息")
     public ResponseEntity<Common> updateUser(SysUser sysUser) {
@@ -121,6 +134,11 @@ public class UserController {
     }
 
 
+    /**
+     * 查看用户是不是存在
+     * @param username
+     * @return
+     */
     @GetMapping("isHave")
     @ControllerLog(describe = "查看用户是否存在")
     public ResponseEntity<Common> updateUser(@RequestParam("username") String username) {
@@ -140,6 +158,12 @@ public class UserController {
     }
 
 
+    /**
+     * 新建用户
+     * @param sysUser
+     * @return
+     * @throws TencentCloudSDKException
+     */
     @Secured("ROLE_ADMIN")
     @PostMapping
     @ControllerLog(describe = "新建用户")
@@ -150,6 +174,14 @@ public class UserController {
 
     }
 
+
+    /**
+     * 查找所有用户
+     * @param page
+     * @param limit
+     * @param search
+     * @return
+     */
     @Secured("ROLE_ADMIN")
     @GetMapping()
     @ControllerLog(describe = "查看所有用户")
