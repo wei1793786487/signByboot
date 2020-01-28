@@ -76,6 +76,8 @@ public class MsgServicesImpl implements MsgServices {
 
     }
 
+
+    @ServiceLog(describe = "通知会议人员")
     @Override
     public void sendMsgOneMeeting(Integer metingId,Integer psersonId) {
         Persons persons = personsMapper.selectById(psersonId);

@@ -9,6 +9,7 @@ import com.hqgml.sign.servce.impl.UserLogServiceImpl;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +37,12 @@ public class LogController {
      * @param limit
      */
     @GetMapping()
-    public LayUi selectByUserName(
+    public LayUi selectByAddId(
             @RequestParam(name = "serch", required = false) String serch,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
     ) {
-        String username = userService.findUserByUserName(null).getUsername();
-        return userLogService.selectLog(username, serch, page, limit);
-
+        return userLogService.selectLog(serch, page, limit);
 
     }
 
@@ -54,5 +53,27 @@ public class LogController {
         Common common = new Common("删除成功");
         return ResponseEntity.ok(common);
     }
+
+
+    /**
+     * 超管查询日志
+     * @param serch
+     * @param page
+     * @param limit
+     */
+    @GetMapping("all")
+    @Secured("ROLE_ADMIN")
+    @ControllerLog(describe = "超管查询日志")
+
+    public LayUi selectByAll(
+            @RequestParam(name = "serch", required = false) String serch,
+            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
+    ) {
+        return userLogService.selectAllLog(serch, page, limit);
+
+    }
+
+
 
 }

@@ -16,21 +16,28 @@ public interface UserLogService {
 
 
     /**
-     *
-     * @param username
      * @param serch
      * @param page
      * @param limit
      * @return
      */
-    LayUi selectLog(String username,String serch, Integer page, Integer limit);
+    LayUi selectLog(String serch, Integer page, Integer limit);
 
     /**
-     *
      * @param ids
      */
     void deleteLog(Integer[] ids);
+
+    /**
+     * 超管查询日志
+     * @param serch
+     * @param page
+     * @param limit
+     * @return
+     */
+    LayUi selectAllLog(String serch, Integer page, Integer limit);
 }
+
 
 
 

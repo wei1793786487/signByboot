@@ -101,6 +101,7 @@ public class UserController {
     @ControllerLog(describe = "更新用户信息")
     public ResponseEntity<Common> updateUser(SysUser sysUser) {
          boolean isSuper=false;
+         //todo 超管可以设置自己的账号不可用，这样就全部都不可用了，哈哈哈哈
         //判断更新用户是不是当前存在的用户，防止恶意请求
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<GrantedAuthority> authorities = userDetails.getAuthorities();
@@ -109,6 +110,7 @@ public class UserController {
                 isSuper=true;
             }
         }
+
         if (!isSuper&&!userDetails.getUsername().equals(sysUser.getUsername())){
             throw new XxException(ExceptionEnums.INSUFFICIENT_AUTHORITY);
         }
@@ -154,14 +156,5 @@ public class UserController {
     public LayUi<SysUser> selectAll(Integer page, Integer limit, String search) {
       return sysUserService.findUserList(page,limit,search);
     }
-
-
-//    @Secured("ROLE_ADMIN")
-//    @GetMapping()
-//    @ControllerLog(describe = "查看所有用户")
-//    public LayUi<SysUser> delete( String search) {
-//        return sysUserService.findUserList(search);
-//    }
-
 
 }

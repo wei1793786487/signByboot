@@ -1,7 +1,9 @@
 package com.hqgml.sign.config;
 
 
+import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
+import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.UserLogService;
 import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.ThreadPoolUtil;
@@ -39,6 +41,9 @@ public class SystemLogAspect {
 
     @Autowired
     private UserLogService userLogService;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @Autowired(required = false)
     private HttpServletRequest request;
@@ -111,6 +116,10 @@ public class SystemLogAspect {
 
                 //请求用户
                 tbLog.setUser(username);
+
+                SysUser user = sysUserService.findUserByUserName(username);
+
+                tbLog.setAddid(user.getId());
                 //请求IP
                 tbLog.setIp(AddressUtils.getIp(request));
                 //IP地址
@@ -161,7 +170,9 @@ public class SystemLogAspect {
                 //请求参数
                 Map<String, String[]> logParams = request.getParameterMap();
                 tbLog.setMapToParams(logParams);
+                SysUser user = sysUserService.findUserByUserName(username);
 
+                tbLog.setAddid(user.getId());
                 //请求用户
                 tbLog.setUser(username);
                 //请求IP

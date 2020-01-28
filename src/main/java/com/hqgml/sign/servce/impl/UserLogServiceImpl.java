@@ -4,7 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
+import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,9 @@ public class UserLogServiceImpl implements UserLogService {
     @Resource
     private UserLogMapper userLogMapper;
 
+    @Resource
+    private SysUserService SysUserService ;
+
 
     /**
      * 查询所有日志
@@ -40,7 +45,7 @@ public class UserLogServiceImpl implements UserLogService {
      */
     public List<UserLog> findAll() {
         List<UserLog> userLogs = userLogMapper.selectAll();
-        if (userLogs == null||userLogs.size()==0) {
+        if (userLogs == null || userLogs.size() == 0) {
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
         return userLogs;
@@ -52,10 +57,11 @@ public class UserLogServiceImpl implements UserLogService {
     }
 
     @Override
-    public LayUi selectLog(String username, String serch, Integer page, Integer limit) {
+    public LayUi selectLog( String serch, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
-        List<UserLog> userLogs = userLogMapper.selectByUser(username, serch);
-        if (userLogs == null||userLogs.size()==0) {
+        SysUser user =SysUserService.findUserByUserName(null);
+        List<UserLog> userLogs = userLogMapper.selectByAddId(user.getId(), serch);
+        if (userLogs == null || userLogs.size() == 0) {
             log.error("日志未找到");
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
@@ -74,8 +80,24 @@ public class UserLogServiceImpl implements UserLogService {
         }
     }
 
+    @Override
+    public LayUi selectAllLog(String search, Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        List<UserLog> userLogs = userLogMapper.selectAllLog(search);
+        if (userLogs == null || userLogs.size() == 0) {
+            log.error("日志未找到");
+            throw new XxException(ExceptionEnums.LOG_NOT_FIND);
+        }
+        PageInfo<UserLog> brandPageInfo = new PageInfo<>(userLogs);
+        LayUi<UserLog> layUi = new LayUi<>();
+        layUi.setCount(brandPageInfo.getTotal());
+        layUi.setData(userLogs);
+        return layUi;
+    }
+
 
 }
+
 
 
 
