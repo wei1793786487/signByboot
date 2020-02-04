@@ -3,6 +3,9 @@ package com.hqgml.sign.utlis;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hqgml.sign.utlis.exception.ExceptionEnums;
+import com.hqgml.sign.utlis.exception.XxException;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -24,8 +27,11 @@ import java.util.Map;
 @Slf4j
 public class AddressUtils {
 
+    static  final  String AK = "3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
+
+
+
     public static String GetAddress(HttpServletRequest request) {
-        String ak = "3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
         String ip_json = null;
         //透过代理获取ip地址
         String ipAddress = getIp(request);
@@ -35,7 +41,7 @@ public class AddressUtils {
         }
         try {
             //将ip地址发送至百度地图接口获取json
-            ip_json = HttpUtil.get("http://api.map.baidu.com/location/ip?ip=" + ipAddress + "&ak=" + ak);
+            ip_json = HttpUtil.get("http://api.map.baidu.com/location/ip?ip=" + ipAddress + "&ak=" + AK);
         } catch (Exception e) {
             return "获取失败";
         }
@@ -92,14 +98,49 @@ public class AddressUtils {
     }
 
 
+    /**
+     * 地点监所
+     *
+     * @return
+     */
 
-    public  static  String getCoordinate(){
-     String parm="http://api.map.baidu.com/place/v2/suggestion?query=日照职业技术学院&region=日照&city_limit=true&output=json&ak=3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
-        return HttpUtil.get(parm);
+    public static String getCoordinate(String query, String region,HttpServletRequest request) {
+        String response ="";
+
+        /**
+         * 区域数据召回限制，为true时，仅召回region对应区域内数据。
+         */
+        Boolean city_limit = false;
+        String output = "json";
+        String url = "http://api.map.baidu.com/place/v2/suggestion";
+
+        if (StringUtils.equals(region,"")||region==null){
+            try {
+                region= GetAddress(request);
+            } catch (Exception e) {
+                region="北京";
+            }
+        }
+
+
+        Map parm = new HashMap();
+        parm.put("query", query);
+        parm.put("region", region);
+        parm.put("output", output);
+        parm.put("ak", AK);
+
+
+
+
+        try {
+         response= HttpUtil.get(url, parm);
+        } catch (Exception e) {
+            log.error("地点检索出现问题");
+           throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+        }
+        return response;
+
     }
-
-
-
 
 
     private static Boolean polygonJudgment(String xys, Double lng, Double lat) {
@@ -122,8 +163,6 @@ public class AddressUtils {
         }
         return false;
     }
-
-
 
 
 }

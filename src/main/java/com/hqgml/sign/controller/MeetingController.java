@@ -50,7 +50,6 @@ public class MeetingController {
      */
     @GetMapping
     @ControllerLog(describe = "查询会议")
-
     public ResponseEntity<LayUi> getAllByUser(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,

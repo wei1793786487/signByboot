@@ -16,6 +16,7 @@ public enum ExceptionEnums {
     USER_PASSWORD_ERROR(400, "密码输入错误"),
     REGIST_ERROR(500, "注册异常"),
     DELETE_ERROR(500, "删除异常"),
+    ADDRESS_ERROR(500, "地点检索失败"),
     RESOUT_NOT_ONE(500, "结果集不唯一"),
     USER_ISHAVE(401, "该用户已经存在"),
     READ_ERROR(400, "读取文件异常"),

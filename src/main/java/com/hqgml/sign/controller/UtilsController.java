@@ -1,11 +1,15 @@
 package com.hqgml.sign.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hqgml.sign.pojo.Common;
+import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Menu;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MenuService;
 import com.hqgml.sign.servce.MsgServices;
 import com.hqgml.sign.servce.SysUserService;
+import com.hqgml.sign.utlis.AddressUtils;
 import com.hqgml.sign.utlis.CookieUtils;
 import com.hqgml.sign.utlis.IdWorker;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
@@ -79,6 +83,10 @@ public class UtilsController {
         outputStream.close();
     }
 
+    /**
+     * 菜单
+     * @return
+     */
     @GetMapping("menu")
     @ResponseBody
     public ResponseEntity<Common> loadMeau() {
@@ -122,7 +130,7 @@ public class UtilsController {
 
 
     /**
-     * 单发迟到消息
+     * 单发通知消息
      *
      * @return
      */
@@ -132,4 +140,22 @@ public class UtilsController {
         msgServices.sendMsgOneMeeting(mid,pid);
         return ResponseEntity.ok(new Common("发送完成"));
     }
+
+    @GetMapping("findAddress")
+    @ResponseBody
+    public ResponseEntity<LayUi> findAddress(@RequestParam("keyword") String keyword){
+
+        String coordinate = AddressUtils.getCoordinate("超市", "山东省临沂市",null);
+        JSONObject jsonObject = JSON.parseObject(coordinate);
+        if (jsonObject.getInteger("status")==0){
+
+
+        }else {
+            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+        }
+
+        return null;
+
+    }
+
 }
