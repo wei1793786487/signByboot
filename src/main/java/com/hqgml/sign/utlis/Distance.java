@@ -51,14 +51,9 @@ public class Distance {
 //        System.out.println(distance);
 
 //
-        String coordinate = AddressUtils.getCoordinate("信一金典", "重庆市",null);
+        String coordinate = AddressUtils.getCoordinate("日照职业技术", "",null);
         System.out.println(coordinate);
-//        BaiduResult baiduResult = JSON.parseObject(coordinate, BaiduResult.class);
-//        List<Address> result = baiduResult.getResult();
-//        for (Address address : result) {
-//            Map<String, Double> location = address.getLocation();
-//            System.out.println(location.get("lng"));
-//        }
+
     }
 
 }

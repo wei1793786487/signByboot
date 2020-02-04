@@ -70,7 +70,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
         PageHelper.startPage(page, limit);
         List<Meeting> meetings = meetingMapper.selectAllByAddId(sysUser.getId(), meetingName);
-        if (meetings == null||meetings.size()==0) {
+        if (meetings == null || meetings.size() == 0) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         PageInfo<Meeting> brandPageInfo = new PageInfo<>(meetings);
@@ -98,7 +98,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<String> addMeetingPeople(Integer mid, Integer[] pids) {
-        List<String > list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
 
         Meeting meeting = meetingMapper.findOneById(mid);
         if (meeting == null) {
@@ -107,15 +107,15 @@ public class MeetingServiceImpl implements MeetingService {
         for (Integer pid : pids) {
             //这里面已经处理了person为null的情况
             Persons per = personsMapper.selectById(pid);
-            if (per==null){
+            if (per == null) {
                 list.add("人员不存在");
-            }else {
+            } else {
                 MeetingPersion one = meetingPersionMapper.selectOneByMidAndPid(mid, pid);
                 if (one != null) {
-                    log.error("{}，人员以存在该会议",pid);
+                    log.error("{}，人员以存在该会议", pid);
                     Persons persons = personsService.selectById(pid);
-                    list.add(persons.getPersonName()+"已经存在该会议");
-                }else {
+                    list.add(persons.getPersonName() + "已经存在该会议");
+                } else {
                     MeetingPersion meetingPersion = new MeetingPersion();
                     meetingPersion.setMid(mid);
                     meetingPersion.setPid(pid);
@@ -124,9 +124,9 @@ public class MeetingServiceImpl implements MeetingService {
                     if (insert != 1) {
                         log.error("添加异常");
                         Persons persons = personsService.selectById(pid);
-                        list.add(persons.getPersonName()+"添加异常");
-                    }else {
-                        list.add(per.getPersonName()+"添加成功");
+                        list.add(persons.getPersonName() + "添加异常");
+                    } else {
+                        list.add(per.getPersonName() + "添加成功");
                     }
                 }
 
@@ -148,14 +148,14 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<String> addMeetingAllPeople(Integer mid) {
-        List<String > list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
 
         Meeting meeting = meetingMapper.findOneById(mid);
         if (meeting == null) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         SysUser user = sysUserService.findUserByUserName(null);
-        List<Persons> persons = personsMapper.findAllByAddId(user.getId(),null);
+        List<Persons> persons = personsMapper.findAllByAddId(user.getId(), null);
         for (Persons person : persons) {
             MeetingPersion meetingPersion = new MeetingPersion();
             meetingPersion.setMid(mid);
@@ -165,9 +165,9 @@ public class MeetingServiceImpl implements MeetingService {
             int insert = meetingPersionMapper.insert(meetingPersion);
             if (insert != 1) {
                 log.error("添加异常");
-                list.add(person.getPersonName()+"添加异常");
-            }else {
-                list.add(person.getPersonName()+"添加成功");
+                list.add(person.getPersonName() + "添加异常");
+            } else {
+                list.add(person.getPersonName() + "添加成功");
             }
         }
         return list;
@@ -176,7 +176,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public Meeting selectByuuid(String uuid) {
         Meeting oneByUuid = meetingMapper.findOneByUuid(uuid);
-        if (oneByUuid==null){
+        if (oneByUuid == null) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return oneByUuid;
@@ -185,7 +185,7 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public Meeting selectById(Integer id) {
         Meeting meeting = meetingMapper.selectById(id);
-        if (meeting==null){
+        if (meeting == null) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return meeting;
@@ -199,6 +199,11 @@ public class MeetingServiceImpl implements MeetingService {
 
 
 }
+
+
+
+
+
 
 
 

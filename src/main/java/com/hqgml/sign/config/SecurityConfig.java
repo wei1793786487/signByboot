@@ -115,7 +115,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/verifyCode.jpg").permitAll()
-                .antMatchers("/meeting/information/**").permitAll()
+                .antMatchers("/meeting/information/**","/findAddress").permitAll()
                 .antMatchers("/face/search").permitAll()
                 .antMatchers("/meeting").hasAnyRole("ADMIN","USER")
                 .antMatchers("/**").authenticated()

@@ -26,6 +26,7 @@ public interface MeetingService {
 
     /**
      * 将本账号所属的所有人员添加进该会议
+     *
      * @param mid
      * @return
      */
@@ -33,6 +34,7 @@ public interface MeetingService {
 
     /**
      * 根据uuid查询单个用户
+     *
      * @param uuid
      * @return
      */
@@ -42,10 +44,16 @@ public interface MeetingService {
 
     /**
      * 获取总数量
+     *
      * @return
      */
     Integer slectCount();
 }
+
+
+
+
+
 
 
 

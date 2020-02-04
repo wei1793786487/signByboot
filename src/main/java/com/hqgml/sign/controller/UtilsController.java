@@ -2,10 +2,7 @@ package com.hqgml.sign.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.hqgml.sign.pojo.Common;
-import com.hqgml.sign.pojo.LayUi;
-import com.hqgml.sign.pojo.Menu;
-import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.MenuService;
 import com.hqgml.sign.servce.MsgServices;
 import com.hqgml.sign.servce.SysUserService;
@@ -15,6 +12,7 @@ import com.hqgml.sign.utlis.IdWorker;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.getverUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -72,7 +72,7 @@ public class UtilsController {
         redisTemplate.opsForValue().set(uuid, code, 5, TimeUnit.MINUTES);
         CookieUtils.setCookie(request, response, "getverid", uuid, 60 * 5);
         //每次更改删除cookie
-        if (cookie != null&& StringUtils.equals(cookie,"")) {
+        if (cookie != null && StringUtils.equals(cookie, "")) {
             Boolean isDelete = redisTemplate.delete(cookie);
             String msg = isDelete ? "成功" : "失败";
             log.info("删除" + msg + cookie);
@@ -85,6 +85,7 @@ public class UtilsController {
 
     /**
      * 菜单
+     *
      * @return
      */
     @GetMapping("menu")
@@ -115,7 +116,6 @@ public class UtilsController {
     }
 
 
-
     /**
      * 群发通知消息
      *
@@ -136,25 +136,26 @@ public class UtilsController {
      */
     @GetMapping("sendOneMassage")
     @ResponseBody
-    public ResponseEntity<Common> sendOneMassage(@RequestParam("mid") Integer mid,@RequestParam("pid") Integer pid) {
-        msgServices.sendMsgOneMeeting(mid,pid);
+    public ResponseEntity<Common> sendOneMassage(@RequestParam("mid") Integer mid, @RequestParam("pid") Integer pid) {
+        msgServices.sendMsgOneMeeting(mid, pid);
         return ResponseEntity.ok(new Common("发送完成"));
     }
 
     @GetMapping("findAddress")
     @ResponseBody
-    public ResponseEntity<LayUi> findAddress(@RequestParam("keyword") String keyword){
+    public ResponseEntity<LayUi> findAddress(@RequestParam("keyword") String keyword) {
 
-        String coordinate = AddressUtils.getCoordinate("超市", "山东省临沂市",null);
+        LayUi layUi = new LayUi();
+        String coordinate = AddressUtils.getCoordinate(keyword, "", null);
         JSONObject jsonObject = JSON.parseObject(coordinate);
-        if (jsonObject.getInteger("status")==0){
-
-
-        }else {
+        if (jsonObject.getInteger("status") == 0) {
+            BaiduResult baiduResult = JSON.parseObject(coordinate, BaiduResult.class);
+            layUi.setMsg("success");
+            layUi.setData(baiduResult.getResult());
+        } else {
             throw new XxException(ExceptionEnums.ADDRESS_ERROR);
         }
-
-        return null;
+        return ResponseEntity.ok(layUi);
 
     }
 

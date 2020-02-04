@@ -2,14 +2,11 @@ package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-
 import lombok.Data;
 
 /**
  * @author Devil
- * @date 2020/1/12 13:20
+ * @date 2020/2/5 0:00
  */
 @Data
 @Table(name = "meeting")
@@ -22,19 +19,18 @@ public class Meeting implements Serializable {
     @Column(name = "add_id")
     private Integer addId;
 
-    @NotNull
-    @Column(name = "metting_address")
-    private String mettingAddress;
+    @Column(name = "address_name")
+    private String addressName;
 
-    @NotNull
+    @Column(name = "meeting_address")
+    private String meetingAddress;
+
     @Column(name = "meeting_name")
     private String meetingName;
 
-    @NotNull
     @Column(name = "start_time")
     private String startTime;
 
-    @NotNull
     @Column(name = "end_time")
     private String endTime;
 
@@ -44,11 +40,16 @@ public class Meeting implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    @Column(name = "lng")
+    private Double lng;
+
+    @Column(name = "lat")
+    private Double lat;
+
     @Column(name = "information")
     private String information;
 
+    private static final long serialVersionUID = 1L;
     @Transient
     private Integer persionNumber;
-
-    private static final long serialVersionUID = 1L;
 }
