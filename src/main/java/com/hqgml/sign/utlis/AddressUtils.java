@@ -12,6 +12,8 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 ;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +34,7 @@ public class AddressUtils {
 
 
     public static String GetAddress(HttpServletRequest request) {
+
         String ip_json = null;
         //透过代理获取ip地址
         String ipAddress = getIp(request);

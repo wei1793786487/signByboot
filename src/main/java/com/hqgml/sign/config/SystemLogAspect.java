@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Spring AOP实现日志管理
@@ -44,6 +46,11 @@ public class SystemLogAspect {
 
     @Autowired
     private SysUserService sysUserService;
+
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
 
     @Autowired(required = false)
     private HttpServletRequest request;
@@ -91,11 +98,11 @@ public class SystemLogAspect {
 
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if(authentication!=null){
+            if (authentication != null) {
                 User userDetails = (User) authentication.getPrincipal();
                 username = userDetails.getUsername();
-            }else {
-                username="";
+            } else {
+                username = "";
                 return;
             }
 
@@ -120,10 +127,26 @@ public class SystemLogAspect {
                 SysUser user = sysUserService.findUserByUserName(username);
 
                 tbLog.setAddid(user.getId());
+
                 //请求IP
-                tbLog.setIp(AddressUtils.getIp(request));
-                //IP地址
-                tbLog.setIpinfo(AddressUtils.GetAddress(request));
+                String ip = AddressUtils.getIp(request);
+                tbLog.setIp(ip);
+                //先从缓存找这个ip找到就不用请求接口了，
+                String _address = redisTemplate.opsForValue().get(ip);
+                if (_address == null) {
+                    //IP地址
+                    String address = AddressUtils.GetAddress(request);
+                    tbLog.setIpinfo(address);
+                    log.info("无ip信息，调用接口获取地址");
+                    //设置ip在调用完之后设置ip，防止同一ip多次请求导致多次数调用接口,设置30天之后过期
+                    redisTemplate.opsForValue().set(ip, address, 30, TimeUnit.DAYS);
+                } else {
+                    tbLog.setIpinfo(_address);
+                    log.info("有ip信息");
+
+                }
+
+
                 //请求开始时间
                 Date logStartTime = beginTimeThreadLocal.get();
 
@@ -175,10 +198,23 @@ public class SystemLogAspect {
                 tbLog.setAddid(user.getId());
                 //请求用户
                 tbLog.setUser(username);
+
                 //请求IP
-                tbLog.setIp(AddressUtils.getIp(request));
-                //IP地址
-                tbLog.setIpinfo(AddressUtils.GetAddress(request));
+                String ip = AddressUtils.getIp(request);
+                tbLog.setIp(ip);
+                //先从缓存找这个ip找到就不用请求接口了，
+                String _address = redisTemplate.opsForValue().get(ip);
+                if (_address == null) {
+                    //IP地址
+                    String address = AddressUtils.GetAddress(request);
+                    tbLog.setIpinfo(address);
+
+                    //设置ip在调用完之后设置ip，防止同一ip多次请求导致多次数调用接口,设置30天之后过期
+                    redisTemplate.opsForValue().set(ip, address, 30, TimeUnit.DAYS);
+                } else {
+                    tbLog.setIpinfo(_address);
+                }
+
                 //请求开始时间
                 Date logStartTime = beginTimeThreadLocal.get();
 
