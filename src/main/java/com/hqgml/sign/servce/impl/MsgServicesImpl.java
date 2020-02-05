@@ -40,7 +40,6 @@ public class MsgServicesImpl implements MsgServices {
     @ServiceLog(describe = "通知会议人员")
     public void sendMsgAllMeeting(Integer metingId) {
         //TODO 参数长度有限制，咱不加url
-        String informationUrl = "不支持url";
 
         List<Persons> persons = personsMapper.selectAllByMid(metingId);
         if (persons.size()== 0) {
@@ -62,8 +61,8 @@ public class MsgServicesImpl implements MsgServices {
                 log.debug("{}用户没有手机号", person.getPersonName());
             } else {
                 String[] parms = {person.getPersonName(), meeting.getMeetingName(),
-                        subsTime, subeTime, meeting.getMeetingAddress(),
-                        informationUrl };
+                        subsTime, subeTime, meeting.getMeetingName(),
+                        meeting.getId().toString() };
                 SmsSingleSenderResult result = msgUtils.sendAllNotice(person.getPhone(), parms);
                 if (result.result == 0) {
                     log.info("给{}发送群体信息", person.getPersonName());

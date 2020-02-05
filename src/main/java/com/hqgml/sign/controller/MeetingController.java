@@ -117,14 +117,26 @@ public class MeetingController {
         return ResponseEntity.ok(new Common(message));
     }
 
+//    /**
+//     * 查询用户信息根据uuid(不限制次数应该使用这个id)
+//     * @param uuid
+//     * @return
+//     */
+//    @GetMapping("/information/{uuid}")
+//    public ResponseEntity<Common> selectMeetingByuuid(@PathVariable("uuid") String uuid) {
+//        Meeting meeting = meetingService.selectByuuid(uuid);
+//        return ResponseEntity.ok(new Common(meeting));
+//    }
+
+
     /**
-     * 查询用户信息
-     * @param uuid
+     * 查询会议信息根据id
+     * @param
      * @return
      */
-    @GetMapping("/information/{uuid}")
-    public ResponseEntity<Common> selectMeetingByuuid(@PathVariable("uuid") String uuid) {
-        Meeting meeting = meetingService.selectByuuid(uuid);
+    @GetMapping("/information/{id}")
+    public ResponseEntity<Common> selectMeetingByid(@PathVariable("id") Integer id) {
+        Meeting meeting = meetingService.selectById(id);
         return ResponseEntity.ok(new Common(meeting));
     }
 
