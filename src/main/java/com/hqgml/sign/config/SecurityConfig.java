@@ -114,7 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/verifyCode.jpg").permitAll()
+                .antMatchers("/verifyCode.jpg","/meeting/winformation/**").permitAll()
                 .antMatchers("/meeting/information/**","/findAddress").permitAll()
                 .antMatchers("/face/search").permitAll()
                 .antMatchers("/meeting").hasAnyRole("ADMIN","USER")

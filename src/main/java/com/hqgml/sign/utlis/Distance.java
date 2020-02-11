@@ -47,13 +47,16 @@ public class Distance {
      * @param args
      */
     public static void main(String[] args){
-//        double distance = getDistance(35.4614700000,119.5415800000,35.4609845500,119.5397687000);
-//        System.out.println(distance);
+        double distance = getDistance(118.363007,35.10964,118.35646,35.10465);
+        System.out.println(distance);
 
+//        String coordinate = AddressUtils.getCoordinate("日照职业技术", "",null);
+//        System.out.println(coordinate);
+//        35.10465
+//        118.35646
+//        Map<String, Long> transform = AddressUtils.Transform("");
+//        System.out.println(transform);
 //
-        String coordinate = AddressUtils.getCoordinate("日照职业技术", "",null);
-        System.out.println(coordinate);
-
     }
 
 }

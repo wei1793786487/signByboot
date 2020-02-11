@@ -2,6 +2,7 @@ package com.hqgml.sign.utlis;
 
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
@@ -29,8 +30,7 @@ import java.util.Map;
 @Slf4j
 public class AddressUtils {
 
-    static  final  String AK = "3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
-
+    static final String AK = "3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
 
 
     public static String GetAddress(HttpServletRequest request) {
@@ -107,8 +107,8 @@ public class AddressUtils {
      * @return
      */
 
-    public static String getCoordinate(String query, String region,HttpServletRequest request) {
-        String response ="";
+    public static String getCoordinate(String query, String region, HttpServletRequest request) {
+        String response = "";
 
         /**
          * 区域数据召回限制，为true时，仅召回region对应区域内数据。
@@ -117,11 +117,11 @@ public class AddressUtils {
         String output = "json";
         String url = "http://api.map.baidu.com/place/v2/suggestion";
 
-        if (StringUtils.equals(region,"")||region==null){
+        if (StringUtils.equals(region, "") || region == null) {
             try {
-                region= GetAddress(request);
+                region = GetAddress(request);
             } catch (Exception e) {
-                region="北京";
+                region = "北京";
             }
         }
 
@@ -133,38 +133,41 @@ public class AddressUtils {
         parm.put("ak", AK);
 
 
-
-
         try {
-         response= HttpUtil.get(url, parm);
+            response = HttpUtil.get(url, parm);
         } catch (Exception e) {
             log.error("地点检索出现问题");
-           throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
         }
         return response;
 
     }
 
-
-    private static Boolean polygonJudgment(String xys, Double lng, Double lat) {
-        String[] strings = xys.split(",");
-        Coordinate[] coordinates = new Coordinate[strings.length / 2];
+    //gps转换为百度坐标
+    public static Map<String,String> Transform(String gpslocation) {
+//        gpslocation为经度在前，纬度在后
+        String url = "http://api.map.baidu.com/geoconv/v1/";
+        Map parm = new HashMap();
+        parm.put("coords", gpslocation);
+        parm.put("from", "1");
+        parm.put("to", "5");
+        parm.put("ak", AK);
         try {
-            for (int i = 0; i < strings.length; i += 2) {
-                coordinates[i / 2] = new Coordinate(Double.parseDouble(strings[i]), Double.parseDouble(strings[i + 1]));
+            String response = HttpUtil.get(url, parm);
+            System.out.println(response);
+            JSONObject jsonObject = JSON.parseObject(response);
+            if (jsonObject.getInteger("status")==0){
+                Map result = (Map) jsonObject.getJSONArray("result").get(0);
+                return result;
+            }else {
+                log.error("地点检索出现问题");
+                throw new XxException(ExceptionEnums.ADDRESS_ERROR);
             }
-            GeometryFactory factory = new GeometryFactory();
-            if (coordinates.length > 3) {
-                LinearRing shell = factory.createLinearRing(coordinates);
-                Polygon polygon = factory.createPolygon(shell, null);
-                if (polygon.contains(factory.createPoint(new Coordinate(lng, lat)))) {
-                    return true;
-                }
-            }
-        } catch (Exception ignored) {
-            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("地点检索出现问题");
+            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
         }
-        return false;
     }
 
 

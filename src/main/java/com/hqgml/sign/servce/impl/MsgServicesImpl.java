@@ -39,7 +39,6 @@ public class MsgServicesImpl implements MsgServices {
     @Override
     @ServiceLog(describe = "通知会议人员")
     public void sendMsgAllMeeting(Integer metingId) {
-        //TODO 参数长度有限制，咱不加url
 
         List<Persons> persons = personsMapper.selectAllByMid(metingId);
         if (persons.size()== 0) {

@@ -49,6 +49,8 @@ public class FaceServicesImpl implements FaceService {
     @Override
     public Map<String, Object> face(String img, String mid) throws TencentCloudSDKException {
 
+
+
         Float score = 90f;
         Map<String, Object> information = new HashMap<>();
         SearchPersonsResponse search;
@@ -82,7 +84,7 @@ public class FaceServicesImpl implements FaceService {
 
                 MeetingPersion meetingPersion = meetingPersionMapper.selectOneByMidAndPid(Integer.parseInt(mid), persons.getId());
                 if (meetingPersion.getIscheck()==1){
-                    information.put("message", "您已经签到过滤");
+                    information.put("message", "您已经签到过了");
                 }else {
                     int isupdata = meetingPersionMapper.updateIscheckByMidAndPid(1, Integer.parseInt(mid), persons.getId());
                     if (isupdata == 1) {

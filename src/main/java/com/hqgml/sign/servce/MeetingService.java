@@ -48,6 +48,15 @@ public interface MeetingService {
      * @return
      */
     Integer slectCount();
+
+
+    /**
+     * 根据名字迷糊查询
+     * @return
+     * @param meetingname
+     */
+    List<Meeting> selectLikeMeetingName(String meetingname);
+
 }
 
 

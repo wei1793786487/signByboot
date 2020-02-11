@@ -1,7 +1,9 @@
 package com.hqgml.sign.mapper;
 
 import com.hqgml.sign.pojo.Meeting;
-import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.logging.log4j.spi.StandardLevel;
+import tk.mybatis.mapper.common.Mapper;import java.util.List;
 
 /**
  * @author Devil
@@ -21,4 +23,14 @@ public interface MeetingMapper extends Mapper<Meeting> {
     Meeting selectById(@Param("id") Integer id);
 
     Integer count();
+
+    /**
+     * 查询相似名字的
+     * @param likeMeetingName
+     * @return
+     */
+    List<Meeting> selectAllByMeetingNameLike(@Param("likeMeetingName")String likeMeetingName);
+
+
+
 }

@@ -140,5 +140,12 @@ public class MeetingController {
         return ResponseEntity.ok(new Common(meeting));
     }
 
+    @GetMapping("/winformation/{meetingname}")
+    public ResponseEntity<Common>selectMeetingInformation(@PathVariable("meetingname") String meetingname){
+     List<Meeting> meetings=  meetingService.selectLikeMeetingName(meetingname);
+        return ResponseEntity.ok(new Common(meetings));
+
+    }
+
 
 }

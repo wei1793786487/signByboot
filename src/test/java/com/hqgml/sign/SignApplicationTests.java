@@ -10,7 +10,9 @@ import com.hqgml.sign.controller.LogController;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.config.MsgProperties;
 import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.MsgServices;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.utlis.IdWorker;
@@ -23,23 +25,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 @SpringBootTest
 @EnableConfigurationProperties(MsgProperties.class)
 class SignApplicationTests {
 
 
-@Autowired
-private SysUserService sysUserService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    private MeetingService meetingService;
 
 
-@Autowired
- @Test
-    void findUser(){
-     LayUi<SysUser> userList = sysUserService.findUserList(1, 5, null);
-
-
-
- }
+    @Autowired
+    @Test
+    void findUser() {
+        List<Meeting> meetings = meetingService.selectLikeMeetingName("瑶瑶");
+        System.out.println(meetings);
+    }
 
 }

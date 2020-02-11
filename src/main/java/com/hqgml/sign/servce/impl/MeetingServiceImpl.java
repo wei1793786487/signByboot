@@ -197,6 +197,15 @@ public class MeetingServiceImpl implements MeetingService {
         return count;
     }
 
+    @Override
+    public List<Meeting> selectLikeMeetingName(String meetingname) {
+        List<Meeting> meetings = meetingMapper.selectAllByMeetingNameLike(meetingname);
+        if (meetings.size()==0){
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
+        }
+        return meetings;
+    }
+
 
 }
 
