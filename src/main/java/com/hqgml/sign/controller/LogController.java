@@ -43,7 +43,6 @@ public class LogController {
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
     ) {
         return userLogService.selectLog(serch, page, limit);
-
     }
 
     @DeleteMapping()

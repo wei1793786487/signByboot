@@ -65,7 +65,7 @@ public class FaceController {
         double distance = Distance.getDistance(lng, lat,lng2 ,lat2);
 
          if (distance>source){
-             return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米"));
+             return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,500米之内可签到"));
          }
 
         if (!StringUtils.equals(mid,"")&&!StringUtils.equals(imgStr,"")){

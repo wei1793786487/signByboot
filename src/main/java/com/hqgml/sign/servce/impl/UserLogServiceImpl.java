@@ -58,8 +58,8 @@ public class UserLogServiceImpl implements UserLogService {
 
     @Override
     public LayUi selectLog( String serch, Integer page, Integer limit) {
-        PageHelper.startPage(page, limit);
         SysUser user =SysUserService.findUserByUserName(null);
+        PageHelper.startPage(page, limit);
         List<UserLog> userLogs = userLogMapper.selectByAddId(user.getId(), serch);
         if (userLogs == null || userLogs.size() == 0) {
             log.error("日志未找到");
