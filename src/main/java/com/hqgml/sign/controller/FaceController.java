@@ -10,6 +10,9 @@ import com.hqgml.sign.utlis.exception.ExceptionResult;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,19 +35,26 @@ import java.util.Map;
 public class FaceController {
 
 
-    @Autowired
+    @Resource
     private FaceService faceService;
 
-    @Autowired
+    @Resource
     private MeetingService meetingService;
     /**
      * 人脸搜索
-     * @param mid
-     * @param imgStr
-     * @return
-     * @throws TencentCloudSDKException
+     * @param mid 会议的id
+     * @param imgStr  人脸的base64编码
+     *
      */
     @PostMapping("search")
+    @ApiOperation(value = "查询签到情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要签到的会议的id"),
+            @ApiImplicitParam(name = "imgStr",value = "人脸的base64编码"),
+            @ApiImplicitParam(name = "lat",value = "签到的纬度,请传入gps的纬度"),
+            @ApiImplicitParam(name = "long",value = "签到的经度,请传入gps的纬度")
+
+    })
     public ResponseEntity<Common> face(
             @RequestParam("mid") String mid,
             @RequestParam("imgStr") String imgStr,
@@ -52,7 +62,7 @@ public class FaceController {
             @RequestParam("long") String longitude
     ) throws TencentCloudSDKException {
         //看看是不是超过了500米
-        Double source= 500d;
+        double source= 500d;
 
         Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
         //获取格式转换的所需要的坐标
