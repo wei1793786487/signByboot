@@ -7,6 +7,7 @@ import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.impl.UserLogServiceImpl;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -22,6 +23,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("log")
+@Api(tags = "日志管理接口")
+
 public class LogController {
     @Autowired
     private UserLogServiceImpl userLogService;

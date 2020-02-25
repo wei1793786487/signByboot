@@ -9,6 +9,7 @@ import com.hqgml.sign.utlis.Distance;
 import com.hqgml.sign.utlis.exception.ExceptionResult;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,8 @@ import java.util.Map;
  */
 @RequestMapping("face")
 @RestController
+@Api(tags = "人员识别接口")
+
 public class FaceController {
 
 

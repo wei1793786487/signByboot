@@ -13,6 +13,7 @@ import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,8 @@ import java.util.Collection;
 @RestController()
 @RequestMapping("user")
 @Slf4j
+@Api(tags = "用户管理接口")
+
 public class UserController {
 
     @Autowired

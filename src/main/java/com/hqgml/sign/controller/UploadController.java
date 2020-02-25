@@ -4,6 +4,7 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.UploadService;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("upload")
+@Api(tags = "上传相关接口")
+
 public class UploadController {
 
 

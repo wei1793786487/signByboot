@@ -6,6 +6,7 @@ import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("person")
+@Api(tags = "人员管理接口")
+
 public class PersonController {
 
     @Autowired

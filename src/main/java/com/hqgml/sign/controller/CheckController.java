@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("check")
-@Api("人员签到管理接口")
+@Api(tags = "人员签到管理接口")
 public class CheckController {
 
     @Resource
@@ -36,8 +36,15 @@ public class CheckController {
      */
     @GetMapping("{mid}")
     @ControllerLog(describe = "查询签到情况")
-    @ApiOperation(value = "查询签到情况",notes = "查询签到情况")
-    @ApiImplicitParam(name = "mid",required = true,value = "要查询的会议的id")
+    @ApiOperation(value = "查询签到情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要查询的会议的id"),
+            @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer"),
+            @ApiImplicitParam(name = "personName",value = "人员的名字，用来查询某个单独的人员签到状态"),
+            @ApiImplicitParam(name = "isCheck",value = "要查询的签到状态,0为未签到,1为签到",type = "Integer")
+
+    })
     public ResponseEntity<LayUi> selectSignPerson(
             @PathVariable("mid") Integer mid,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
@@ -52,13 +59,19 @@ public class CheckController {
     /**
      * 更改签到状态
      *
-     * @param mid
-     * @param check
-     * @param ids
-     * @return
+     * @param mid 会议id
+     * @param check 要修改的签到状态,0为未签到,1为签到
+     * @param ids 要修改的id
+     * @return 返回200表示成功
      */
+    @ApiOperation(value = "修改签到状态")
     @PutMapping("{isCheck}/{mid}")
     @ControllerLog(describe = "修改签到状态")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要查询的会议的id"),
+            @ApiImplicitParam(name = "isCheck",value = "要修改的签到状态,0为未签到,1为签到",type = "Integer"),
+            @ApiImplicitParam(name = "ids",value = "要修改的id,数组类型，如[1,2,3]",type = "Integer[]"),
+    })
     public ResponseEntity<Common> chanceCheck(@PathVariable("mid") Integer mid, @PathVariable("isCheck") Integer check, @RequestParam("ids[]") Integer[] ids) {
         checkServices.updateCheck(mid, check, ids);
         return ResponseEntity.ok(new Common("修改完成"));
@@ -66,12 +79,17 @@ public class CheckController {
 
     /**
      * 删除
-     * @param pid
-     * @param mid
-     * @return
+     * @param pid  要删除的人员id
+     * @param mid  要删除的会议id
+     *
      */
     @DeleteMapping
     @ControllerLog(describe = "删除会议人员")
+    @ApiOperation(value = "删除会议人员")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pid",value = "要删除的人员的id"),
+            @ApiImplicitParam(name = "mid",value = "要删除的会议的id")
+    })
     public ResponseEntity<Common> deleteCheckPserson(@RequestParam("pid") Integer pid, @RequestParam("mid") Integer mid) {
         checkServices.deletePerson(mid, pid);
         return ResponseEntity.ok(new Common("删除成功"));
@@ -79,11 +97,14 @@ public class CheckController {
 
     /**
      * 查看签到与未签到的人数
-     * @param mid
-     * @return
+     * @param mid 要查询的会议的id
      */
     @GetMapping
     @ControllerLog(describe = "查询签到比例")
+    @ApiOperation(value = "查看签到与未签到的数量")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要查询的会议的id")
+    })
     public ResponseEntity<Common> findCheckNumber(@RequestParam("mid") Integer mid){
         Integer checkNumber=checkServices.countCheck(1,mid);
         Integer uncheckNumber=checkServices.countCheck(0,mid);

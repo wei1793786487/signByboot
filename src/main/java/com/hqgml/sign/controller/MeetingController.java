@@ -6,6 +6,7 @@ import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
+import io.swagger.annotations.Api;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,8 @@ import java.util.List;
  */
 @RestController()
 @RequestMapping("meeting")
+@Api(tags = "会议管理接口")
+
 public class MeetingController {
     @Resource
     private MeetingService meetingService;
