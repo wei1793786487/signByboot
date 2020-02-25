@@ -4,6 +4,10 @@ import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
 import com.hqgml.sign.servce.CheckServices;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,22 +21,23 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("check")
+@Api("人员签到管理接口")
 public class CheckController {
 
     @Resource
     private CheckServices checkServices;
 
 
-
-
     /**
      * 查询签到情况
      *
-     * @param mid
-     * @return
+     * @param mid 会议的id
+     * @return 返回签到人员的列表
      */
     @GetMapping("{mid}")
     @ControllerLog(describe = "查询签到情况")
+    @ApiOperation(value = "查询签到情况",notes = "查询签到情况")
+    @ApiImplicitParam(name = "mid",required = true,value = "要查询的会议的id")
     public ResponseEntity<LayUi> selectSignPerson(
             @PathVariable("mid") Integer mid,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,

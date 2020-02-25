@@ -13,6 +13,8 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/meeting2?&serverTimezone=GMT%2b8
     password: root
     username: root
+  thymeleaf:
+      check-template-location: false
 
 
   redis:

@@ -47,7 +47,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
           log.info("用户选择了记住我");
             Cookie cookie = new Cookie("remember", "true");
             cookie.setPath("/");
-            cookie.setDomain("wukaka.com");
+            cookie.setDomain("hqgml.com");
             cookie.setMaxAge(60*60*24*7);
             response.addCookie(cookie);
         }

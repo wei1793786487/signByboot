@@ -6,9 +6,10 @@ import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
 
+
+
 @Configuration
 @Import(FdfsClientConfig.class)
-
 @EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class FastClientImporter {
     

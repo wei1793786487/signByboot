@@ -25,6 +25,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
+
+
     /**
      * 成功的处理
      */
@@ -117,6 +119,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/verifyCode.jpg","/meeting/winformation/**").permitAll()
                 .antMatchers("/meeting/information/**","/findAddress").permitAll()
                 .antMatchers("/face/search").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("/configuration/security").permitAll()
                 .antMatchers("/meeting").hasAnyRole("ADMIN","USER")
                 .antMatchers("/**").authenticated()
                 .and()
