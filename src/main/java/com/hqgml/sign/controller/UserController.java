@@ -14,6 +14,9 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +47,7 @@ import java.util.Collection;
 
 public class UserController {
 
-    @Autowired
+    @Resource
     private SysUserService sysUserService;
 
     @Resource
@@ -52,16 +55,17 @@ public class UserController {
 
 
     @Resource
-
     private PersonsService personsService;
 
     /**
      * 获取用户上次的参数
-     * @param username
-     * @param request
-     * @return
+     * @param username  用户名
+     * @param request request队形
+     *
      */
     @GetMapping("{username}")
+    @ApiOperation(value = "获取用户上次登录信息")
+    @ApiImplicitParam(name = "username",value = "要获取的用户名")
     public ResponseEntity<Common> getUserByUsername(@PathVariable("username") String username, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String lasttime = (String) session.getAttribute("lasttime");
@@ -85,14 +89,19 @@ public class UserController {
 
     /**
      * 修改密码
-     * @param oldPassword
-     * @param newPassword
-     * @param request
-     * @param response
-     * @return
+     * @param oldPassword 老密码
+     * @param newPassword 新密码
+     * @param request  ？？
+     * @param response ？？
+     *
      */
     @PutMapping("password")
     @ControllerLog(describe = "修改密码")
+    @ApiOperation(value = "修改密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "old_password",value = "旧密码"),
+            @ApiImplicitParam(name = "new_password",value = "新密码"),
+    })
     public ResponseEntity<Common> updatePassword(
             @RequestParam("old_password") String oldPassword,
             @RequestParam("new_password") String newPassword,
@@ -110,14 +119,15 @@ public class UserController {
 
     /**
      * 更新用户信息
-     * @param sysUser
-     * @return
+     * @param sysUser  用户对象
+     *
      */
     @PutMapping()
     @ControllerLog(describe = "更新用户信息")
+    @ApiOperation(value = "跟新用户信息")
     public ResponseEntity<Common> updateUser(SysUser sysUser) {
          boolean isSuper=false;
-         //todo 超管可以设置自己的账号不可用，这样就全部都不可用了，哈哈哈哈
+         //todo 超管可以设置自己的账号不可用，这样就全部都不可用了，哈哈哈哈，系统崩溃bug
         //判断更新用户是不是当前存在的用户，防止恶意请求
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<GrantedAuthority> authorities = userDetails.getAuthorities();
@@ -139,11 +149,13 @@ public class UserController {
 
     /**
      * 查看用户是不是存在
-     * @param username
-     * @return
+     * @param username  用户名
+     *
      */
     @GetMapping("isHave")
     @ControllerLog(describe = "查看用户是否存在")
+    @ApiOperation(value = "查看用户名是不是已经存在")
+    @ApiImplicitParam(name = "username",value = "要查询的用户名")
     public ResponseEntity<Common> updateUser(@RequestParam("username") String username) {
         try {
             sysUserService.findUserByUserName(username);
@@ -163,13 +175,13 @@ public class UserController {
 
     /**
      * 新建用户
-     * @param sysUser
-     * @return
-     * @throws TencentCloudSDKException
+     * @param sysUser 用户对象
      */
     @Secured("ROLE_ADMIN")
     @PostMapping
     @ControllerLog(describe = "新建用户")
+
+    @ApiOperation(value = "新建用户，仅admin有访问的权限")
     public ResponseEntity<Common> insertUser(@Valid SysUser sysUser) throws TencentCloudSDKException {
         sysUserService.insertUser(sysUser);
         Common common = new Common("新建成功");
@@ -180,14 +192,20 @@ public class UserController {
 
     /**
      * 查找所有用户
-     * @param page
-     * @param limit
-     * @param search
-     * @return
+     * @param page  页面
+     * @param limit 多少行
+     * @param search 搜索
+     *
      */
     @Secured("ROLE_ADMIN")
     @GetMapping()
     @ControllerLog(describe = "查看所有用户")
+    @ApiOperation(value = "查找所有的用户，仅admin有访问权限")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer"),
+            @ApiImplicitParam(name = "search",value = "要查询的用户"),
+    })
     public LayUi<SysUser> selectAll(Integer page, Integer limit, String search) {
       return sysUserService.findUserList(page,limit,search);
     }

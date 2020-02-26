@@ -5,6 +5,8 @@ import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.UploadService;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,19 +35,19 @@ public class UploadController {
 
 
 
-    @Autowired
+    @Resource
     private UploadService uploadService;
 
 
     /**
      * 批量上传人员
-     * @param files
-     * @return
-     * @throws Exception
+     *
+
      */
     @PostMapping("person")
     @ControllerLog(describe = "批量上传人员")
-
+    @ApiOperation(value = "上传人员")
+    @ApiImplicitParam(name = "file",value = "要上传的人脸",required = true,allowableValues = "jpg, png, jpeg")
     public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
         uploadService.uploadPersion(files);
         Common common =new Common("上传成功");
@@ -55,29 +57,24 @@ public class UploadController {
 
     /**
      * 将人员添加进会议
-     * @param file
-     * @return
-     * @throws Exception
      */
     @PostMapping("personMeeting")
     @ControllerLog(describe = "批量添加人员到会议")
-
-    public ResponseEntity<Common> uploadPersionMeeting(@RequestParam(value = "file") MultipartFile file ) throws Exception {
+    @ApiOperation(value = "将人员添加进会议")
+    @ApiImplicitParam(name = "file",value = "要上传的文件",required = true,allowableValues = "xls, xlsx")
+    public ResponseEntity<Common> uploadPersionMeeting(@RequestParam(value = "file") MultipartFile file )  {
         List<String> message = uploadService.uploadPersionMeeting(file);
         return ResponseEntity.ok(new Common(message));
-
     }
 
     /**
      * 批量添加手机号
-     * @param file
-     * @return
-     * @throws Exception
      */
     @PostMapping("Phone")
     @ControllerLog(describe = "批量为人员添加手机号")
-
-    public ResponseEntity<Common> uploadPhone(@RequestParam(value = "file") MultipartFile file ) throws Exception {
+    @ApiOperation(value = "批量添加手机号")
+    @ApiImplicitParam(name = "file",value = "要上传的文件",required = true,allowableValues = "xls, xlsx")
+    public ResponseEntity<Common> uploadPhone(@RequestParam(value = "file") MultipartFile file )  {
         List<String> message = uploadService.uploadPhone(file);
         return ResponseEntity.ok(new Common(message));
 

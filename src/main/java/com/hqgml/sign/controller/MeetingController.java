@@ -81,7 +81,6 @@ public class MeetingController {
     @PutMapping
     @ControllerLog(describe = "修改会议")
     @ApiOperation(value = "修改会议")
-
     public ResponseEntity<Common> update(@Valid Meeting meeting) {
         meetingService.updateMeeting(meeting);
         Common common = new Common("修改成功");
@@ -98,7 +97,7 @@ public class MeetingController {
     @ControllerLog(describe = "删除所选会议")
     @ApiOperation(value = "删除会议")
 
-    @ApiImplicitParam(name = "ids[]",value = "要删除的会议的id的数组")
+    @ApiImplicitParam(name = "ids[]",value = "要删除的会议的id的数组",required = true)
 
     public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
         meetingService.deleteMeeting(ids);
@@ -117,8 +116,8 @@ public class MeetingController {
     @ControllerLog(describe = "添加人员进入会议")
     @ApiOperation(value = "添加人员进入会议")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "mid",value = "要添加的会议的id"),
-            @ApiImplicitParam(name = "pids",value = "要添加的人员id 数组类型"),
+            @ApiImplicitParam(name = "mid",value = "要添加的会议的id",required = true),
+            @ApiImplicitParam(name = "pids",value = "要添加的人员id 数组类型",required = true),
     })
     @ApiImplicitParam(name = "mid",value = "要删除的会议的id的数组")
 
@@ -136,7 +135,7 @@ public class MeetingController {
     @PostMapping("addAll")
     @ControllerLog(describe = "添加该用户下所有人员进入会议")
     @ApiOperation(value = "将登录用户所属的所有的人员添加到该会议")
-    @ApiImplicitParam(name = "mid",value = "要添加的会议的id")
+    @ApiImplicitParam(name = "mid",value = "要添加的会议的id",required = true)
 
     public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid) {
         List<String> message = meetingService.addMeetingAllPeople(mid);
@@ -160,8 +159,8 @@ public class MeetingController {
      * @param id 会议的id
      *
      */
-    @ApiOperation(value = "根据用户的id查询单个会议信息")
-    @ApiImplicitParam(name = "mid",value = "要搜索的会议的id")
+    @ApiOperation(value = "根据用户的id查询单个会议信息，这个接口不需要登录")
+    @ApiImplicitParam(name = "mid",value = "要搜索的会议的id",required = true)
     @GetMapping("/information/{id}")
     public ResponseEntity<Common> selectMeetingByid(@PathVariable("id") Integer id) {
         Meeting meeting = meetingService.selectById(id);
@@ -174,7 +173,7 @@ public class MeetingController {
      */
     @GetMapping("/winformation/{meetingname}")
     @ApiOperation(value = "根据会议的名字模糊查询")
-    @ApiImplicitParam(name = "mid",value = "要搜索的会议的会议名称")
+    @ApiImplicitParam(name = "mid",value = "要搜索的会议的会议名称，这个接口不需要登录",required = true)
     public ResponseEntity<Common>selectMeetingInformation(@PathVariable("meetingname") String meetingname){
      List<Meeting> meetings=  meetingService.selectLikeMeetingName(meetingname);
         return ResponseEntity.ok(new Common(meetings));

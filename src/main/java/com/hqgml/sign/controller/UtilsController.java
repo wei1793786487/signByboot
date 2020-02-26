@@ -14,6 +14,9 @@ import com.hqgml.sign.utlis.exception.XxException;
 import com.hqgml.sign.utlis.getverUtils;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import sun.security.provider.MD2;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,23 +48,24 @@ import java.util.concurrent.TimeUnit;
 
 public class UtilsController {
 
-    @Autowired
+    @Resource
     private StringRedisTemplate redisTemplate;
 
-    @Autowired
+    @Resource
     private MenuService menuService;
 
-    @Autowired
+    @Resource
     private SysUserService userService;
 
-    @Autowired
+    @Resource
     private IdWorker idWorker;
 
-    @Autowired
-
+    @Resource
     private MsgServices msgServices;
 
     @RequestMapping("verifyCode.jpg")
+    @ApiOperation(value = "获取验证码")
+
     public void verifyCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String cookie = CookieUtils.getCookieValue(request, "getverid");
         /*禁止缓存*/
@@ -89,10 +94,11 @@ public class UtilsController {
     /**
      * 菜单
      *
-     * @return
      */
     @GetMapping("menu")
     @ResponseBody
+    @ApiOperation(value = "获取菜单信息")
+
     public ResponseEntity<Common> loadMeau() {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser user = userService.findUserByUserName(userDetails.getUsername());
@@ -110,10 +116,11 @@ public class UtilsController {
     /**
      * 看看是不是活着
      *
-     * @return
      */
     @GetMapping("isLife")
     @ResponseBody
+    @ApiOperation(value = "判断是否cookie过期")
+
     public ResponseEntity<Void> isLife() {
         return ResponseEntity.ok().build();
     }
@@ -125,6 +132,9 @@ public class UtilsController {
      * @return
      */
     @GetMapping("sendMassage")
+    @ApiOperation(value = "群发通知人员签到")
+    @ApiImplicitParam(name = "mid",value = "要群发的会议id")
+
     @ResponseBody
     public ResponseEntity<Common> sendMassage(@RequestParam("mid") Integer mid) {
         msgServices.sendMsgAllMeeting(mid);
@@ -135,9 +145,13 @@ public class UtilsController {
     /**
      * 单发通知消息
      *
-     * @return
      */
     @GetMapping("sendOneMassage")
+    @ApiOperation(value = "单发通知人员签到")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要单发的会议id"),
+            @ApiImplicitParam(name = "pid",value = "要单发的人员id"),
+    })
     @ResponseBody
     public ResponseEntity<Common> sendOneMassage(@RequestParam("mid") Integer mid, @RequestParam("pid") Integer pid) {
         msgServices.sendMsgOneMeeting(mid, pid);
@@ -146,6 +160,8 @@ public class UtilsController {
 
     @GetMapping("findAddress")
     @ResponseBody
+    @ApiOperation(value = "模糊插叙地点")
+    @ApiImplicitParam(name = "keyword",value = "要查询的关键字")
     public ResponseEntity<LayUi> findAddress(@RequestParam("keyword") String keyword) {
 
         LayUi layUi = new LayUi();
