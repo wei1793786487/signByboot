@@ -2,20 +2,17 @@ package com.hqgml.sign.controller;
 
 import com.hqgml.sign.pojo.Common;
 import com.hqgml.sign.pojo.LayUi;
-import com.hqgml.sign.pojo.SysUser;
-import com.hqgml.sign.pojo.UserLog;
-import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.impl.UserLogServiceImpl;
 import com.hqgml.sign.utlis.annotation.ControllerLog;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * @author Devil
@@ -24,22 +21,24 @@ import java.util.List;
 @RestController
 @RequestMapping("log")
 @Api(tags = "日志管理接口")
-
 public class LogController {
-    @Autowired
+    @Resource
     private UserLogServiceImpl userLogService;
-
-    @Autowired
-    private SysUserService userService;
 
 
     /**
      * 查询日志
-     * @param serch
-     * @param page
-     * @param limit
+     * @param serch 搜索内容
+     * @param page 当前页面
+     * @param limit 每页的大小
      */
     @GetMapping()
+    @ApiOperation(value = "查询日志")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "serch",value = "支持名称,类型，请求url，请求参数，请求类型，ip地址，ip地址，创建时间"),
+            @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer")
+    })
     public LayUi selectByAddId(
             @RequestParam(name = "serch", required = false) String serch,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
@@ -48,8 +47,11 @@ public class LogController {
         return userLogService.selectLog(serch, page, limit);
     }
 
+
     @DeleteMapping()
     @ControllerLog(describe = "删除所选日志")
+    @ApiOperation(value = "删除日志信息")
+    @ApiImplicitParam(name = "ids[]",value = "要删除的日志的数组")
     public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
         userLogService.deleteLog(ids);
         Common common = new Common("删除成功");
@@ -59,14 +61,19 @@ public class LogController {
 
     /**
      * 超管查询日志
-     * @param serch
-     * @param page
-     * @param limit
+     * @param serch 搜索内容
+     * @param page 当前页面
+     * @param limit 每页的大小
      */
     @GetMapping("all")
     @Secured("ROLE_ADMIN")
     @ControllerLog(describe = "超管查询日志")
-
+    @ApiOperation(value = "查询所有的日志，用户必须有admin角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "serch",value = "支持名称,类型，请求url，请求参数，请求类型，ip地址，ip地址，创建时间"),
+            @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer")
+    })
     public LayUi selectByAll(
             @RequestParam(name = "serch", required = false) String serch,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
