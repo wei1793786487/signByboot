@@ -35,7 +35,7 @@ public class UploadController {
 
 
 
-    @Resource
+    @Autowired
     private UploadService uploadService;
 
 

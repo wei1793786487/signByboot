@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 @Api(tags = "人员管理接口")
 public class PersonController {
 
-    @Resource
+    @Autowired
     private PersonsService personsService;
 
     /**

@@ -47,14 +47,14 @@ import java.util.Collection;
 
 public class UserController {
 
-    @Resource
+    @Autowired
     private SysUserService sysUserService;
 
-    @Resource
+    @Autowired
     private MeetingService meetingService;
 
+    @Autowired
 
-    @Resource
     private PersonsService personsService;
 
     /**

@@ -35,10 +35,10 @@ import java.util.Map;
 public class FaceController {
 
 
-    @Resource
+    @Autowired
     private FaceService faceService;
 
-    @Resource
+    @Autowired
     private MeetingService meetingService;
     /**
      * 人脸搜索

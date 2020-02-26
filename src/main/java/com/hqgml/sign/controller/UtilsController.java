@@ -48,19 +48,19 @@ import java.util.concurrent.TimeUnit;
 
 public class UtilsController {
 
-    @Resource
+    @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Resource
+    @Autowired
     private MenuService menuService;
 
-    @Resource
+    @Autowired
     private SysUserService userService;
 
-    @Resource
+    @Autowired
     private IdWorker idWorker;
 
-    @Resource
+    @Autowired
     private MsgServices msgServices;
 
     @RequestMapping("verifyCode.jpg")

@@ -149,7 +149,7 @@ public final class CookieUtils {
 				/**
 				 * 域名写死，正式的是使用下面的方法获取
 				 */
-				cookie.setDomain("hqgml.com");
+				cookie.setDomain("wukaka.com");
 			}
 			cookie.setPath("/");
 			response.addCookie(cookie);
@@ -179,7 +179,7 @@ public final class CookieUtils {
 				/**
 				 * 域名写死
 				 */
-				cookie.setDomain("hqgml.com");
+				cookie.setDomain("wukaka.com");
 			}
 			cookie.setPath("/");
 			response.addCookie(cookie);
