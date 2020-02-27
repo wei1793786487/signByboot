@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public interface MenuService {
 
     /**
-     * 根据用户名加载菜单
+     * 根据用户角色查找菜单
      * @param username
      * @return
      */
-     Menu findByUsername(String username);
+     Menu findMenuByRolename(String username);
 
 
 }

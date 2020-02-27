@@ -96,11 +96,11 @@ public class SysUserServiceImpl implements SysUserService {
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             username = userDetails.getUsername();
         }
-        SysUser User = sysUserMapper.findOneByUsername(username);
-        if (User == null) {
+        SysUser user = sysUserMapper.findOneByUsername(username);
+        if (user == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
-        return User;
+        return user;
     }
 
     /**

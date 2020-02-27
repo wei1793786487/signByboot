@@ -98,14 +98,13 @@ public class UtilsController {
     @GetMapping("menu")
     @ResponseBody
     @ApiOperation(value = "获取菜单信息")
-
     public ResponseEntity<Common> loadMeau() {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser user = userService.findUserByUserName(userDetails.getUsername());
         if (user == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
-        Menu menu = menuService.findByUsername(user.getRole());
+        Menu menu = menuService.findMenuByRolename(user.getRole());
         if (menu == null) {
             throw new XxException(ExceptionEnums.MENU_NOT_FIND);
         }
