@@ -26,7 +26,7 @@
 | hikari            | 数据库连接池                 | http://www.m-hikari.com/                             |
 | Lombok            | 简化对象封装工具             | https://github.com/rzwitserloot/lombok               |
 | 腾讯云            | 腾讯云人脸识别以及腾讯云短信  | https://console.cloud.tencent.com                    |
-| 百度地图开放平台  | 坐标转换                     | http://lbsyun.baidu.com/fast                         |
+| 百度地图开放平台  | 坐标转换                     | http://lbsyun.baidu.com/                         |
 | fastDFS           | 轻量级分布式文件系统         | https://github.com/happyfish100/fastdfs              |
 
 
