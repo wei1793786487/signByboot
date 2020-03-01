@@ -27,7 +27,7 @@ public class Common {
         this.data = data;
         this.timestamp = System.currentTimeMillis();
     }
-    public Common(Integer code, T data) {
+    public Common(Integer code, Object data) {
         this.code = code;
         this.data = data;
         this.timestamp = System.currentTimeMillis();
