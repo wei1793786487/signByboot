@@ -14,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -66,6 +67,7 @@ public class CustomizeValidateCodeFilter extends OncePerRequestFilter {
 
     private void validate(ServletWebRequest request) throws ValidateCodeException {
         String getver = null;
+        Map<String, String[]> parameterMap = request.getParameterMap();
         String captcha = request.getParameter("captcha");
         if (cookie != null) {
             getver = redisTemplate.opsForValue().get(cookie);

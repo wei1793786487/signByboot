@@ -189,6 +189,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public void insertUser(SysUser sysUser) throws TencentCloudSDKException {
         sysUser.setPassword(passwordEncode.encode(sysUser.getPassword()));
+        SysUser userByUserName = sysUserMapper.findOneByUsername(sysUser.getUsername());
+        if (userByUserName!=null){
+            throw new XxException(ExceptionEnums.USER_ISHAVE);
+        }
         int insert = sysUserMapper.insertSelective(sysUser);
         //新建用户组
         tenlentService.createGroup(sysUser.getId().toString(),sysUser.getId().toString());

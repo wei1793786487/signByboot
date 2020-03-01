@@ -2,6 +2,7 @@ package com.hqgml.sign.pojo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.poi.ss.formula.functions.T;
 
 /**
  * @author Devil
@@ -26,7 +27,7 @@ public class Common {
         this.data = data;
         this.timestamp = System.currentTimeMillis();
     }
-    public Common(Integer code,Object data) {
+    public Common(Integer code, T data) {
         this.code = code;
         this.data = data;
         this.timestamp = System.currentTimeMillis();

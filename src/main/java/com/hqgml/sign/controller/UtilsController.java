@@ -34,6 +34,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -120,8 +121,10 @@ public class UtilsController {
     @ResponseBody
     @ApiOperation(value = "判断是否cookie过期")
 
-    public ResponseEntity<Void> isLife() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map> isLife() {
+        Map<String,Boolean> isLife=new HashMap<>();
+        isLife.put("islife",true);
+        return ResponseEntity.ok(isLife);
     }
 
 
