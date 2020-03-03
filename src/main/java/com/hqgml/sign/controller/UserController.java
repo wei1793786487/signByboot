@@ -110,9 +110,10 @@ public class UserController {
         User userDetails = (User) auth.getPrincipal();
         sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
         //清除用户信息
+        new SecurityContextLogoutHandler().logout(request, response, auth);
+
         CookieUtils.deleteCookie(request,response,"username");
         CookieUtils.deleteCookie(request,response,"remember");
-        new SecurityContextLogoutHandler().logout(request, response, auth);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }

@@ -82,7 +82,7 @@ public class MeetingController {
     @PutMapping
     @ControllerLog(describe = "修改会议")
     @ApiOperation(value = "修改会议")
-    public ResponseEntity<Common> update(@Valid Meeting meeting) {
+    public ResponseEntity<Common> update(Meeting meeting) {
         meetingService.updateMeeting(meeting);
         Common common = new Common("修改成功");
         return ResponseEntity.ok(common);
