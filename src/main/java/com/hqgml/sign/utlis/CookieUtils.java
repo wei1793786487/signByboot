@@ -18,6 +18,7 @@ import java.net.URLEncoder;
 public final class CookieUtils {
 
 	protected static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
+	private static final String DOMAIN = "wukaka.com";
 
 	/**
 	 * 得到Cookie的值, 不编码
@@ -145,12 +146,7 @@ public final class CookieUtils {
 			if (cookieMaxage > 0){
 
 			}
-			if (null != request){
-				/**
-				 * 域名写死，正式的是使用下面的方法获取
-				 */
-				cookie.setDomain("wukaka.com");
-			}
+			setcookie(request, cookie);
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
@@ -175,16 +171,23 @@ public final class CookieUtils {
 			if (cookieMaxage > 0){
 				cookie.setMaxAge(cookieMaxage);
 			}
-			if (null != request){
-				/**
-				 * 域名写死
-				 */
-				cookie.setDomain("wukaka.com");
-			}
+			setcookie(request, cookie);
 			cookie.setPath("/");
 			response.addCookie(cookie);
 		} catch (Exception e) {
 			logger.error("Cookie Encode Error.", e);
+		}
+	}
+
+	private static void setcookie(HttpServletRequest request, Cookie cookie) {
+		if (null != request){
+			String url = request.getRequestURL().toString();
+			if ("127.0.0.1".equals(url)||"localhost".equals(url)){
+				cookie.setDomain(DOMAIN);
+			}else {
+				String domainName = getDomainName(request);
+				cookie.setDomain(domainName);
+			}
 		}
 	}
 
