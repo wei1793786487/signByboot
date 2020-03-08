@@ -21,12 +21,11 @@ import java.net.URLEncoder;
 public final class CookieUtils {
 
 	protected static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
-	private static  String domain = "111";
+	private static  String domain = "";
 
     @Value("${server.servlet.session.cookie.domain}")
     public void setDomain(String domain) {
         CookieUtils.domain = domain;
-        System.out.println(domain);
     }
 
 
