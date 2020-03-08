@@ -2,6 +2,8 @@ package com.hqgml.sign.utlis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +17,20 @@ import java.net.URLEncoder;
  * Cookie 工具类
  *
  */
+@Component
 public final class CookieUtils {
 
 	protected static final Logger logger = LoggerFactory.getLogger(CookieUtils.class);
-	private static final String DOMAIN = "wukaka.com";
+	private static  String domain = "111";
 
-	/**
+    @Value("${server.servlet.session.cookie.domain}")
+    public void setDomain(String domain) {
+        CookieUtils.domain = domain;
+        System.out.println(domain);
+    }
+
+
+    /**
 	 * 得到Cookie的值, 不编码
 	 * 
 	 * @param request
@@ -183,7 +193,7 @@ public final class CookieUtils {
 		if (null != request){
 			String url = request.getRequestURL().toString();
 			if (url.contains("127.0.0.1")||url.contains("localhost")){
-				cookie.setDomain(DOMAIN);
+				cookie.setDomain(domain);
 			}else {
 				String domainName = getDomainName(request);
 				cookie.setDomain(domainName);
