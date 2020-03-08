@@ -182,7 +182,7 @@ public final class CookieUtils {
 	private static void setcookie(HttpServletRequest request, Cookie cookie) {
 		if (null != request){
 			String url = request.getRequestURL().toString();
-			if ("127.0.0.1".equals(url)||"localhost".equals(url)){
+			if (url.contains("127.0.0.1")||url.contains("localhost")){
 				cookie.setDomain(DOMAIN);
 			}else {
 				String domainName = getDomainName(request);

@@ -10,6 +10,7 @@ import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,7 +92,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser findUserByUserName(String username) {
 
-        if (username == null) {
+        if (StringUtils.isBlank(username)) {
             //如果用户没有传 自动读取security容器里面的用户名
             User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             username = userDetails.getUsername();
