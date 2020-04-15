@@ -1,10 +1,6 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.utlis.annotation.ServiceLog;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Priority;
-import javax.annotation.Resource;
 
 /**
  * @author Devil

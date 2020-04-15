@@ -1,13 +1,11 @@
 package com.hqgml.sign.controller;
 
-import com.hqgml.sign.pojo.Common;
+import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.FaceService;
 import com.hqgml.sign.servce.MeetingService;
-import com.hqgml.sign.utlis.AddressUtils;
-import com.hqgml.sign.utlis.Distance;
-import com.hqgml.sign.utlis.exception.ExceptionResult;
-import com.hqgml.sign.utlis.exception.XxException;
+import com.hqgml.sign.others.utlis.AddressUtils;
+import com.hqgml.sign.others.utlis.Distance;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,11 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.NativeWebRequest;
-import sun.security.provider.MD2;
 
-import javax.annotation.Resource;
-import javax.persistence.Id;
 import java.util.Map;
 
 /**

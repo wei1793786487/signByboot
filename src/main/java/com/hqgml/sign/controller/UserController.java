@@ -1,14 +1,15 @@
 package com.hqgml.sign.controller;
 
-import cn.hutool.http.HttpUtil;
+import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.utlis.CookieUtils;
-import com.hqgml.sign.utlis.annotation.ControllerLog;
-import com.hqgml.sign.utlis.exception.ExceptionEnums;
-import com.hqgml.sign.utlis.exception.XxException;
+import com.hqgml.sign.others.utlis.CookieUtils;
+import com.hqgml.sign.others.annotation.ControllerLog;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,7 +27,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

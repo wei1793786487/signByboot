@@ -1,6 +1,6 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 

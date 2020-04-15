@@ -1,9 +1,9 @@
 package com.hqgml.sign.controller;
 
-import com.hqgml.sign.pojo.Common;
-import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.servce.impl.UserLogServiceImpl;
-import com.hqgml.sign.utlis.annotation.ControllerLog;
+import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 /**
  * @author Devil

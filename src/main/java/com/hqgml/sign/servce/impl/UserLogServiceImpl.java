@@ -2,18 +2,16 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hqgml.sign.pojo.LayUi;
-import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.utlis.exception.ExceptionEnums;
-import com.hqgml.sign.utlis.exception.XxException;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 
 import com.hqgml.sign.mapper.UserLogMapper;
 import com.hqgml.sign.servce.UserLogService;

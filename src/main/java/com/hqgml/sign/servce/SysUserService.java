@@ -1,6 +1,6 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.SysUser;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.security.core.userdetails.UserDetailsService;
