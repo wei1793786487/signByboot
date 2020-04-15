@@ -54,6 +54,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private TenlentService tenlentService;
 
+
+
+
     /**
      * spring security的认证的方法
      *
@@ -71,12 +74,7 @@ public class SysUserServiceImpl implements SysUserService {
             throw new RuntimeException("查找不到用户");
         }
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        /**
-         * 储存用户的权限
-         * 这里只是简单的权限的控制因此只有一个权限
-         */
         grantedAuthorities.add(new SimpleGrantedAuthority(sysUser.getRole()));
-
         User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getIsenabled().equals(0) ? true : false, true, true, true, grantedAuthorities);
 
 
