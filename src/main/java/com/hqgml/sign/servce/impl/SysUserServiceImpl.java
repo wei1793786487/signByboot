@@ -3,8 +3,10 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.pojo.LayUi;
+import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
+import com.hqgml.sign.servce.RoleService;
 import com.hqgml.sign.servce.TenlentService;
 import com.hqgml.sign.utlis.exception.ExceptionEnums;
 import com.hqgml.sign.utlis.exception.XxException;
@@ -54,6 +56,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private TenlentService tenlentService;
 
+    @Resource
+    private RoleService roleService;
     /**
      * spring security的认证的方法
      *
@@ -70,16 +74,13 @@ public class SysUserServiceImpl implements SysUserService {
         if (sysUser == null) {
             throw new RuntimeException("查找不到用户");
         }
+        List<Role> roles = roleService.selectRoleListByUid(sysUser.getId());
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        /**
-         * 储存用户的权限
-         * 这里只是简单的权限的控制因此只有一个权限
-         */
-        grantedAuthorities.add(new SimpleGrantedAuthority(sysUser.getRole()));
 
+        for (Role role : roles) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        }
         User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getIsenabled().equals(0) ? true : false, true, true, true, grantedAuthorities);
-
-
         return user;
     }
 
@@ -191,12 +192,12 @@ public class SysUserServiceImpl implements SysUserService {
     public void insertUser(SysUser sysUser) throws TencentCloudSDKException {
         sysUser.setPassword(passwordEncode.encode(sysUser.getPassword()));
         SysUser userByUserName = sysUserMapper.findOneByUsername(sysUser.getUsername());
-        if (userByUserName!=null){
+        if (userByUserName != null) {
             throw new XxException(ExceptionEnums.USER_ISHAVE);
         }
         int insert = sysUserMapper.insertSelective(sysUser);
         //新建用户组
-        tenlentService.createGroup(sysUser.getId().toString(),sysUser.getId().toString());
+        tenlentService.createGroup(sysUser.getId().toString(), sysUser.getId().toString());
         if (insert != 1) {
             throw new XxException(ExceptionEnums.INSERT_ERROR);
         }
@@ -207,7 +208,7 @@ public class SysUserServiceImpl implements SysUserService {
         PageHelper.startPage(page, limit);
         List<SysUser> sysUsers = sysUserMapper.selectAllUser(search);
 
-        if (sysUsers==null||sysUsers.size()==0){
+        if (sysUsers == null || sysUsers.size() == 0) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
         PageInfo<SysUser> brandPageInfo = new PageInfo<>(sysUsers);
@@ -217,5 +218,6 @@ public class SysUserServiceImpl implements SysUserService {
         return layUi;
     }
 }
+
 
 

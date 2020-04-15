@@ -1,13 +1,11 @@
 package com.hqgml.sign.mapper;
 
 import com.hqgml.sign.pojo.SysUser;
-import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;import java.util.List;
 
 /**
  * @author Devil
- * @date 2020/1/27 21:54
+ * @date 2020/4/15 10:47
  */
 public interface SysUserMapper extends Mapper<SysUser> {
     SysUser findOneByUsername(@Param("username") String username);
@@ -18,10 +16,5 @@ public interface SysUserMapper extends Mapper<SysUser> {
 
     int updatePasswordByUsername(@Param("updatedPassword") String updatedPassword, @Param("username") String username);
 
-    List<SysUser> selectAllUser(@Param("search")String search);
-
-
-
-
-
+    List<SysUser> selectAllUser(@Param("search") String search);
 }

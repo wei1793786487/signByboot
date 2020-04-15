@@ -1,20 +1,23 @@
 package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Devil
- * @date 2020/1/27 21:54
+ * @date 2020/4/15 10:47
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "sys_user")
-@ApiModel(value="会议请求参数" )
 public class SysUser implements Serializable {
     @Id
     @Column(name = "id")
@@ -48,20 +51,20 @@ public class SysUser implements Serializable {
     @Column(name = "lasttime")
     private String lasttime;
 
-    @ApiModelProperty(value = "用户角色",example="ROLR_ADMIN",required = true)
-    @Column(name = "`role`")
-    private String role;
-
-    @ApiModelProperty(value = "是否可用，0为可用，1为不可用",example="0",required = true)
+    /**
+     * 是否可用 0为可用，1为不可用
+     */
     @Column(name = "isEnabled")
     private Integer isenabled;
+
+
+    private List<Role> roles;
 
     @ApiModelProperty(hidden = true)
     private int personcount;
 
     @ApiModelProperty(hidden = true)
     private int meetingcount;
-
 
     private static final long serialVersionUID = 1L;
 }

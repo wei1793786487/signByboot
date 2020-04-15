@@ -112,9 +112,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
+        //如果需要验证码 将下面这段放入即可
+        //addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
         http.cors().and().csrf().disable();
-        http.addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
+        http
                 .authorizeRequests()
                 .antMatchers("/verifyCode.jpg","/meeting/winformation/**").permitAll()
                 .antMatchers("/meeting/information/**","/findAddress").permitAll()

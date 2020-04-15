@@ -96,22 +96,22 @@ public class UtilsController {
      * 菜单
      *
      */
-    @GetMapping("menu")
-    @ResponseBody
-    @ApiOperation(value = "获取菜单信息")
-    public ResponseEntity<Common> loadMeau() {
-        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        SysUser user = userService.findUserByUserName(userDetails.getUsername());
-        if (user == null) {
-            throw new XxException(ExceptionEnums.USER_NOT_FIND);
-        }
-        Menu menu = menuService.findMenuByRolename(user.getRole());
-        if (menu == null) {
-            throw new XxException(ExceptionEnums.MENU_NOT_FIND);
-        }
-        Common common = new Common(menu);
-        return ResponseEntity.ok(common);
-    }
+//    @GetMapping("menu")
+//    @ResponseBody
+//    @ApiOperation(value = "获取菜单信息")
+//    public ResponseEntity<Common> loadMeau() {
+//        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        SysUser user = userService.findUserByUserName(userDetails.getUsername());
+//        if (user == null) {
+//            throw new XxException(ExceptionEnums.USER_NOT_FIND);
+//        }
+//        Menu menu = menuService.findMenuByRolename(user.getRole());
+//        if (menu == null) {
+//            throw new XxException(ExceptionEnums.MENU_NOT_FIND);
+//        }
+//        Common common = new Common(menu);
+//        return ResponseEntity.ok(common);
+//    }
 
     /**
      * 看看是不是活着
