@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sys_user")
-public class SysUser implements Serializable {
+public class SysUser implements Serializable  {
     @Id
     @Column(name = "id")
     @ApiModelProperty(hidden = true)
@@ -38,6 +39,7 @@ public class SysUser implements Serializable {
     @Column(name = "phone")
     private String phone;
 
+    @JsonIgnore
     @ApiModelProperty(value = "密码",example="dadad51d5a",required = true)
     @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z\\\\W]{6,18}$",message = "密码必须包含字母与数字，且在6到18位之间")
     @Column(name = "`password`")
@@ -65,6 +67,11 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(hidden = true)
     private int meetingcount;
+
+    public SysUser(Integer id,String username) {
+        this.id=id;
+        this.username = username;
+    }
 
     private static final long serialVersionUID = 1L;
 }

@@ -1,5 +1,7 @@
 package com.hqgml.sign;
 
+import com.hqgml.sign.others.pojo.JwtProperties;
+import org.apache.commons.collections4.SplitMapUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +15,9 @@ class SignApplicationTests {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private JwtProperties jwtProperties;
+
     @Test
     void contextLoads() {
         Long role_user = redisTemplate.getExpire("2222222", TimeUnit.DAYS);
@@ -22,5 +27,10 @@ class SignApplicationTests {
     @Test
     void add() {
         redisTemplate.opsForValue().set("111","1",10,TimeUnit.HOURS);
+    }
+
+    @Test
+    void  testJwt(){
+        System.out.println(jwtProperties);
     }
 }

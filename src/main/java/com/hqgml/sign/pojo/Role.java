@@ -2,7 +2,10 @@ package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
 *@author Devil
@@ -10,7 +13,7 @@ import lombok.Data;
 */
 @Data
 @Table(name = "`role`")
-public class Role implements Serializable {
+public class Role implements GrantedAuthority {
     @Column(name = "id")
     private Integer id;
 
@@ -27,4 +30,10 @@ public class Role implements Serializable {
     private String describe;
 
     private static final long serialVersionUID = 1L;
+
+    @JsonIgnore
+    @Override
+    public String getAuthority() {
+        return roleName;
+    }
 }

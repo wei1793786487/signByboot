@@ -1,6 +1,9 @@
 package com.hqgml.sign.others.handler;
 
 import cn.hutool.core.date.DateUtil;
+import com.hqgml.sign.others.jwt.JwtUtils;
+import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.impl.SysUserServiceImpl;
 import com.hqgml.sign.others.utlis.AddressUtils;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Devil
@@ -34,19 +38,16 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
 
     @Autowired
     private SysUserServiceImpl userService;
+    @Autowired
+    private JwtProperties jwtProperties;
+
+
 
     @ControllerLog(describe = "用户登录")
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String rememember = request.getParameter("remember-me");
-        if (StringUtils.isNotBlank(rememember)){
-          log.info("用户选择了记住我");
-            Cookie cookie = new Cookie("remember", "true");
-            cookie.setPath("/");
-            cookie.setDomain("hqgml.com");
-            cookie.setMaxAge(60*60*24*7);
-            response.addCookie(cookie);
-        }
+
+
         HttpSession session = request.getSession();
         /**
          * 通过这个方法可以获取存在与security容器里面的security对象
@@ -62,6 +63,13 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         userService.updateLastAddressByUserName(address, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request, response, "username", sysUser.getUsername());
+        try {
+
+            String token = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
+            response.addHeader(jwtProperties.getTokenName(),jwtProperties.getPreToken()+token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         JsonWriteUtlis.success(response);
     }
 }

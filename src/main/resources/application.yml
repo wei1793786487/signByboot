@@ -61,3 +61,12 @@ fdfs:
   - 49.232.54.164 :22122
 
 
+hqgml:
+  jwt:
+    secret: dqdq@token(Auth}*^31)&hwwww% # 登录校验的密钥
+    pubKeyPath: G:\jwtdemo\rsa.pub # 公钥地址
+    priKeyPath: G:\jwtdemo\rsa.pri # 私钥地址
+    expire: 60 #过期时间,单位分钟
+    cookieName: auth
+    tokenName: Authorization
+    preToken : Bearer
