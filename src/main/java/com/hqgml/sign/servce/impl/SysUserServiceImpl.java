@@ -89,8 +89,8 @@ public class SysUserServiceImpl implements SysUserService {
 
         if (StringUtils.isBlank(username)) {
             //如果用户没有传 自动读取security容器里面的用户名
-            User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            username = userDetails.getUsername();
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            username = (String) principal;
         }
         SysUser user = sysUserMapper.findOneByUsername(username);
         if (user == null) {

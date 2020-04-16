@@ -28,7 +28,6 @@ public class CheckController {
 
     private CheckServices checkServices;
 
-
     /**
      * 查询签到情况
      *

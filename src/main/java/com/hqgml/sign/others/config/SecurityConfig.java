@@ -1,6 +1,8 @@
 package com.hqgml.sign.others.config;
 
 import com.hqgml.sign.others.handler.*;
+import com.hqgml.sign.others.jwt.JwtUtils;
+import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -17,10 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled=true)
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-
 
 
     /**
@@ -54,12 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
-     * 会话失效
+     * jwt的参数
      */
     @Autowired
-    CustomizeSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
-
-
+    private JwtProperties jwtProperties;
 
 
     @Autowired
@@ -91,9 +90,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] allowUrl={"/meeting/winformation/**","/meeting/information/**","/findAddress","/face/search"};
-        String[] swagger ={"/swagger-ui.html", "/swagger-resources/**","/images/**","/webjars/**",
-        "/v2/api-docs","/configuration/ui","/configuration/security"
+        String[] allowUrl = {"/meeting/winformation/**", "/meeting/information/**", "/findAddress", "/face/search"};
+        String[] swagger = {"/swagger-ui.html", "/swagger-resources/**", "/images/**", "/webjars/**",
+                "/v2/api-docs", "/configuration/ui", "/configuration/security"
         };
         //如果需要验证码 将下面这段放入即可
         //"/verifyCode.jpg",放行这个url
@@ -120,10 +119,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         accessDeniedHandler(accessDeniedHandler).
                 //匿名用户访问无权限资源时的异常处理
                         authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                .sessionManagement()
-                .maximumSessions(1)
-                //同一账号同时登录最大用户数
-                .expiredSessionStrategy(sessionInformationExpiredStrategy);
+                .and().addFilter(new CustomizeVerifyFilter(super.authenticationManager(),jwtProperties))
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
     }
 }

@@ -24,7 +24,6 @@ public class LogController {
     @Autowired
     private UserLogServiceImpl userLogService;
 
-
     /**
      * 查询日志
      * @param serch 搜索内容
