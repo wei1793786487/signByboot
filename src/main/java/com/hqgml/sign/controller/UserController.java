@@ -1,7 +1,10 @@
 package com.hqgml.sign.controller;
 
+import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.PersonsService;
@@ -26,12 +29,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Devil
@@ -51,8 +57,10 @@ public class UserController {
     private MeetingService meetingService;
 
     @Autowired
-
     private PersonsService personsService;
+
+    @Autowired
+    private JwtProperties jwtProperties;
 
     /**
      * 获取用户上次的参数
@@ -216,4 +224,16 @@ public class UserController {
         return sysUserService.findUserList(page, limit, search);
     }
 
+
+    @GetMapping("userInfo")
+    public ResponseEntity<Common> getUserInfo(HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //获取请求头
+        String header = request.getHeader(jwtProperties.getTokenName());
+        String token = header.replaceAll(jwtProperties.getPreToken(), "");
+        Payload<SysUser> user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
+//        这里不用判断，解析token失败是进不来的
+        SysUser findsUser = sysUserService.findUserById(user.getUserInfo().getId());
+        return ResponseEntity.ok(new Common(findsUser));
+    }
 }

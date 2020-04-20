@@ -17,12 +17,6 @@ public enum ResultCode {
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),
 
-    /* 参数错误：1000～1999 */
-    PARAM_NOT_VALID(1001, "参数无效"),
-    PARAM_IS_BLANK(1002, "参数为空"),
-    PARAM_TYPE_ERROR(1003, "参数类型错误"),
-    PARAM_NOT_COMPLETE(1004, "参数缺失"),
-
     /* 用户错误 */
     USER_NOT_LOGIN(2001, "用户未登录"),
     USER_ACCOUNT_EXPIRED(2002, "账号已过期"),

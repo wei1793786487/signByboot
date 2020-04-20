@@ -13,6 +13,7 @@ import com.hqgml.sign.others.annotation.ControllerLog;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -25,7 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Devil
@@ -42,17 +46,11 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     private JwtProperties jwtProperties;
 
 
-
     @ControllerLog(describe = "用户登录")
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
-
         HttpSession session = request.getSession();
-        /**
-         * 通过这个方法可以获取存在与security容器里面的security对象
-         * 根据用户名
-         */
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SysUser sysUser = userService.findUserByUserName(userDetails.getUsername());
         String now = DateUtil.now();
@@ -64,12 +62,12 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request, response, "username", sysUser.getUsername());
         try {
-
             String token = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
-            response.addHeader(jwtProperties.getTokenName(),jwtProperties.getPreToken()+token);
+            Map map=new HashMap();
+            map.put("token",token);
+            JsonWriteUtlis.success(response,map);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JsonWriteUtlis.success(response);
     }
 }

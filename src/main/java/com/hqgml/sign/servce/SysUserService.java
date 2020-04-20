@@ -63,7 +63,16 @@ public interface SysUserService extends UserDetailsService {
      * 查找所有用户
      */
     LayUi<SysUser> findUserList(Integer page, Integer limit, String search);
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id
+     * @return
+     */
+    SysUser findUserById(Integer id);
 }
+
 
 
 

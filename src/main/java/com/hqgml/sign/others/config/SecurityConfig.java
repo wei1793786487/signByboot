@@ -6,6 +6,7 @@ import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Devil
@@ -53,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomizeAccessDeniedHandler accessDeniedHandler;
 
+   @Autowired
+   private StringRedisTemplate redisTemplate;
 
     /**
      * jwt的参数
@@ -119,7 +123,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         accessDeniedHandler(accessDeniedHandler).
                 //匿名用户访问无权限资源时的异常处理
                         authenticationEntryPoint(authenticationEntryPoint)
-                .and().addFilter(new CustomizeVerifyFilter(super.authenticationManager(),jwtProperties))
+                .and().addFilterAfter(new CustomizeVerifyFilter(super.authenticationManager(),jwtProperties,redisTemplate), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }

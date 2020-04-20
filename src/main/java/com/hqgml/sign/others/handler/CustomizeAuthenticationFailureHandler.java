@@ -48,7 +48,7 @@ public class CustomizeAuthenticationFailureHandler implements AuthenticationFail
         } else if (e instanceof ValidateCodeException){
             JsonResult jsonResult=new JsonResult();
             jsonResult.setCode(400);
-            jsonResult.setErrorMsg(e.getMessage());
+            jsonResult.setMsg(e.getMessage());
             jsonResult.setSuccess(false);
             result=jsonResult;
         }else {

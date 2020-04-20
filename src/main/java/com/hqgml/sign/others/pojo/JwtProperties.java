@@ -34,6 +34,11 @@ public class JwtProperties {
     private String tokenName;//token的名字
 
     private String preToken;//token前缀
+
+    private int redis_cache;//
+
+    private  String redis_pre_name;
+
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 
     /**

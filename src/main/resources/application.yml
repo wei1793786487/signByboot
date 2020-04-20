@@ -70,3 +70,4 @@ hqgml:
     cookieName: auth
     tokenName: Authorization
     preToken : Bearer
+    redis_cache: 60 #redis缓存token的过期时间

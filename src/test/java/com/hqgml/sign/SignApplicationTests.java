@@ -1,6 +1,10 @@
 package com.hqgml.sign;
 
+import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.others.pojo.Payload;
+import com.hqgml.sign.pojo.SysUser;
+import javafx.scene.chart.XYChart;
 import org.apache.commons.collections4.SplitMapUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +36,28 @@ class SignApplicationTests {
     @Test
     void  testJwt(){
         System.out.println(jwtProperties);
+    }
+
+    @Test
+    void  get(){
+        String dsadadadadad = redisTemplate.opsForValue().get("dsadadadadad");
+        System.out.println(dsadadadadad);
+    }
+
+    @Test
+    void  token(){
+        SysUser sysUser=new SysUser();
+        sysUser.setUsername("dadada");
+        sysUser.setPassword("dadada");
+        String s = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), 1);
+        System.out.println(s);
+        redisTemplate.opsForValue().set("token",s);
+    }
+
+    @Test
+    void getgoken(){
+        String token = redisTemplate.opsForValue().get("token");
+        Payload<SysUser> infoFromToken = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
+        System.out.println(infoFromToken);
     }
 }

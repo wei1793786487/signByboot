@@ -26,6 +26,18 @@ public class JsonWriteUtlis {
         response.getWriter().write(JSON.toJSONString(result));
     }
 
+    /**
+     * 带data的返回请求方法
+     * @param response
+     * @param data
+     * @throws IOException
+     */
+    public static void success(HttpServletResponse response,Object data) throws IOException {
+        JsonResult result = ResultTool.success(data);
+        response.setContentType("text/json;charset=utf-8");
+        response.getWriter().write(JSON.toJSONString(result));
+    }
+
     public static void fail(HttpServletRequest request, HttpServletResponse response, JsonResult result) throws IOException {
         if (result.getCode() > 2000 || result.getCode() < 2010) {
             CookieUtils.deleteCookie(request, response, "username");

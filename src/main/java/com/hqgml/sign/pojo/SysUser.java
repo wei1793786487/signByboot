@@ -59,6 +59,8 @@ public class SysUser implements Serializable  {
     @Column(name = "isEnabled")
     private Integer isenabled;
 
+    @Column
+    private String avatar;
 
     private List<Role> roles;
 

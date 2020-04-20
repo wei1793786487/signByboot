@@ -52,6 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private RoleService roleService;
+
     /**
      * spring security的认证的方法
      *
@@ -211,7 +212,17 @@ public class SysUserServiceImpl implements SysUserService {
         layUi.setData(sysUsers);
         return layUi;
     }
+
+    @Override
+    public SysUser findUserById(Integer id) {
+        SysUser sysUser = sysUserMapper.findOneById(id);
+        if (sysUser == null) {
+            throw new XxException(ExceptionEnums.USER_NOT_FIND);
+        }
+        return sysUser;
+    }
 }
+
 
 
 
