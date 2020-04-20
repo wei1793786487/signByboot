@@ -66,8 +66,12 @@ hqgml:
     secret: dqdq@token(Auth}*^31)&hwwww% # 登录校验的密钥
     pubKeyPath: G:\jwtdemo\rsa.pub # 公钥地址
     priKeyPath: G:\jwtdemo\rsa.pri # 私钥地址
-    expire: 60 #过期时间,单位分钟
+    expire: 15 #过期时间,单位分钟
     cookieName: auth
     tokenName: Authorization
     preToken : Bearer
-    redis_cache: 60 #redis缓存token的过期时间
+
+  redis:
+    tokenPre : Refresh_KEY-
+    redisCache: 43200 #redis缓存token的过期时间 单位分钟 30天*
+    disparity: 2880 #多少时间内没有登录刷新token失效 单位分钟

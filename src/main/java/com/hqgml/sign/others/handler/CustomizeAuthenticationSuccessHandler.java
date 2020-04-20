@@ -3,6 +3,7 @@ package com.hqgml.sign.others.handler;
 import cn.hutool.core.date.DateUtil;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.impl.SysUserServiceImpl;
@@ -45,6 +46,11 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Autowired
+    private  StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RedisProperties redisProperties;
 
     @ControllerLog(describe = "用户登录")
     @Override
@@ -63,6 +69,7 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         CookieUtils.setCookie(request, response, "username", sysUser.getUsername());
         try {
             String token = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
+            stringRedisTemplate.opsForValue().set(redisProperties.getTokenPre()+sysUser.getId(),sysUser.getUsername(),redisProperties.getRedisCache(),TimeUnit.MINUTES);
             Map map=new HashMap();
             map.put("token",token);
             JsonWriteUtlis.success(response,map);

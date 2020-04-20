@@ -3,6 +3,7 @@ package com.hqgml.sign;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
+import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.pojo.SysUser;
 import javafx.scene.chart.XYChart;
 import org.apache.commons.collections4.SplitMapUtils;
@@ -21,6 +22,9 @@ class SignApplicationTests {
 
     @Autowired
     private JwtProperties jwtProperties;
+
+    @Autowired
+    private RedisProperties redisProperties;
 
     @Test
     void contextLoads() {
@@ -59,5 +63,10 @@ class SignApplicationTests {
         String token = redisTemplate.opsForValue().get("token");
         Payload<SysUser> infoFromToken = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
         System.out.println(infoFromToken);
+    }
+
+    @Test
+    void getredis(){
+        System.out.println(redisProperties);
     }
 }

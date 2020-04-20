@@ -3,6 +3,7 @@ package com.hqgml.sign.others.config;
 import com.hqgml.sign.others.handler.*;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.servce.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    @Autowired
    private StringRedisTemplate redisTemplate;
 
+   @Autowired
+   private RedisProperties redisProperties;
     /**
      * jwt的参数
      */
@@ -123,7 +126,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         accessDeniedHandler(accessDeniedHandler).
                 //匿名用户访问无权限资源时的异常处理
                         authenticationEntryPoint(authenticationEntryPoint)
-                .and().addFilterAfter(new CustomizeVerifyFilter(super.authenticationManager(),jwtProperties,redisTemplate), UsernamePasswordAuthenticationFilter.class)
+                .and().addFilterAfter(new CustomizeVerifyFilter(super.authenticationManager(),jwtProperties,redisTemplate,redisProperties), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     }
