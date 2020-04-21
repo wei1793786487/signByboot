@@ -39,9 +39,6 @@ public class JsonWriteUtlis {
     }
 
     public static void fail(HttpServletRequest request, HttpServletResponse response, JsonResult result) throws IOException {
-        if (result.getCode() > 2000 || result.getCode() < 2010) {
-            CookieUtils.deleteCookie(request, response, "username");
-        }
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(JSON.toJSONString(result));
     }

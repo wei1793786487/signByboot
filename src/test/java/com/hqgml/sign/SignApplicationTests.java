@@ -34,12 +34,12 @@ class SignApplicationTests {
 
     @Test
     void add() {
-        redisTemplate.opsForValue().set("111","1",10,TimeUnit.HOURS);
+        redisTemplate.opsForValue().set("111","1",43200,TimeUnit.MINUTES);
     }
 
     @Test
     void  testJwt(){
-        System.out.println(jwtProperties);
+        System.out.println(jwtProperties.getExpire());
     }
 
     @Test
@@ -67,6 +67,6 @@ class SignApplicationTests {
 
     @Test
     void getredis(){
-        System.out.println(redisProperties);
+        System.out.println(redisProperties.getRedisCache());
     }
 }

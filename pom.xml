@@ -138,11 +138,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!--srping session redis的驱动-->
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
 
         <!--xml文件读取-->
         <dependency>

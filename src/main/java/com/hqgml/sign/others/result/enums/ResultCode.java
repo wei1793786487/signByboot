@@ -13,10 +13,9 @@ package com.hqgml.sign.others.result.enums;
 public enum ResultCode {
     /* 成功 */
     SUCCESS(200, "成功"),
-
+    TOKEN_REFRESH(1000,"token失效，刷新token"),
     /* 默认失败 */
     COMMON_FAIL(999, "失败"),
-
     /* 用户错误 */
     USER_NOT_LOGIN(2001, "用户未登录"),
     USER_ACCOUNT_EXPIRED(2002, "账号已过期"),

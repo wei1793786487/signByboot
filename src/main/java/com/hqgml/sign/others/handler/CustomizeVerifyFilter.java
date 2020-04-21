@@ -13,6 +13,8 @@ import com.hqgml.sign.others.utlis.TimeUtils;
 import com.hqgml.sign.pojo.SysUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -34,6 +38,8 @@ import java.util.Collection;
  * 登录认证的过滤器
  */
 public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomizeVerifyFilter.class);
     private final JwtProperties jwtProperties;
     private final StringRedisTemplate redisTemplate;
     private final RedisProperties redisProperties;
@@ -60,9 +66,6 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
                 SysUser userInfo = payload.getUserInfo();
                 UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(userInfo.getUsername(),userInfo.getPassword(),userInfo.getRoles());
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                //认证成功刷新token
-                String newToken = JwtUtils.generateTokenExpireInSeconds(userInfo, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
-                response.addHeader(jwtProperties.getTokenName(),jwtProperties.getPreToken()+newToken);
                 //没有问题之后再放行过滤器
                 chain.doFilter(request, response);
             } catch (Exception e) {
@@ -78,10 +81,8 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
                         //如果redis里面有缓存的话并且没有超过一定时间没有登录，那么生成新的token
                         String newToken = JwtUtils.generateTokenExpireInMinutes(user, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
                         response.setHeader("token",newToken);
-                        //将认证信息放入
-                        UsernamePasswordAuthenticationToken auth=new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword(),user.getRoles());
-                        SecurityContextHolder.getContext().setAuthentication(auth);
-                        chain.doFilter(request, response);
+                        JsonResult result = ResultTool.fail(ResultCode.TOKEN_REFRESH);
+                        JsonWriteUtlis.fail(request,response,result);
                     }else {
                         JsonResult result = ResultTool.fail(ResultCode.USER_ACCOUNT_EXPIRED);
                         JsonWriteUtlis.fail(request, response,result);

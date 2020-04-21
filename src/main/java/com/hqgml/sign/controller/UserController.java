@@ -233,6 +233,7 @@ public class UserController {
         String token = header.replaceAll(jwtProperties.getPreToken(), "");
         Payload<SysUser> user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
 //        这里不用判断，解析token失败是进不来的
+        //TODO 这里解析token如果过期会完蛋
         SysUser findsUser = sysUserService.findUserById(user.getUserInfo().getId());
         return ResponseEntity.ok(new Common(findsUser));
     }
