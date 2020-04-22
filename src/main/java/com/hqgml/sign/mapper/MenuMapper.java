@@ -1,14 +1,17 @@
 package com.hqgml.sign.mapper;
+import java.util.List;
 
 import com.hqgml.sign.pojo.Menu;
-import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;import java.util.List;
+import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;
 
 /**
  * @author Devil
- * @date 2020/1/5 16:43
+ * @date 2020/4/22 8:41
  */
-public interface MenuMapper extends Mapper<Menu> {
-    Menu findOneByRoleName(@Param("roleName")String roleName);
+public interface MenuMapper  {
+   List<Menu> selectAll();
 
-    int updateMenuById(@Param("updatedMenu") String updatedMenu, @Param("id") Integer id);
+  Menu selectById(@Param("id")Integer id);
+
+
 }

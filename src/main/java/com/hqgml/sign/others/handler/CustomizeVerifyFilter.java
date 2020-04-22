@@ -80,8 +80,7 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
                     if (refresh!=null&&isoverTime){
                         //如果redis里面有缓存的话并且没有超过一定时间没有登录，那么生成新的token
                         String newToken = JwtUtils.generateTokenExpireInMinutes(user, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
-                        response.setHeader("token",newToken);
-                        JsonResult result = ResultTool.fail(ResultCode.TOKEN_REFRESH);
+                        JsonResult result = ResultTool.fail(ResultCode.TOKEN_REFRESH,newToken);
                         JsonWriteUtlis.fail(request,response,result);
                     }else {
                         JsonResult result = ResultTool.fail(ResultCode.USER_ACCOUNT_EXPIRED);

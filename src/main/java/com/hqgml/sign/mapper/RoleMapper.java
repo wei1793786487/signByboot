@@ -10,10 +10,12 @@ import java.util.List;
 *@author Devil
 *@date  2020/4/15 7:56
 */
-public interface RoleMapper extends Mapper<Role> {
+public interface RoleMapper  {
 
     List<Role> selectByUserId(@Param("id")Integer id);
 
+
+    List<Role> selectAllByMetaId(@Param("id")Integer id);
 
 
 }

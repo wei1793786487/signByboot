@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/1/5 16:28
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class MenuServiceImpl implements MenuService {
 
@@ -33,30 +32,12 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+
     @Override
-    public Menu findMenuByRolename(String rolename) {
-        Menu menu;
-        if (StringUtils.isBlank(rolename)) {
-            throw new XxException(ExceptionEnums.ROLE_NOT_FIND);
-        }
+    public Menu findMenu() {
 
-        String role = redisTemplate.opsForValue().get(rolename);
-        if (role==null){
 
-            menu= menuMapper.findOneByRoleName(rolename);
-            String jsonrole = JSON.toJSONString(menu);
-            redisTemplate.opsForValue().set(rolename,jsonrole, 10,TimeUnit.DAYS);
-            log.info("角色菜单没有缓存");
-        }else {
-           menu= JSON.parseObject(role, Menu.class);
-            log.info("角色菜单有缓存");
-
-        }
-
-        if (menu == null) {
-            throw new XxException(ExceptionEnums.MENU_NOT_FIND);
-        }
-        return menu;
+        return null;
     }
 }
 
