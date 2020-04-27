@@ -1,7 +1,8 @@
 package com.hqgml.sign.servce;
 
 import com.hqgml.sign.pojo.Menu;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Devil
@@ -12,9 +13,10 @@ public interface MenuService {
     /**
      * @return 菜单信息
      */
-    Menu findMenu();
+    List<Menu> findMenu(Integer type);
 
 
 }
+
 
 

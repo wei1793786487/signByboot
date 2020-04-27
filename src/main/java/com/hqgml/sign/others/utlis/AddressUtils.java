@@ -41,12 +41,12 @@ public class AddressUtils {
             return "获取失败";
         }
         //解析json获取物理地址
-        if (ip_json != null) {
-            JSONObject city = JSON.parseObject(ip_json);
-            String address = city.getJSONObject("content").getString("address");
-            return address;
-        } else {
-            return null;
+            if (ip_json != null) {
+                JSONObject city = JSON.parseObject(ip_json);
+                String address = city.getJSONObject("content").getString("address");
+                return address;
+            } else {
+                return null;
         }
 
     }

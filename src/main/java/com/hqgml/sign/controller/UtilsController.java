@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -94,13 +95,12 @@ public class UtilsController {
      * 菜单
      *
      */
-    @GetMapping("menu")
+    @GetMapping("menu/{type}")
     @ResponseBody
     @ApiOperation(value = "获取菜单信息")
-    public ResponseEntity<Common> loadMeau() {
-
-
-        Common common = new Common("");
+    public ResponseEntity<Common> loadMeau(@PathVariable("type") Integer type) {
+        List<Menu> menu = menuService.findMenu(type);
+        Common common = new Common(menu);
         return ResponseEntity.ok(common);
     }
 

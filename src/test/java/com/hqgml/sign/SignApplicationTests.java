@@ -53,7 +53,7 @@ class SignApplicationTests {
         SysUser sysUser=new SysUser();
         sysUser.setUsername("dadada");
         sysUser.setPassword("dadada");
-        String s = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), 1);
+        String s = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), 1000033);
         System.out.println(s);
         redisTemplate.opsForValue().set("token",s);
     }

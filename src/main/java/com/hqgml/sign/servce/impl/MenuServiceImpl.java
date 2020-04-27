@@ -1,11 +1,10 @@
 package com.hqgml.sign.servce.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.hqgml.sign.pojo.Menu;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.others.utlis.TreeUtils;
+import com.hqgml.sign.pojo.Menu;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,9 @@ import javax.annotation.Resource;
 
 import com.hqgml.sign.mapper.MenuMapper;
 import com.hqgml.sign.servce.MenuService;
-import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.annotation.TypeNotPresentExceptionProxy;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 /**
  * @author Devil
@@ -34,10 +33,17 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Override
-    public Menu findMenu() {
-
-
-        return null;
+    public List<Menu> findMenu(Integer type) {
+        List<Menu> menus = menuMapper.selectAll();
+        if (menus.size() == 0) {
+            throw new XxException(ExceptionEnums.MENU_NOT_FIND);
+        }
+        if (type == 0) {
+            return menus;
+        } else {
+            return TreeUtils.toTree(menus, 0);
+        }
     }
 }
+
 

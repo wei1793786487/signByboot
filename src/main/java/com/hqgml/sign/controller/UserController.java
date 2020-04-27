@@ -5,6 +5,7 @@ import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.Payload;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.PersonsService;
@@ -227,14 +228,8 @@ public class UserController {
 
     @GetMapping("userInfo")
     public ResponseEntity<Common> getUserInfo(HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //获取请求头
-        String header = request.getHeader(jwtProperties.getTokenName());
-        String token = header.replaceAll(jwtProperties.getPreToken(), "");
-        Payload<SysUser> user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
-//        这里不用判断，解析token失败是进不来的
-        //TODO 这里解析token如果过期会完蛋
-        SysUser findsUser = sysUserService.findUserById(user.getUserInfo().getId());
+        SysUser user = UserUtils.getUserByToken(request);
+        SysUser findsUser = sysUserService.findUserById(user.getId());
         return ResponseEntity.ok(new Common(findsUser));
     }
 }

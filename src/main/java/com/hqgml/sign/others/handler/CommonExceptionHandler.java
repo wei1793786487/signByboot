@@ -9,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.List;
 
 /**
  * @author Devil
@@ -40,6 +43,7 @@ public class CommonExceptionHandler {
              */
             return ResponseEntity.status(200).body(new ExceptionResult(2001, "用户信息异常"));
         } else if (e instanceof MethodArgumentNotValidException) {
+
             /**
              * 校异常验
              */
@@ -56,12 +60,16 @@ public class CommonExceptionHandler {
         } else if (e instanceof CookieTheftException) {
             return ResponseEntity.status(200).body(new ExceptionResult(400, "登录失效"));
         } else if (e instanceof BindException) {
+            //校验的异常
+            StringBuilder stringBuilder=new StringBuilder();
+            List<FieldError> fieldErrors = ((BindException) e).getFieldErrors();
+            for (FieldError fieldError : fieldErrors) {
+                String message = fieldError.getDefaultMessage();
+                 stringBuilder.append(message+",");
+            }
+            String message = stringBuilder.toString();
+            return ResponseEntity.status(200).body(new ExceptionResult(400, message));
 
-            e.printStackTrace();
-            String message = e.getMessage();
-            String replaceAll = message.replaceAll("[^\\u4e00-\\u9fa5]", "");
-
-            return ResponseEntity.status(200).body(new ExceptionResult(400, replaceAll));
         } else if (e instanceof MissingServletRequestParameterException){
             /**
              * 参数缺少的处理

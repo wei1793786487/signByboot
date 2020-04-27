@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author Devil
- * @date 2020/4/22 8:41
+ * @date 2020/4/22 17:28
  */
 @Data
 @AllArgsConstructor
@@ -28,15 +28,13 @@ public class Menu implements Serializable {
 
     /**
      * components corresponding to the front end
+     * Layout is root component
+     * Others are front-end component paths
      */
     @Column(name = "component")
     private String component;
 
-    /**
-     * if set noRedirect will no redirect in the breadcrumb
-     */
-    @Column(name = "redirect")
-    private String redirect;
+
 
     /**
      * the name is used by <keep-alive> (must set!!!)
@@ -53,8 +51,25 @@ public class Menu implements Serializable {
     @Column(name = "parent")
     private Integer parent;
 
+    /**
+     * if set true, item will not show in the sidebar(default is false，0 is flase，1 is ture )
+     */
+    @Column(name = "hidden")
+    private Integer hidden;
+
+    /**
+     * if set noRedirect will no redirect in the breadcrumb,Has been set automatically
+     */
+    @Transient
+    private String redirect;
+
     @Transient
     private Meta meta;
 
+    @Transient
+    private Menu children;
+
     private static final long serialVersionUID = 1L;
+
+
 }

@@ -1,6 +1,7 @@
 package com.hqgml.sign.others.config;
 
 
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.SysUserService;
@@ -124,7 +125,7 @@ public class SystemLogAspect {
                 //请求用户
                 tbLog.setUser(username);
 
-                SysUser user = sysUserService.findUserByUserName(username);
+                SysUser user = UserUtils.getUserByToken(request);
 
                 tbLog.setAddid(user.getId());
 
