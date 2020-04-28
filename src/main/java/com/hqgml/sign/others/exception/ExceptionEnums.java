@@ -22,6 +22,7 @@ public enum ExceptionEnums {
     READ_ERROR(400, "读取文件异常"),
     PERSON_NOT_FIND(400, "无人员信息"),
     INSERT_ERROR(400, "无人员信息"),
+    FILED_ERROR(400, "参数不允许"),
     ROLE_NOT_FIND(400,"角色信息没找到"),
     PHONE_NOT_FIND(400, "无电话信息"),
     TPDO_NOT_FIND(400,"todo没有找到"),

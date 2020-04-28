@@ -6,6 +6,7 @@ import com.hqgml.sign.others.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.authentication.rememberme.CookieTheftException;
 import org.springframework.validation.BindException;
@@ -78,7 +79,14 @@ public class CommonExceptionHandler {
             return ResponseEntity.status(200).body(new ExceptionResult(400, "确少必要的参数"+parm));
         }  else if (e instanceof AccessDeniedException){
             return ResponseEntity.status(403).body(new ExceptionResult(403, "权限不足"));
+        } else if (e instanceof BadSqlGrammarException){
+            /**
+             * mybaits参数异常
+             */
+            e.printStackTrace();
+            return ResponseEntity.status(400).body(new ExceptionResult(400, "数据库参数错误,请按照接口要求调用数据"));
         }
+
         else {
             e.printStackTrace();
         }

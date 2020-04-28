@@ -15,6 +15,7 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
@@ -100,8 +101,9 @@ public class SystemLogAspect {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
-                User userDetails = (User) authentication.getPrincipal();
-                username = userDetails.getUsername();
+
+                SysUser user = UserUtils.getUserByToken(request);
+                username=user.getUsername();
             } else {
                 username = "";
                 return;

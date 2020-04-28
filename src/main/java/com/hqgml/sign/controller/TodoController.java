@@ -8,6 +8,7 @@ import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.Todos;
 import com.hqgml.sign.servce.TodosService;
+import com.sun.xml.internal.bind.v2.TODO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -66,17 +67,14 @@ public class TodoController {
     }
 
 
-    @PutMapping("{field}")
+    @PutMapping("{id}")
     @ControllerLog(describe = "更新TODO信息")
-    @ApiOperation(value = "更新TODO信息" )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "field", value = "需要更新的字段，things为更新内容,done为更新状态",required = true),
-            @ApiImplicitParam(name = "data", value = "要更新的值",required = true),
-    })
+    @ApiOperation(value = "更新TODO信息")
     public ResponseEntity<Common> update(
-            @PathVariable("field") String type,
-            @RequestParam("data") String data) {
-        todosService.updateTodo(type,data);
+            @PathVariable("id") Integer id,
+            @Valid Todos todos
+    ) {
+        todosService.updateTodo(todos, id);
         Common common = new Common("修改成功");
         return ResponseEntity.ok(common);
     }
@@ -85,8 +83,7 @@ public class TodoController {
     @PostMapping
     @ControllerLog(describe = "添加TODO信息")
     @ApiOperation(value = "添加TODO信息")
-    public ResponseEntity<Common> addMeeting(@Valid Todos todos,HttpServletRequest request)
-    {
+    public ResponseEntity<Common> addMeeting(@Valid Todos todos, HttpServletRequest request) {
         SysUser user = UserUtils.getUserByToken(request);
         todos.setUid(user.getId());
         todosService.addTodo(todos);

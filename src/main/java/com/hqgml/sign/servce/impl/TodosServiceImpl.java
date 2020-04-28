@@ -1,12 +1,10 @@
 package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.FactoryUtlis;
-import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.Todos;
 import org.slf4j.Logger;
@@ -15,9 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.hqgml.sign.mapper.TodosMapper;
 import com.hqgml.sign.servce.TodosService;
-import sun.security.smartcardio.SunPCSC;
 
-import java.nio.channels.NonWritableChannelException;
 import java.util.List;
 
 /**
@@ -52,10 +48,11 @@ public class TodosServiceImpl implements TodosService{
     }
 
     @Override
-    public void updateTodo(String type,String data) {
-
-
-
+    public void updateTodo(Todos todos,Integer id) {
+        int update = todosMapper.updateById(todos, id);
+        if (update!=1){
+            throw new XxException(ExceptionEnums.UPDATE_ERROR);
+        }
     }
 
     @Override

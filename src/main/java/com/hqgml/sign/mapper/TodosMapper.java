@@ -25,20 +25,12 @@ public interface TodosMapper{
     int deleteById(@Param("id")Integer id);
 
     /**
-     *
-     * @param updatedThings 要更新的事情
-     * @param id id
-     * @return 更新的id
+     * 根据id更新
+     * @param updated
+     * @param id
+     * @return
      */
-	int updateThingsById(@Param("updatedThings")String updatedThings,@Param("id")Integer id);
-
-    /**
-     *
-     * @param updatedDone 更新结束状态
-     * @param id id
-     * @return 更新的id
-     */
-	int updateDoneById(@Param("updatedDone")Integer updatedDone,@Param("id")Integer id);
+    int updateById(@Param("updated")Todos updated,@Param("id")Integer id);
 
 
     /**

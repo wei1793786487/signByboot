@@ -22,7 +22,6 @@ import org.hibernate.validator.constraints.Range;
 public class Todos implements Serializable {
 
     @Id
-    @Null(message = "id必须为空")
     @Column(name = "id")
     private Integer id;
 

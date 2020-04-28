@@ -15,7 +15,7 @@ public interface TodosService {
 
     void deleteTodo(Integer[] ids);
 
-    void updateTodo(String type,String data);
+    void updateTodo(Todos todos,Integer id);
 
     void addTodo(Todos todos);
 }
