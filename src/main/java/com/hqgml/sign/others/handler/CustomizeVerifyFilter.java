@@ -55,9 +55,8 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(jwtProperties.getTokenName());
 
         if (header == null || !header.startsWith(jwtProperties.getPreToken())) {
-            //如果携带的是错误的token 那么返回错误,并且不进行下面的过滤器
-            JsonResult result = ResultTool.fail(ResultCode.USER_NOT_LOGIN);
-            JsonWriteUtlis.fail(request, response, result);
+            //如果携带的是错误的token 进行下面过滤器
+            chain.doFilter(request, response);
         } else {
            //正确格式的token
             String token = header.replace(jwtProperties.getPreToken(), "");
