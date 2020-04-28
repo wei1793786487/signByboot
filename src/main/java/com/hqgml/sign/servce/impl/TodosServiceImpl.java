@@ -28,15 +28,10 @@ public class TodosServiceImpl implements TodosService{
     private TodosMapper todosMapper;
 
     @Override
-    public MyPageInfo selectTodos(Integer page, Integer limit, SysUser user) {
-
+    public MyPageInfo<Todos> selectTodos(Integer page, Integer limit, SysUser user) {
         PageHelper.startPage(page,limit);
         List<Todos> todos = todosMapper.selectAllByUid(user.getId());
-        if (todos.size()==0){
-            throw new XxException(ExceptionEnums.TPDO_NOT_FIND);
-        }
-        MyPageInfo<Object> info = FactoryUtlis.pageInfoFactory(todos);
-        return info;
+        return  FactoryUtlis.pageInfoFactory(todos);
     }
 
     @Override

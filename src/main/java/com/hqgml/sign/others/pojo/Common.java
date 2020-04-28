@@ -10,7 +10,7 @@ import org.apache.poi.ss.formula.functions.T;
  * 统一返回格式
  */
 @Data
-public class Common {
+public class Common<T> {
 
 
     @ApiModelProperty(value = "返回的code,200为正常",example="200")
@@ -20,14 +20,14 @@ public class Common {
     private long timestamp;
 
     @ApiModelProperty(value = "返回的信息")
-    private Object data;
+    private T data;
 
-    public Common(Object data) {
+    public Common(T data) {
         this.code = 200;
         this.data = data;
         this.timestamp = System.currentTimeMillis();
     }
-    public Common(Integer code, Object data) {
+    public Common(Integer code, T data) {
         this.code = code;
         this.data = data;
         this.timestamp = System.currentTimeMillis();

@@ -15,9 +15,9 @@ import java.util.List;
  */
 public class FactoryUtlis {
 
-    public static MyPageInfo<Object> pageInfoFactory(List data){
-        PageInfo<Object> brandPageInfo = new PageInfo<Object>(data);
-        MyPageInfo<Object> myPageInfo=new MyPageInfo<Object>();
+    public static<T> MyPageInfo<T> pageInfoFactory(List<T> data){
+        PageInfo<T> brandPageInfo = new PageInfo<T>(data);
+        MyPageInfo<T> myPageInfo=new MyPageInfo<T>();
         myPageInfo.setCount(brandPageInfo.getTotal());
         myPageInfo.setData(data);
         return myPageInfo;

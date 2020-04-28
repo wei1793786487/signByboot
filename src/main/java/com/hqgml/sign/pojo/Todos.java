@@ -22,9 +22,11 @@ import org.hibernate.validator.constraints.Range;
 public class Todos implements Serializable {
 
     @Id
+    @ApiModelProperty(hidden = true)
     @Column(name = "id")
     private Integer id;
 
+    @ApiModelProperty(hidden = true)
     @Null(message = "uid禁止添加")
     @Column(name = "`uid`")
     private Integer uid;

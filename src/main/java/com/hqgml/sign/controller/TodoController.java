@@ -4,25 +4,19 @@ import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.Todos;
 import com.hqgml.sign.servce.TodosService;
-import com.sun.xml.internal.bind.v2.TODO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.ranges.Range;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @author Devil
@@ -44,7 +38,7 @@ public class TodoController {
             @ApiImplicitParam(name = "page", value = "当前页", defaultValue = "1", type = "Integer"),
             @ApiImplicitParam(name = "limit", value = "每页的大小", defaultValue = "15", type = "Integer"),
     })
-    public ResponseEntity<Common> findTodos(
+    public ResponseEntity<MyPageInfo<Todos>> findTodos(
             @RequestParam(name = "search", required = false) String search,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
@@ -52,7 +46,7 @@ public class TodoController {
     ) {
         SysUser user = UserUtils.getUserByToken(httpServletRequest);
         MyPageInfo myPageInfo = todosService.selectTodos(page, limit, user);
-        return ResponseEntity.ok(new Common(myPageInfo));
+        return ResponseEntity.ok(myPageInfo);
     }
 
 
@@ -60,9 +54,9 @@ public class TodoController {
     @ControllerLog(describe = "删除TODO信息")
     @ApiOperation(value = "删除TODO信息")
     @ApiImplicitParam(name = "ids[]", value = "要删除的TODO的数组")
-    public ResponseEntity<Common> deleteTodo(@RequestParam("ids[]") Integer[] ids) {
+    public ResponseEntity<Common<String>> deleteTodo(@RequestParam("ids") Integer[] ids) {
         todosService.deleteTodo(ids);
-        Common common = new Common("删除成功");
+        Common<String> common = new Common<>("删除成功");
         return ResponseEntity.ok(common);
     }
 
@@ -70,12 +64,12 @@ public class TodoController {
     @PutMapping("{id}")
     @ControllerLog(describe = "更新TODO信息")
     @ApiOperation(value = "更新TODO信息")
-    public ResponseEntity<Common> update(
+    public ResponseEntity<Common<String>> update(
             @PathVariable("id") Integer id,
             @Valid Todos todos
     ) {
         todosService.updateTodo(todos, id);
-        Common common = new Common("修改成功");
+        Common<String> common = new Common<>("修改成功");
         return ResponseEntity.ok(common);
     }
 
@@ -83,11 +77,11 @@ public class TodoController {
     @PostMapping
     @ControllerLog(describe = "添加TODO信息")
     @ApiOperation(value = "添加TODO信息")
-    public ResponseEntity<Common> addMeeting(@Valid Todos todos, HttpServletRequest request) {
+    public ResponseEntity<Common<String>> addMeeting(@Valid Todos todos, HttpServletRequest request) {
         SysUser user = UserUtils.getUserByToken(request);
         todos.setUid(user.getId());
         todosService.addTodo(todos);
-        Common common = new Common("添加成功");
+        Common<String> common = new Common<>("添加成功");
         return ResponseEntity.ok(common);
     }
 
