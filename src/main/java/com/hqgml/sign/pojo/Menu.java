@@ -1,6 +1,7 @@
 package com.hqgml.sign.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,7 +68,7 @@ public class Menu implements Serializable {
     private Meta meta;
 
     @Transient
-    private Menu children;
+    private List<Menu> children;
 
     private static final long serialVersionUID = 1L;
 

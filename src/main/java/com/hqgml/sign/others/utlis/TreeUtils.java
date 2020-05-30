@@ -1,9 +1,6 @@
 package com.hqgml.sign.others.utlis;
 
 import com.hqgml.sign.pojo.Menu;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +21,9 @@ public class TreeUtils {
         for (Menu menu : retList) {
             //如果这个哥们是最上级，并且他的子类不是空的，那么设置他redirect的子类的路径
             if (menu.getParent().equals(0)){
-                Menu children = menu.getChildren();
-                if (ObjectUtils.isNotEmpty(children)){
-                    menu.setRedirect(children.getPath());
+                List<Menu> children = menu.getChildren();
+                if (children.size()!=0){
+                    menu.setRedirect(children.get(0).getPath());
                 }
             }
         }
@@ -34,14 +31,16 @@ public class TreeUtils {
     }
 
     private static Menu findChildren(Menu parent, List<Menu> treeList) {
+        List<Menu> children = new ArrayList<>();
         for (Menu menu : treeList) {
             if (parent.getId().equals(menu.getParent())) {
                 if (parent.getParent() == 0) {
                     parent.setChildren(null);
                 }
-                parent.setChildren(findChildren(menu, treeList));
+                children.add(findChildren(menu, treeList));
             }
         }
+        parent.setChildren(children);
         return parent;
     }
 

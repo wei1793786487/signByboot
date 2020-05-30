@@ -34,6 +34,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public List<Menu> findMenu(Integer type) {
+
         List<Menu> menus = menuMapper.selectAll();
         if (menus.size() == 0) {
             throw new XxException(ExceptionEnums.MENU_NOT_FIND);
@@ -43,6 +44,16 @@ public class MenuServiceImpl implements MenuService {
         } else {
             return TreeUtils.toTree(menus, 0);
         }
+    }
+
+    @Override
+    public void deleteMenu(Integer[] ids) {
+
+    }
+
+    @Override
+    public void updateMenu(Menu menu, Integer id) {
+
     }
 }
 

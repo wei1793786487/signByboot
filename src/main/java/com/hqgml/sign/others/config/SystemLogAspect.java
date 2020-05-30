@@ -1,6 +1,7 @@
 package com.hqgml.sign.others.config;
 
 
+import com.fasterxml.jackson.datatype.jsr310.ser.YearSerializer;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
@@ -101,9 +102,12 @@ public class SystemLogAspect {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
-
                 SysUser user = UserUtils.getUserByToken(request);
-                username=user.getUsername();
+                if (user!=null){
+                    username=user.getUsername();
+                }else {
+                    username="登陆";
+                }
             } else {
                 username = "";
                 return;

@@ -16,6 +16,18 @@ public interface MenuService {
     List<Menu> findMenu(Integer type);
 
 
+    /**
+     * 删除菜单
+     * @param ids
+     */
+    void deleteMenu(Integer[] ids);
+
+    /**
+     * 更新菜单
+     * @param menu
+     * @param id
+     */
+    void updateMenu(Menu menu, Integer id);
 }
 
 

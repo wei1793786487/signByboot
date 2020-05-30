@@ -26,6 +26,9 @@ public class UserUtils {
     public static SysUser getUserByToken(HttpServletRequest request){
         //获取请求头
         String header = request.getHeader(jwtProperties.getTokenName());
+        if ("login".contains(request.getRequestURI())){
+            return null;
+        }
         String token = header.replaceAll(jwtProperties.getPreToken(), "");
         Payload<SysUser> user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
         return user.getUserInfo();

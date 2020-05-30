@@ -45,17 +45,12 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Controller
 @Api(tags = "工具接口")
-
 public class UtilsController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    @Autowired
-    private MenuService menuService;
 
-    @Autowired
-    private SysUserService userService;
 
     @Autowired
     private IdWorker idWorker;
@@ -91,18 +86,7 @@ public class UtilsController {
         outputStream.close();
     }
 
-    /**
-     * 菜单
-     *
-     */
-    @GetMapping("menu/{type}")
-    @ResponseBody
-    @ApiOperation(value = "获取菜单信息")
-    public ResponseEntity<Common> loadMeau(@PathVariable("type") Integer type) {
-        List<Menu> menu = menuService.findMenu(type);
-        Common common = new Common(menu);
-        return ResponseEntity.ok(common);
-    }
+
 
     /**
      * 看看是不是活着
