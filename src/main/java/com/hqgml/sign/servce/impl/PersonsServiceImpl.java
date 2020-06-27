@@ -3,7 +3,6 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
@@ -45,8 +45,7 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private SysUserService userService;
 
-     @Resource
-     private MeetingPersionMapper meetingPersionMapper;
+
 
 
     @Override
@@ -99,21 +98,29 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public void deleteByids(Integer[] ids) throws TencentCloudSDKException {
+    public void deleteByids(Integer[] ids, String url) throws TencentCloudSDKException {
+      if (ids!=null){
+          for (Integer id : ids) {
+              Persons persons = selectById(id);
+              storageClient.deleteFile(persons.getUrl());
+              log.info("删除服务器图片信息");
 
-        for (Integer id : ids) {
-            Persons persons = selectById(id);
-            storageClient.deleteFile(persons.getUrl());
-            log.info("删除服务器图片信息");
+              tenlentServices.deletePerson(persons.getUuid());
+              log.info("删除腾讯云");
 
-            tenlentServices.deletePerson(persons.getUuid());
-            log.info("删除腾讯云");
-
-            int isdelect = personsMapper.deleteById(id);
-            if (isdelect != 1) {
-                log.error("数据库删除id为" + id + "失败");
-            }
-        }
+              int isdelect = personsMapper.deleteById(id);
+              if (isdelect != 1) {
+                  log.error("数据库删除id为" + id + "失败");
+              }
+          }
+      }
+      if (url!= null){
+          Persons persons = personsMapper.selectByUrl(url);
+          storageClient.deleteFile(persons.getUrl());
+          tenlentServices.deletePerson(persons.getUuid());
+          log.info("删除腾讯云");
+          personsMapper.deleteById(persons.getId());
+      }
     }
 
     @Override

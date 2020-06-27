@@ -133,7 +133,9 @@ public class SystemLogAspect {
 
                 SysUser user = UserUtils.getUserByToken(request);
 
-                tbLog.setAddid(user.getId());
+                if (user!=null){
+                    tbLog.setAddid(user.getId());
+                }
 
                 //请求IP
                 String ip = AddressUtils.getIp(request);

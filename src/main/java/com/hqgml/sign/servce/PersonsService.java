@@ -55,9 +55,10 @@ public interface PersonsService {
     /**
      * 删除人员
      * @param ids
+     * @param url
      * @throws TencentCloudSDKException
      */
-    void deleteByids(Integer[] ids) throws TencentCloudSDKException;
+    void deleteByids(Integer[] ids, String url) throws TencentCloudSDKException;
 
 
     /**

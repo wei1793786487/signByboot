@@ -1,5 +1,7 @@
 package com.hqgml.sign.controller;
 
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.pojo.Persons;
@@ -10,9 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URL;
 
 /**
  * @author Devil
@@ -75,17 +80,21 @@ public class PersonController {
     @DeleteMapping
     @ControllerLog(describe = "人员库删除人员")
     @ApiOperation(value = "删除人员接口")
-    @ApiImplicitParam(name = "ids[]",value = "要删除的人员的id的数组",required = true)
-
-    public ResponseEntity<Common> deleteByIds(@RequestParam("ids[]") Integer[] ids) throws TencentCloudSDKException {
-        personsService.deleteByids(ids);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ids[]",value = "要删除的人员的id的数组"),
+            @ApiImplicitParam(name = "urr",value = "要删除的人员的图片位置")
+    })
+    public ResponseEntity<Common> deleteByIds(
+            @RequestParam(value = "ids[]",required = false)  Integer[] ids,
+            @RequestParam(value = "url",required = false)  String url
+    ) throws TencentCloudSDKException {
+        if (ids==null&&url==null){
+            throw new XxException(ExceptionEnums.PARAMETER_ERROT);
+        }
+        personsService.deleteByids(ids,url);
         Common common = new Common("删除完成");
         return ResponseEntity.ok(common);
     }
-
-
-
-
 
 
 

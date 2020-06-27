@@ -26,7 +26,7 @@ public class UserUtils {
     public static SysUser getUserByToken(HttpServletRequest request){
         //获取请求头
         String header = request.getHeader(jwtProperties.getTokenName());
-        if ("login".contains(request.getRequestURI())){
+        if (request.getRequestURI().contains("login")){
             return null;
         }
         String token = header.replaceAll(jwtProperties.getPreToken(), "");

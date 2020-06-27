@@ -65,7 +65,7 @@ public class UserController {
 
     /**
      * 获取用户上次的参数
-     *
+     *userInfo
      * @param username 用户名
      * @param request  request队形
      */
@@ -124,7 +124,6 @@ public class UserController {
         sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
         //清除用户信息
         new SecurityContextLogoutHandler().logout(request, response, auth);
-
         CookieUtils.deleteCookie(request, response, "username");
         CookieUtils.deleteCookie(request, response, "remember");
         Common common = new Common("更新成功");
@@ -201,7 +200,6 @@ public class UserController {
         sysUserService.insertUser(sysUser);
         Common common = new Common("新建成功");
         return ResponseEntity.ok(common);
-
     }
 
 
@@ -230,6 +228,8 @@ public class UserController {
     public ResponseEntity<Common> getUserInfo(HttpServletRequest request) {
         SysUser user = UserUtils.getUserByToken(request);
         SysUser findsUser = sysUserService.findUserById(user.getId());
+        findsUser.setLasttime(user.getLasttime());
         return ResponseEntity.ok(new Common(findsUser));
     }
+
 }

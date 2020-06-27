@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -25,7 +27,6 @@ import java.util.*;
 @RestController
 @RequestMapping("upload")
 @Api(tags = "上传相关接口")
-
 public class UploadController {
 
 
@@ -43,9 +44,10 @@ public class UploadController {
     @ControllerLog(describe = "批量上传人员")
     @ApiOperation(value = "上传人员")
     @ApiImplicitParam(name = "file",value = "要上传的人脸",required = true,allowableValues = "jpg, png, jpeg")
-    public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile[] files ) throws Exception {
-        uploadService.uploadPersion(files);
-        Common common =new Common("上传成功");
+    public ResponseEntity<Common> uploadPersion(@RequestParam(value = "file") MultipartFile files, HttpServletRequest request) throws Exception {
+        //一次上传多个文件会导致返回结果中只包含最后一个id
+        String url = uploadService.uploadPersion(files, request);
+        Common common =new Common(url);
         return ResponseEntity.ok(common);
 
     }

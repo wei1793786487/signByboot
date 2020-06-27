@@ -77,7 +77,7 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
                     String refresh = redisTemplate.opsForValue().get(redisProperties.getTokenPre() + user.getId());
                     Boolean isoverTime = TimeUtils.CalculateTime(user.getLasttime(), redisProperties.getDisparity());
                     if (refresh!=null&&isoverTime){
-                        //如果redis里面有缓存的话并且没有超过一定时间没有登录，那么生成新的token
+                        //如果redis里面有缓存的话并且没有超过一定时间没有登录，那么生成新的token.
                         String newToken = JwtUtils.generateTokenExpireInMinutes(user, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
                         JsonResult result = ResultTool.fail(ResultCode.TOKEN_REFRESH,newToken);
                         JsonWriteUtlis.fail(request,response,result);

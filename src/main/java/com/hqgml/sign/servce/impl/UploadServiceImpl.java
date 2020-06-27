@@ -9,6 +9,7 @@ import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.MeetingPersion;
 import com.hqgml.sign.pojo.Persons;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,26 +71,30 @@ public class UploadServiceImpl implements UploadService {
      * 人员添加
      *
      * @param file
+     * @param request
      * @throws TencentCloudSDKException
      */
     @Override
-    public void uploadPersion(MultipartFile[] file) throws TencentCloudSDKException {
-        SysUser sysUser = sysUserService.findUserByUserName(null);
-        List<Persons> personlist = new ArrayList<>();
-        for (MultipartFile multipartFile : file) {
-            //大小
+    public String uploadPersion(MultipartFile file, HttpServletRequest request) throws TencentCloudSDKException {
+
+
+        SysUser userByToken = UserUtils.getUserByToken(request);
+        SysUser sysUser = sysUserService.findUserById(userByToken.getId());
+        Persons persons = new Persons();
+
+        //大小
             try {
-                if (multipartFile.getSize() == 0) {
+                if (file.getSize() == 0) {
                     throw new XxException(ExceptionEnums.FIlE_IS_NULL);
                 }
-                String filename = multipartFile.getOriginalFilename();
+                String filename = file.getOriginalFilename();
 
 
                 //空白名
                 if (StringUtils.isBlank(filename)) {
                     throw new XxException(ExceptionEnums.FIlENAME_IS_NULL);
                 }
-                String suffix = FileUtils.suffix(multipartFile.getOriginalFilename());
+                String suffix = FileUtils.suffix(file.getOriginalFilename());
                 String personname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
                 Persons person = personsService.selectOneByUsername(personname);
 
@@ -114,32 +120,29 @@ public class UploadServiceImpl implements UploadService {
                 if (StringUtils.equals(suffix, "zip")) {
                     //TODO 为zip的操作，暂时不做完成
                 } else {
-                    StorePath storePath = storageClient.uploadFile(multipartFile.getInputStream(), multipartFile.getSize(), suffix, null);
+                    StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), suffix, null);
                     log.info("文件上传的路径是" + storePath.getFullPath());
                     String uuid = IdUtil.simpleUUID();
-                    Persons persons = new Persons();
                     persons.setPersonName(personname);
                     persons.setUrl(storePath.getFullPath());
                     persons.setAddTime(DateUtil.now());
-                    persons.setAddId(sysUser.getId());
+                    persons.setAddId(userByToken.getId());
                     persons.setPhone("");
                     persons.setUuid(uuid);
                     //创建人员
                     personsService.createPersion(persons);
-                    personlist.add(persons);
                 }
             } catch (IOException e) {
                 log.error("文件上传异常", e);
                 throw new XxException(ExceptionEnums.SERVER_ERROR);
             }
-
             try {
                 //防止节点读取异常
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+
 
         try {
             //防止图片还没上传到服务器，腾讯云就开始下载文件了
@@ -148,21 +151,26 @@ public class UploadServiceImpl implements UploadService {
             e.printStackTrace();
         }
         //将数组的人脸添加进去
-        for (Persons person : personlist) {
             try {
-                tenlentServices.createPerson(sysUser.getId().toString(), person.getPersonName(), person.getUuid(), "http://www.hqgml.com/" + person.getUrl());
+                tenlentServices.createPerson(sysUser.getId().toString(), persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
             } catch (TencentCloudSDKException e) {
                 //先对异常进行处理
-                storageClient.deleteFile(person.getUrl());
-                personsService.delectByuuid(person.getUuid());
+                storageClient.deleteFile(persons.getUrl());
+                personsService.delectByuuid(persons.getUuid());
                 //这里抛出去是因为要丢给springmvc去处理异常；
                 throw e;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+
+        }
+        return persons.getUrl();
+
         }
 
-    }
+
+
+
+
 
     /**
      * 将人员添加进会员

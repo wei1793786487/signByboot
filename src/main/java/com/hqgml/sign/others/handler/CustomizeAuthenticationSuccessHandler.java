@@ -62,11 +62,10 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         String now = DateUtil.now();
         String address = AddressUtils.GetAddress(request);
         userService.updateLastimeByUserName(now, sysUser.getUsername());
-        session.setAttribute("address", sysUser.getAddress());
-        session.setAttribute("lasttime", sysUser.getLasttime());
         userService.updateLastAddressByUserName(address, sysUser.getUsername());
         //这里还可以进行其他的逻辑处理
         CookieUtils.setCookie(request, response, "username", sysUser.getUsername());
+
         try {
             String token = JwtUtils.generateTokenExpireInMinutes(sysUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
             stringRedisTemplate.opsForValue().set(redisProperties.getTokenPre()+sysUser.getId(),sysUser.getUsername(),redisProperties.getRedisCache(),TimeUnit.MINUTES);

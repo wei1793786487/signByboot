@@ -21,6 +21,11 @@ public interface PersonsMapper extends Mapper<Persons> {
 
     List<Persons> selectByPersonName(@Param("personName")String personName);
 
+     Persons selectByUrl(@Param("url")String url);
+
+
+
+
     /**
      * 查询签到情况
      * @param mid

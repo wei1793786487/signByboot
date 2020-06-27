@@ -3,6 +3,7 @@ package com.hqgml.sign.servce;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -14,8 +15,9 @@ public interface UploadService {
     /**
      * 文件人员上传
      * @param file
+     * @param request
      */
-     void uploadPersion(MultipartFile[] file) throws TencentCloudSDKException;
+     String uploadPersion(MultipartFile file, HttpServletRequest request) throws TencentCloudSDKException;
 
     /**
      * 上传会议人员
