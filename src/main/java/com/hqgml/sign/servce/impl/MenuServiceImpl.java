@@ -40,7 +40,7 @@ public class MenuServiceImpl implements MenuService {
             throw new XxException(ExceptionEnums.MENU_NOT_FIND);
         }
         if (type == 0) {
-            return menus;
+           return TreeUtils.setParentName(menus);
         } else {
             return TreeUtils.toTree(menus, 0);
         }

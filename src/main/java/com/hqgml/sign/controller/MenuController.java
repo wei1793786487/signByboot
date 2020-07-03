@@ -34,8 +34,7 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
-    @Autowired
-    private SysUserService userService;
+
 
 
     /**
@@ -49,6 +48,7 @@ public class MenuController {
         Common common = new Common(menu);
         return ResponseEntity.ok(common);
     }
+
 
     @DeleteMapping()
     @ControllerLog(describe = "删除菜单信息")
@@ -73,6 +73,7 @@ public class MenuController {
         Common<String> common = new Common<>("修改成功");
         return ResponseEntity.ok(common);
     }
+
 
 
 

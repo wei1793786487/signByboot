@@ -1,6 +1,10 @@
 package com.hqgml.sign.others.utlis;
 
 import com.hqgml.sign.pojo.Menu;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
+import sun.print.PeekGraphics;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +18,7 @@ public class TreeUtils {
     public static List<Menu> toTree(List<Menu> treeList, Integer pid) {
         List<Menu> retList = new ArrayList<Menu>();
         for (Menu parent : treeList) {
+
             if (pid.equals(parent.getParent())) {
                 retList.add(findChildren(parent,treeList));
             }
@@ -27,6 +32,7 @@ public class TreeUtils {
                 }
             }
         }
+
         return retList;
     }
 
@@ -44,4 +50,25 @@ public class TreeUtils {
         return parent;
     }
 
+   public static List<Menu> setParentName(List<Menu> parents){
+        List<Menu> list=new ArrayList<>();
+        for (Menu parent : parents) {
+            if ("0".equals(parent.getParent())) {
+                list.add(parent);
+            }else {
+                list.add(getParentId(parents, parent));
+            }
+        }
+       return list;
+   }
+
+    private static Menu getParentId(List<Menu> parents,Menu menu){
+
+        for (Menu parent : parents) {
+           if (menu.getParent().equals(parent.getId())){
+            menu.setParentName(parent.getMeta().getTitle());
+           }
+        }
+        return menu;
+    }
 }

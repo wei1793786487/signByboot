@@ -14,5 +14,8 @@ public interface MetaMapper {
 
     Meta selectById(@Param("id")Integer id);
 
+    int deleteById(@Param("id")Integer id);
+
+    int insertSelective(Meta meta);
 
 }

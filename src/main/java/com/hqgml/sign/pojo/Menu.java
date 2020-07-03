@@ -65,6 +65,10 @@ public class Menu implements Serializable {
     private String redirect;
 
     @Transient
+    private String parentName;
+
+
+    @Transient
     private Meta meta;
 
     @Transient
