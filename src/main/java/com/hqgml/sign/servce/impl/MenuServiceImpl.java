@@ -55,6 +55,14 @@ public class MenuServiceImpl implements MenuService {
     public void updateMenu(Menu menu, Integer id) {
 
     }
+
+    @Override
+    public void addMenu(Menu menu) {
+        int insert = menuMapper.insertSelective(menu);
+        if (insert!=1){
+            throw new  XxException(ExceptionEnums.ADD_TODO_ERROR);
+        }
+    }
 }
 
 

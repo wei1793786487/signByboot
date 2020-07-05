@@ -1,6 +1,8 @@
 package com.hqgml.sign;
 
+import com.hqgml.sign.controller.RoleController;
 import com.hqgml.sign.others.jwt.JwtUtils;
+import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.others.pojo.RedisProperties;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.ResponseEntity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +28,10 @@ class SignApplicationTests {
 
     @Autowired
     private RedisProperties redisProperties;
+
+
+    @Autowired
+    private RoleController roleController;
 
     @Test
     void contextLoads() {
@@ -65,8 +72,17 @@ class SignApplicationTests {
         System.out.println(infoFromToken);
     }
 
+
     @Test
     void getredis(){
         System.out.println(redisProperties.getRedisCache());
+    }
+
+
+
+    @Test
+    void findRole(){
+        ResponseEntity<Common> des = roleController.getDes(1);
+        System.out.println(des);
     }
 }

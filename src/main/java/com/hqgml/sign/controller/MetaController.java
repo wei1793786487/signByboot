@@ -34,6 +34,7 @@ public class MetaController {
      return ResponseEntity.ok(new Common(metas));
     }
 
+
     @DeleteMapping()
     @ControllerLog(describe = "删除菜单信息")
     public ResponseEntity<Common<String>> deleteMenu(@RequestParam("id") Integer id) {

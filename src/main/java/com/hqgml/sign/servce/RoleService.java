@@ -12,4 +12,16 @@ public interface RoleService{
 
    List<Role> selectRoleListByUid(Integer id);
 
+   void insertObe(Role role);
+
+   void deleteById(Integer id);
+
+   void updateRole(Role role);
+
+   List<Role> findAll();
+
+   void desRole(Integer[] rid, Integer mid);
+
+   List<Role> findRoleDes(Integer id);
+
 }

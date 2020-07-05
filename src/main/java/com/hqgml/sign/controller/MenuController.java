@@ -35,8 +35,6 @@ public class MenuController {
     private MenuService menuService;
 
 
-
-
     /**
      * 查询
      */
@@ -75,6 +73,14 @@ public class MenuController {
     }
 
 
+    @PostMapping()
+    @ControllerLog(describe = "新增菜单")
+    @ApiOperation(value = "新增菜单")
+    public ResponseEntity<Common<String>> addMeun(@Valid Menu menu) {
+        menuService.addMenu(menu);
+        Common<String> common = new Common<>("添加成功");
+        return ResponseEntity.ok(common);
+    }
 
 
 }

@@ -17,5 +17,25 @@ public interface RoleMapper  {
 
     List<Role> selectAllByMetaId(@Param("id")Integer id);
 
+    int insertSelective(Role role);
+
+	int deleteById(@Param("id")Integer id);
+
+	List<Role> selectAll();
+
+    void desRole(@Param("rid")int rid,@Param("mid") int mid);
+
+    List<Role> selectAllById(@Param("id")Integer id);
+
+
+    /**
+     * 清除所有的角色绑定信息
+     * @param mid
+     * @return
+     */
+    int cleanRole(@Param("mid")Integer mid);
+
+
+
 
 }

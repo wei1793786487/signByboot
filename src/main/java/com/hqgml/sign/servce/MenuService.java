@@ -28,6 +28,13 @@ public interface MenuService {
      * @param id
      */
     void updateMenu(Menu menu, Integer id);
+
+
+    /**
+     * 添加菜单
+     * @param menu
+     */
+    void  addMenu(Menu menu);
 }
 
 
