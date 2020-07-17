@@ -97,9 +97,7 @@ public class MeetingController {
     @DeleteMapping
     @ControllerLog(describe = "删除所选会议")
     @ApiOperation(value = "删除会议")
-
     @ApiImplicitParam(name = "ids",value = "要删除的会议的id的数组",required = true)
-
     public ResponseEntity<Common> delete(@RequestParam("ids") Integer[] ids) {
         meetingService.deleteMeeting(ids);
         Common common = new Common("删除成功");
@@ -120,7 +118,6 @@ public class MeetingController {
             @ApiImplicitParam(name = "mid",value = "要添加的会议的id",required = true),
             @ApiImplicitParam(name = "pids",value = "要添加的人员id 数组类型",required = true),
     })
-    @ApiImplicitParam(name = "mid",value = "要删除的会议的id的数组")
 
     public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid, @RequestParam("pids") Integer[] pids) {
         List<String> message = meetingService.addMeetingPeople(mid, pids);
@@ -180,6 +177,30 @@ public class MeetingController {
         return ResponseEntity.ok(new Common(meetings));
 
     }
+
+    /**
+     * 将某个人员移除会议
+     *
+     * @param ids 要移除的id的数组
+     *
+     */
+    @DeleteMapping("person")
+    @ControllerLog(describe = "将人员从会议里面移除")
+    @ApiOperation(value = "将人员从会议里面移除")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "mid",value = "要移除的会议的id",required = true),
+            @ApiImplicitParam(name = "ids",value = "要删除的人员id 数组类型",required = true),
+    })
+    public ResponseEntity<Common> removePerson(
+            @RequestParam("ids") Integer[] ids,
+            @RequestParam("mid") Integer mid
+    ) {
+        meetingService.removePerson(ids,mid);
+        Common common = new Common("删除成功");
+        return ResponseEntity.ok(common);
+    }
+
+
 
 
 }

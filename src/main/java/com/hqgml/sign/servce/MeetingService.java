@@ -57,6 +57,7 @@ public interface MeetingService {
      */
     List<Meeting> selectLikeMeetingName(String meetingname);
 
+    void  removePerson(Integer[] ids,Integer mid);
 }
 
 

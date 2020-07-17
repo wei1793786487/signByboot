@@ -1,5 +1,6 @@
 package com.hqgml.sign;
 
+import com.hqgml.sign.controller.PersonController;
 import com.hqgml.sign.controller.RoleController;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.Common;
@@ -7,6 +8,7 @@ import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.pojo.SysUser;
+import com.tencentcloudapi.tci.v20190318.models.Person;
 import javafx.scene.chart.XYChart;
 import org.apache.commons.collections4.SplitMapUtils;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,8 @@ class SignApplicationTests {
     @Autowired
     private RedisProperties redisProperties;
 
+    @Autowired
+    private PersonController personController;
 
     @Autowired
     private RoleController roleController;
@@ -84,5 +88,8 @@ class SignApplicationTests {
     void findRole(){
         ResponseEntity<Common> des = roleController.getDes(1);
         System.out.println(des);
+    }
+    @Test
+    void Person(){
     }
 }

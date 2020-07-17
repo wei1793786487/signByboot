@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
 import org.springframework.transaction.annotation.Transactional;
+import sun.security.provider.MD2;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -84,13 +85,13 @@ public class PersonsServiceImpl implements PersonsService {
     @Override
     public void updatePersonById(@Valid Persons persons) {
         //这个接口只允许修改手机号以及姓名，不可以修改其他的所以使用@Valid来约束
-        if (StringUtils.isNotBlank(persons.getPhone())){
+        if (StringUtils.isNotBlank(persons.getPhone())) {
             String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
             Pattern p = Pattern.compile(regex);
             Matcher m = p.matcher(persons.getPhone());
             boolean isMatch = m.matches();
-            if (!isMatch){
-                throw  new XxException(ExceptionEnums.PHONE_ERROT);
+            if (!isMatch) {
+                throw new XxException(ExceptionEnums.PHONE_ERROT);
             }
         }
         int update = personsMapper.updateByPrimaryKeySelective(persons);
@@ -158,6 +159,22 @@ public class PersonsServiceImpl implements PersonsService {
 
         return personsMapper.count();
     }
+
+    @Override
+    public List<Persons> findPersonBelong(Integer type, String mid, HttpServletRequest request) {
+        SysUser user = UserUtils.getUserByToken(request);
+        List<Persons> persons;
+        if (type == 2) {
+          persons=personsMapper.findAllByAddId(user.getId(),null);
+        } else if (type == 0) {
+            persons = personsMapper.findNotBelong(mid, user.getId() + "");
+        } else {
+            persons = personsMapper.findBelong(mid, user.getId() + "");
+        }
+        return persons;
+    }
+
+
 
 
 }

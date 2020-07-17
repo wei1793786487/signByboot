@@ -42,7 +42,7 @@ public interface PersonsMapper extends Mapper<Persons> {
      * @return
      */
 
-   List<Persons> selectAllByMid(@Param("mid") Integer mid);
+   List<Persons> selectBelongAllByMid(@Param("mid") Integer mid);
 
     /**
      * 根据uuid查询单个
@@ -56,6 +56,28 @@ public interface PersonsMapper extends Mapper<Persons> {
      * @return
      */
     Integer count();
+
+
+    /**
+     * 查询属于这个会议的人
+     * @param mid
+     * @return
+     */
+    List<Persons> findBelong(@Param("mid")String mid,@Param("addId")String addId);
+
+
+    /**
+     * 查询不属于这个会议的人
+     * @param mid
+     * @return
+     */
+    List<Persons> findNotBelong(@Param("mid")String mid,@Param("addId")String addId);
+
+
+
+    Persons selectAllByMid(@Param("id")Integer id);
+
+     int romovePerson(@Param("ids")Integer[] ids,@Param("mid") Integer mid);
 
 
 

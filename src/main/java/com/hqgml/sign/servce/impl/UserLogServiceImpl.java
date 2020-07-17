@@ -3,6 +3,7 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.SysUserService;
@@ -55,7 +56,7 @@ public class UserLogServiceImpl implements UserLogService {
     }
 
     @Override
-    public LayUi selectLog( String serch, Integer page, Integer limit) {
+    public MyPageInfo<UserLog> selectLog(String serch, Integer page, Integer limit) {
         SysUser user =SysUserService.findUserByUserName(null);
         PageHelper.startPage(page, limit);
         List<UserLog> userLogs = userLogMapper.selectByAddId(user.getId(), serch);
@@ -64,10 +65,8 @@ public class UserLogServiceImpl implements UserLogService {
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
         }
         PageInfo<UserLog> brandPageInfo = new PageInfo<>(userLogs);
-        LayUi<UserLog> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(userLogs);
-        return layUi;
+        MyPageInfo<UserLog> logs=new MyPageInfo<UserLog>(brandPageInfo.getTotal(),userLogs);
+        return logs;
     }
 
     @Override

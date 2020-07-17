@@ -40,7 +40,7 @@ public class MsgServicesImpl implements MsgServices {
     @ServiceLog(describe = "通知会议人员")
     public void sendMsgAllMeeting(Integer metingId) {
 
-        List<Persons> persons = personsMapper.selectAllByMid(metingId);
+        List<Persons> persons = personsMapper.selectBelongAllByMid(metingId);
         if (persons.size()== 0) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }

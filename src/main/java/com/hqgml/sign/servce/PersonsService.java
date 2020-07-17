@@ -5,6 +5,7 @@ import com.hqgml.sign.pojo.Persons;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Devil
@@ -91,6 +92,17 @@ public interface PersonsService {
      * @return
      */
     Integer selectCount();
+
+    /**
+     * 查询某个会议的参加情况
+     * @param type
+     * @param mid
+     * @param request
+     * @return
+     */
+    List<Persons> findPersonBelong(Integer type, String mid, HttpServletRequest request);
+
+
 }
 
 

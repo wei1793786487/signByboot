@@ -204,7 +204,10 @@ public class MeetingServiceImpl implements MeetingService {
         }
         return meetings;
     }
-
+    @Override
+    public void removePerson(Integer[] ids, Integer mid) {
+        personsMapper.romovePerson(ids,mid);
+    }
 
 }
 

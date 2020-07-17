@@ -1,6 +1,7 @@
 package com.hqgml.sign.servce;
 
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.UserLog;
 
 /**
@@ -21,7 +22,7 @@ public interface UserLogService {
      * @param limit
      * @return
      */
-    LayUi selectLog(String serch, Integer page, Integer limit);
+    MyPageInfo<UserLog> selectLog(String serch, Integer page, Integer limit);
 
     /**
      * @param ids

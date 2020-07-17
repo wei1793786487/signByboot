@@ -2,6 +2,8 @@ package com.hqgml.sign.controller;
 
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.impl.UserLogServiceImpl;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
@@ -37,7 +39,7 @@ public class LogController {
             @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
             @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer")
     })
-    public LayUi selectByAddId(
+    public MyPageInfo<UserLog> selectByAddId(
             @RequestParam(name = "serch", required = false) String serch,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
@@ -50,7 +52,7 @@ public class LogController {
     @ControllerLog(describe = "删除所选日志")
     @ApiOperation(value = "删除日志信息")
     @ApiImplicitParam(name = "ids[]",value = "要删除的日志的数组")
-    public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
+    public ResponseEntity<Common> delete(@RequestParam("ids") Integer[] ids) {
         userLogService.deleteLog(ids);
         Common common = new Common("删除成功");
         return ResponseEntity.ok(common);
