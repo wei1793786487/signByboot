@@ -19,12 +19,10 @@ import lombok.Data;
 public class Meeting implements Serializable {
     @Id
     @Column(name = "id")
-    @Null
     @ApiModelProperty(hidden = true)
     @GeneratedValue(generator = "JDBC")
     private Integer id;
 
-    @Null
     @ApiModelProperty(hidden = true)
     @Column(name = "add_id")
     private Integer addId;
@@ -61,7 +59,6 @@ public class Meeting implements Serializable {
     private String meetingPhone;
 
     @ApiModelProperty(hidden = true)
-    @Null
     @Column(name = "uuid")
     private String uuid;
 
@@ -81,7 +78,17 @@ public class Meeting implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Transient
-    @Null
     @ApiModelProperty(hidden = true)
     private Integer persionNumber;
+
+    @Transient
+    @ApiModelProperty(hidden = true)
+/*
+远程搜素的value值会作为选定值
+ */
+    private String value;
+
+    public String getValue() {
+        return meetingName;
+    }
 }

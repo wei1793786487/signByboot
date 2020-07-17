@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 
+import com.hqgml.sign.others.annotation.Phone;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,6 +41,7 @@ public class Persons implements Serializable {
 
     @ApiModelProperty(value = "人员联系方式",example="151xxxxxxx",required = true)
     @Column(name = "phone")
+    @Phone
     private String phone;
 
     @Null

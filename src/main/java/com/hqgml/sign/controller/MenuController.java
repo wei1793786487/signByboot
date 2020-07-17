@@ -51,7 +51,7 @@ public class MenuController {
     @DeleteMapping()
     @ControllerLog(describe = "删除菜单信息")
     @ApiOperation(value = "删除菜单信息")
-    @ApiImplicitParam(name = "ids[]", value = "要删除的菜单的id的数组")
+    @ApiImplicitParam(name = "id", value = "要删除的菜单的id")
     public ResponseEntity<Common<String>> deleteMenu(@RequestParam("ids") Integer[] ids) {
         menuService.deleteMenu(ids);
         Common<String> common = new Common<>("删除成功");

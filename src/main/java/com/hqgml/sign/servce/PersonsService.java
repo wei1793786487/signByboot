@@ -1,8 +1,10 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Persons;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Devil
@@ -43,7 +45,7 @@ public interface PersonsService {
      * @param username
      * @return
      */
-    LayUi selectAllByusername(String s, Integer page, Integer limit, String username);
+    MyPageInfo<Persons> selectAllByusername(String s, Integer page, Integer limit, String username, HttpServletRequest request);
 
     /**
      * 通过id更新

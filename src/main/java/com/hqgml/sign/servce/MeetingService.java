@@ -1,6 +1,6 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Meeting;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface MeetingService {
 
     void addMeeting(Meeting meeting);
 
-    LayUi getMeetingByUser(String username, Integer page, Integer limit, String personName);
+    MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String personName);
 
     void updateMeeting(Meeting meeting);
 

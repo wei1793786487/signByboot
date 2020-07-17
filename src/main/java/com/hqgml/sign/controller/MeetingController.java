@@ -2,6 +2,7 @@ package com.hqgml.sign.controller;
 
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.others.annotation.ControllerLog;
@@ -62,14 +63,14 @@ public class MeetingController {
             @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer"),
             @ApiImplicitParam(name = "meetingName",value = "搜索的会议的名字，仅支持会议的名字"),
     })
-    public ResponseEntity<LayUi> getAllByUser(
+    public ResponseEntity<MyPageInfo> getAllByUser(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
             @RequestParam(name = "meetingName", required = false) String meetingName
     ) {
-        LayUi data = meetingService.getMeetingByUser(username, page, limit, meetingName);
-        return ResponseEntity.ok(data);
+        MyPageInfo<Meeting> meeting = meetingService.getMeetingByUser(username, page, limit, meetingName);
+        return ResponseEntity.ok(meeting);
     }
 
     /**
@@ -97,9 +98,9 @@ public class MeetingController {
     @ControllerLog(describe = "删除所选会议")
     @ApiOperation(value = "删除会议")
 
-    @ApiImplicitParam(name = "ids[]",value = "要删除的会议的id的数组",required = true)
+    @ApiImplicitParam(name = "ids",value = "要删除的会议的id的数组",required = true)
 
-    public ResponseEntity<Common> delete(@RequestParam("ids[]") Integer[] ids) {
+    public ResponseEntity<Common> delete(@RequestParam("ids") Integer[] ids) {
         meetingService.deleteMeeting(ids);
         Common common = new Common("删除成功");
         return ResponseEntity.ok(common);

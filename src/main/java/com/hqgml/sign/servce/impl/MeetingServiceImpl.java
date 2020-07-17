@@ -5,7 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.SysUserService;
@@ -62,7 +62,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public LayUi getMeetingByUser(String username, Integer page, Integer limit, String meetingName) {
+    public MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String meetingName) {
         SysUser sysUser;
         if (username == null) {
             sysUser = sysUserService.findUserByUserName(null);
@@ -75,10 +75,8 @@ public class MeetingServiceImpl implements MeetingService {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         PageInfo<Meeting> brandPageInfo = new PageInfo<>(meetings);
-        LayUi<Meeting> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(meetings);
-        return layUi;
+        return new MyPageInfo<Meeting>(brandPageInfo.getTotal(),meetings);
+
     }
 
     @Override

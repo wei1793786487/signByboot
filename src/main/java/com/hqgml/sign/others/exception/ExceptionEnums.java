@@ -39,6 +39,7 @@ public enum ExceptionEnums {
     PSRSON_NOT_FIND(404, "人员未找到"),
     NOT_HAVE_AUTHORITY(401, "权限不足"),
     PARAMETER_ERROT(400, "参数错误"),
+    PHONE_ERROT(400, "电话号码格式错误"),
     PERSON_IS_HAVE(400, "该人员已存在该会议"),
     LOFIN_ERROR(400, "账号或者密码错误"),
     EMPTY_ERROR(400, "输入项为空"),

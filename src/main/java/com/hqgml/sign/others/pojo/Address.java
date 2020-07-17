@@ -32,6 +32,6 @@ public class Address {
 
     public String getValue() {
         //这里是因为搜索插件需要一个value作为唯一标识
-        return uid;
+        return name;
     }
 }

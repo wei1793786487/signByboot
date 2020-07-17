@@ -4,6 +4,7 @@ import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.others.annotation.ControllerLog;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 
 /**
@@ -45,29 +47,28 @@ public class PersonController {
             @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer"),
             @ApiImplicitParam(name = "personName",value = "要搜索的人员的名字"),
     })
-    public ResponseEntity<LayUi> findAllByUserNname(
+    public ResponseEntity<MyPageInfo<Persons>> findAllByUserNname(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
-            @RequestParam(name = "personName", required = false) String personName
+            @RequestParam(name = "personName", required = false) String personName,
+            HttpServletRequest request
     ) {
-        //这里的username使用null因为使用sring security容器里面的用户
-        LayUi data = personsService.selectAllByusername(username, page, limit, personName);
+        MyPageInfo<Persons> data = personsService.selectAllByusername(username, page, limit, personName,request);
         return ResponseEntity.ok(data);
-
     }
 
     /**
      *  更新人员信息
      * @param persons  人员信息
-     *
      */
     @PutMapping
     @ControllerLog(describe = "更新人员信息")
     @ApiOperation(value = "更新人员信息")
     public ResponseEntity<Common> updatePersonNameById(Persons persons){
        personsService.updatePersonById(persons);
-        Common common = new Common(null);
+
+        Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }
 
@@ -81,11 +82,11 @@ public class PersonController {
     @ControllerLog(describe = "人员库删除人员")
     @ApiOperation(value = "删除人员接口")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ids[]",value = "要删除的人员的id的数组"),
-            @ApiImplicitParam(name = "urr",value = "要删除的人员的图片位置")
+            @ApiImplicitParam(name = "ids",value = "要删除的人员的id的数组"),
+            @ApiImplicitParam(name = "url",value = "要删除的人员的图片位置")
     })
     public ResponseEntity<Common> deleteByIds(
-            @RequestParam(value = "ids[]",required = false)  Integer[] ids,
+            @RequestParam(value = "ids",required = false)  Integer[] ids,
             @RequestParam(value = "url",required = false)  String url
     ) throws TencentCloudSDKException {
         if (ids==null&&url==null){

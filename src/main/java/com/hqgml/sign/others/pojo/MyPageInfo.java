@@ -38,5 +38,17 @@ public class MyPageInfo<T> {
     private List<T> data;
 
 
+    public MyPageInfo(Long count, List<T> data) {
+        this.count = count;
+        this.data = data;
+    }
 
+    public MyPageInfo(Integer code, Long count, List<T> data) {
+        this.code = code;
+        this.count = count;
+        this.data = data;
+    }
+
+    public MyPageInfo() {
+    }
 }

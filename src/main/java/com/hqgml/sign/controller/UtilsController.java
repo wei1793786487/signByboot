@@ -2,6 +2,7 @@ package com.hqgml.sign.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.hqgml.sign.others.pojo.Address;
 import com.hqgml.sign.others.pojo.BaiduResult;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -139,19 +141,19 @@ public class UtilsController {
     @ResponseBody
     @ApiOperation(value = "模糊插叙地点")
     @ApiImplicitParam(name = "keyword",value = "要查询的关键字")
-    public ResponseEntity<LayUi> findAddress(@RequestParam("keyword") String keyword) {
-
-        LayUi layUi = new LayUi();
-        String coordinate = AddressUtils.getCoordinate(keyword, "", null);
+    public ResponseEntity<Common> findAddress(@RequestParam("keyword") String keyword,
+    HttpServletRequest request
+    ) {
+        Common common=null;
+        String coordinate = AddressUtils.getCoordinate(keyword, "", request);
         JSONObject jsonObject = JSON.parseObject(coordinate);
         if (jsonObject.getInteger("status") == 0) {
             BaiduResult baiduResult = JSON.parseObject(coordinate, BaiduResult.class);
-            layUi.setMsg("success");
-            layUi.setData(baiduResult.getResult());
+            common=new Common(baiduResult.getResult());
         } else {
             throw new XxException(ExceptionEnums.ADDRESS_ERROR);
         }
-        return ResponseEntity.ok(layUi);
+        return ResponseEntity.ok(common);
 
     }
 

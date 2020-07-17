@@ -55,9 +55,8 @@ public class FaceController {
             @RequestParam("lat") String latitude,
             @RequestParam("long") String longitude
     ) throws TencentCloudSDKException {
-        //看看是不是超过了500米
-        double source= 500d;
-
+        //看看是不是超过了100米
+        double source= 100d;
         Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
         //获取格式转换的所需要的坐标
         String parm=longitude+","+latitude;
@@ -72,7 +71,7 @@ public class FaceController {
         double distance = Distance.getDistance(lng, lat,lng2 ,lat2);
 
          if (distance>source){
-             return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,500米之内可签到"));
+             return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,100米之内可签到"));
          }
 
         if (!StringUtils.equals(mid,"")&&!StringUtils.equals(imgStr,"")){
