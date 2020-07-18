@@ -1,7 +1,8 @@
 package com.hqgml.sign.controller;
 
 import com.hqgml.sign.others.pojo.Common;
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.CheckServices;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
@@ -45,15 +46,15 @@ public class CheckController {
             @ApiImplicitParam(name = "isCheck",value = "要查询的签到状态,0为未签到,1为签到",type = "Integer")
 
     })
-    public ResponseEntity<LayUi> selectSignPerson(
+    public ResponseEntity<MyPageInfo<Persons>> selectSignPerson(
             @PathVariable("mid") Integer mid,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
             @RequestParam(name = "personName", required = false) String personName,
             @RequestParam(name = "isCheck", required = false) Integer isCheck
     ) {
-        LayUi layUi = checkServices.selectCheck(mid, page, limit, personName, isCheck);
-        return ResponseEntity.ok(layUi);
+        MyPageInfo<Persons> pageInfo = checkServices.selectCheck(mid, page, limit, personName, isCheck);
+        return ResponseEntity.ok(pageInfo);
     }
 
     /**

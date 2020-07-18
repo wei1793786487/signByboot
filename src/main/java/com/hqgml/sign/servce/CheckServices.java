@@ -1,6 +1,7 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.pojo.Persons;
 
 /**
  * @author Devil
@@ -17,7 +18,7 @@ public interface CheckServices {
      * @param isCheck
      * @return
      */
-    LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName, Integer isCheck);
+    MyPageInfo<Persons> selectCheck(Integer mid, Integer page, Integer limit, String personName, Integer isCheck);
 
     /**
      * 改变签到状态

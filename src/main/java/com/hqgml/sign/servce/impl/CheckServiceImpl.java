@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.servce.CheckServices;
 import com.hqgml.sign.others.exception.ExceptionEnums;
@@ -30,20 +30,15 @@ public class CheckServiceImpl implements CheckServices {
     private MeetingPersionMapper meetingPersionMapper;
 
     @Override
-    public LayUi selectCheck(Integer mid, Integer page, Integer limit, String personName, Integer isCheck) {
+    public MyPageInfo<Persons> selectCheck(Integer mid, Integer page, Integer limit, String personName, Integer isCheck) {
         PageHelper.startPage(page, limit);
         List<Persons> checkPerson = personsMapper.findCheckPerson(mid, personName,isCheck);
         if (checkPerson == null||checkPerson.size()==0) {
             log.error("未找到人员");
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }
-
-
         PageInfo<Persons> brandPageInfo = new PageInfo<>(checkPerson);
-        LayUi<Persons> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(checkPerson);
-        return layUi;
+        return new MyPageInfo<>(brandPageInfo.getTotal(),checkPerson);
     }
 
     @Override
