@@ -38,14 +38,14 @@ tenlent:
     SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8
   sms:
 
-    appId: 1400301549
-    appKey: cbb7366480d67226d25b24ee45fe43a5
+    appId: 1400401687
+    appKey: b6f6fa209ba35122f5f3986e7fa827cf
 #    签名
     sign: hqgml
 #      通知全体
-    sendAllTemplateId: 527457
+    sendAllTemplateId: 667078
 #      通知单个
-    sendOneTemplateId: 527160
+    sendOneTemplateId: 667080
 
 #logging:
 #  level:
@@ -64,8 +64,8 @@ fdfs:
 hqgml:
   jwt:
     secret: dqdq@token(Auth}*^31)&hwwww% # 登录校验的密钥
-    pubKeyPath: G:\jwtdemo\rsa.pub # 公钥地址
-    priKeyPath: G:\jwtdemo\rsa.pri # 私钥地址
+    pubKeyPath: E:\jwtdemo\rsa.pub # 公钥地址
+    priKeyPath: E:\jwtdemo\rsa.pri # 私钥地址
     expire: 130 #过期时间,单位分钟
     cookieName: auth
     tokenName: Authorization
