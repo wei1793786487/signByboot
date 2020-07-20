@@ -74,6 +74,7 @@ public class CheckController {
             @ApiImplicitParam(name = "ids",value = "要修改的id,数组类型，如[1,2,3]",type = "Integer[]"),
     })
     public ResponseEntity<Common> chanceCheck(@PathVariable("mid") Integer mid, @PathVariable("isCheck") Integer check, @RequestParam("ids") Integer[] ids) {
+        System.out.println(ids);
         checkServices.updateCheck(mid, check, ids);
         return ResponseEntity.ok(new Common("修改完成"));
     }
