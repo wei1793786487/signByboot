@@ -1,6 +1,6 @@
 package com.hqgml.sign.servce;
 
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.SysUser;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -62,7 +62,7 @@ public interface SysUserService extends UserDetailsService {
     /**
      * 查找所有用户
      */
-    LayUi<SysUser> findUserList(Integer page, Integer limit, String search);
+    MyPageInfo<SysUser> findUserList(Integer page, Integer limit, String search);
 
     /**
      * 根据id查询用户

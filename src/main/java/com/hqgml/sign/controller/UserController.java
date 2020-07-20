@@ -1,10 +1,6 @@
 package com.hqgml.sign.controller;
 
-import com.hqgml.sign.others.jwt.JwtUtils;
-import com.hqgml.sign.others.pojo.Common;
-import com.hqgml.sign.others.pojo.JwtProperties;
-import com.hqgml.sign.others.pojo.LayUi;
-import com.hqgml.sign.others.pojo.Payload;
+import com.hqgml.sign.others.pojo.*;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.MeetingService;
@@ -23,22 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Devil
@@ -191,7 +183,6 @@ public class UserController {
      *
      * @param sysUser 用户对象
      */
-    @Secured("ROLE_ADMIN")
     @PostMapping
     @ControllerLog(describe = "新建用户")
 
@@ -205,12 +196,10 @@ public class UserController {
 
     /**
      * 查找所有用户
-     *
-     * @param page   页面
+     *  @param page   页面
      * @param limit  多少行
      * @param search 搜索
      */
-    @Secured("ROLE_ADMIN")
     @GetMapping()
     @ControllerLog(describe = "查看所有用户")
     @ApiOperation(value = "查找所有的用户，仅admin有访问权限")
@@ -219,7 +208,7 @@ public class UserController {
             @ApiImplicitParam(name = "limit", value = "每页的大小", defaultValue = "15", type = "Integer"),
             @ApiImplicitParam(name = "search", value = "要查询的用户"),
     })
-    public LayUi<SysUser> selectAll(Integer page, Integer limit, String search) {
+    public MyPageInfo<SysUser> selectAll(Integer page, Integer limit, String search) {
         return sysUserService.findUserList(page, limit, search);
     }
 

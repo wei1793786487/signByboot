@@ -2,7 +2,7 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.RoleService;
@@ -199,7 +199,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public LayUi<SysUser> findUserList(Integer page, Integer limit, String search) {
+    public MyPageInfo<SysUser> findUserList(Integer page, Integer limit, String search) {
         PageHelper.startPage(page, limit);
         List<SysUser> sysUsers = sysUserMapper.selectAllUser(search);
 
@@ -207,10 +207,7 @@ public class SysUserServiceImpl implements SysUserService {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
         PageInfo<SysUser> brandPageInfo = new PageInfo<>(sysUsers);
-        LayUi<SysUser> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(sysUsers);
-        return layUi;
+          return  new MyPageInfo<SysUser>(brandPageInfo.getTotal(),sysUsers);
     }
 
     @Override
