@@ -26,7 +26,6 @@ import java.util.Map;
 public class CheckController {
 
     @Autowired
-
     private CheckServices checkServices;
 
     /**
