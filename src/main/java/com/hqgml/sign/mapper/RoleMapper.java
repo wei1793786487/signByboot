@@ -17,7 +17,6 @@ public interface RoleMapper  {
 
     List<Role> selectAllByMetaId(@Param("id")Integer id);
 
-    int insertSelective(Role role);
 
 	int deleteById(@Param("id")Integer id);
 
@@ -39,6 +38,13 @@ public interface RoleMapper  {
 
 
   int updateById(@Param("updated")Role updated,@Param("id")Integer id);
+
+
+   int insertList(@Param("list")List<Role> list);
+
+
+ int insertSelective(Role role);
+
 
 
 

@@ -86,12 +86,9 @@ public class RoleController {
     @GetMapping("{id}")
     @ControllerLog(describe = "根据id查询角色")
     @ApiOperation(value = "根据id查询角色")
-    public ResponseEntity<Common> getRoleById(
-            @PathVariable("id") String id) {
-        {
-            Role role = roleService.findById(id);
-            return ResponseEntity.ok(new Common(role));
-        }
+    public ResponseEntity<Common> getRoleById(@PathVariable("id") String id) {
+        Role role = roleService.findById(id);
+        return ResponseEntity.ok(new Common(role));
     }
 
 
@@ -99,12 +96,11 @@ public class RoleController {
      * 删除所选就是
      *
      * @param ids 要删除的角色的id数组
-     *
      */
     @DeleteMapping
     @ControllerLog(describe = "删除角色")
     @ApiOperation(value = "删除角色")
-    @ApiImplicitParam(name = "ids",value = "要删除的角色的id的数组",required = true)
+    @ApiImplicitParam(name = "ids", value = "要删除的角色的id的数组", required = true)
     public ResponseEntity<Common> delete(@RequestParam("ids") Integer[] ids) {
         roleService.deleteRole(ids);
         Common common = new Common("删除成功");
@@ -126,7 +122,6 @@ public class RoleController {
      * 添加角色
      *
      * @param role 会议对象
-     *
      */
     @PostMapping
     @ControllerLog(describe = "添加角色")
