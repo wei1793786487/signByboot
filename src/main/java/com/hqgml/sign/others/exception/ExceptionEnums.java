@@ -31,6 +31,7 @@ public enum ExceptionEnums {
     TPDO_NOT_FIND(400,"todo没有找到"),
     PHONE_RRROR(400, "联系方式格式不正确"),
     INSUFFICIENT_AUTHORITY(403, "权限不足"),
+    UODATE_SUPER_ERROE(403, "账号不可更新状态"),
     PERSON_EXIST(401, "该姓名人员已经存在"),
     LOG_NOT_FIND(404, "日志未找到"),
     MEETING_ADD_ERROR(400, "会议添加异常"),

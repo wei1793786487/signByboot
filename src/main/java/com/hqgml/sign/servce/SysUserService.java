@@ -5,6 +5,8 @@ import com.hqgml.sign.pojo.SysUser;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Devil
  * @date 2020/1/5 19:33
@@ -71,6 +73,14 @@ public interface SysUserService extends UserDetailsService {
      * @return
      */
     SysUser findUserById(Integer id);
+
+    /**
+     * 更新用户可用状态
+     * @param userId
+     * @param state
+     * @param request
+     */
+    void updateState(Integer userId, Integer state, HttpServletRequest request);
 }
 
 

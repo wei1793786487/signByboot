@@ -3,6 +3,7 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.RoleService;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.persistence.Id;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.hqgml.sign.mapper.SysUserMapper;
@@ -73,7 +76,7 @@ public class SysUserServiceImpl implements SysUserService {
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         for (Role role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
         }
         User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getIsenabled().equals(0) ? true : false, true, true, true, grantedAuthorities);
         return user;
@@ -217,6 +220,19 @@ public class SysUserServiceImpl implements SysUserService {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
         return sysUser;
+    }
+
+    @Override
+    public void updateState(Integer userId, Integer state, HttpServletRequest request) {
+        SysUser user = UserUtils.getUserByToken(request);
+        SysUser byId = sysUserMapper.findOneById(userId);
+        for (Role role : byId.getRoles()) {
+            if (StringUtils.containsIgnoreCase(role.getRoleName(),"ADMIN")){
+                throw new XxException(ExceptionEnums.UODATE_SUPER_ERROE);
+            }
+        }
+        sysUserMapper.updateIsenabledById(state, userId);
+
     }
 }
 

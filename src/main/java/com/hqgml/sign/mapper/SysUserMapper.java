@@ -19,6 +19,11 @@ public interface SysUserMapper extends Mapper<SysUser> {
     List<SysUser> selectAllUser(@Param("search") String search);
 
     SysUser findOneById(@Param("id")Integer id);
+   int updateIsenabledById(@Param("updatedIsenabled")Integer updatedIsenabled,@Param("id")Integer id);
+
+   int deleteById(@Param("id")Integer id);
+
+
 
 
 }

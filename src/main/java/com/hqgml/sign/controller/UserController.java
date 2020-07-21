@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,7 +58,8 @@ public class UserController {
 
     /**
      * 获取用户上次的参数
-     *userInfo
+     * userInfo
+     *
      * @param username 用户名
      * @param request  request队形
      */
@@ -122,6 +124,7 @@ public class UserController {
         return ResponseEntity.ok(common);
     }
 
+
     /**
      * 更新用户信息
      *
@@ -130,25 +133,30 @@ public class UserController {
     @PutMapping()
     @ControllerLog(describe = "更新用户信息")
     @ApiOperation(value = "跟新用户信息")
-    public ResponseEntity<Common> updateUser(SysUser sysUser) {
-        boolean isSuper = false;
-        //todo 超管可以设置自己的账号不可用，这样就全部都不可用了，哈哈哈哈，系统崩溃bug
-        //判断更新用户是不是当前存在的用户，防止恶意请求
-        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Collection<GrantedAuthority> authorities = userDetails.getAuthorities();
-        for (GrantedAuthority authority : authorities) {
-            if (StringUtils.contains(authority.getAuthority(), "ADMIN")) {
-                isSuper = true;
-            }
-        }
-
-        if (!isSuper && !userDetails.getUsername().equals(sysUser.getUsername())) {
+    public ResponseEntity<Common> updateUser(SysUser sysUser, HttpServletRequest request) {
+        sysUser.setIsenabled(null);
+        SysUser user = UserUtils.getUserByToken(request);
+        if (user.getUsername().equals(sysUser.getUsername())) {
             throw new XxException(ExceptionEnums.INSUFFICIENT_AUTHORITY);
         }
-
         sysUserService.updateUser(sysUser);
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
+    }
+
+
+    /**
+     * 更新用户可以状态
+     */
+    @PutMapping("{userId}/{state}")
+    @ControllerLog(describe = "更新用户状态")
+    @ApiOperation(value = "更新用户状态")
+    public ResponseEntity<Common> updateUserState(
+            @PathVariable("userId") Integer userId,
+            @PathVariable("state") Integer state,
+            HttpServletRequest request) {
+        sysUserService.updateState(userId,state,request);
+        return ResponseEntity.ok(new Common("更新成功"));
     }
 
 
@@ -185,7 +193,6 @@ public class UserController {
      */
     @PostMapping
     @ControllerLog(describe = "新建用户")
-
     @ApiOperation(value = "新建用户，仅admin有访问的权限")
     public ResponseEntity<Common> insertUser(@Valid SysUser sysUser) throws TencentCloudSDKException {
         sysUserService.insertUser(sysUser);
@@ -196,11 +203,13 @@ public class UserController {
 
     /**
      * 查找所有用户
-     *  @param page   页面
+     *
+     * @param page   页面
      * @param limit  多少行
      * @param search 搜索
      */
     @GetMapping()
+
     @ControllerLog(describe = "查看所有用户")
     @ApiOperation(value = "查找所有的用户，仅admin有访问权限")
     @ApiImplicitParams({
@@ -218,6 +227,13 @@ public class UserController {
         SysUser user = UserUtils.getUserByToken(request);
         SysUser findsUser = sysUserService.findUserById(user.getId());
         findsUser.setLasttime(user.getLasttime());
+        return ResponseEntity.ok(new Common(findsUser));
+    }
+
+
+    @GetMapping("find/{userId}")
+    public ResponseEntity<Common> findUserById(@PathVariable("userId") Integer userId) {
+        SysUser findsUser = sysUserService.findUserById(userId);
         return ResponseEntity.ok(new Common(findsUser));
     }
 
