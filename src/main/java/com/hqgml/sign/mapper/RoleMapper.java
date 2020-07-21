@@ -37,13 +37,14 @@ public interface RoleMapper  {
   Role findById(@Param("id")Integer id);
 
 
-  int updateById(@Param("updated")Role updated,@Param("id")Integer id);
+    int updateById(@Param("updated")Role updated,@Param("id")Integer id);
+
 
 
    int insertList(@Param("list")List<Role> list);
 
 
- int insertSelective(Role role);
+   int insertSelective(Role role);
 
 
 
