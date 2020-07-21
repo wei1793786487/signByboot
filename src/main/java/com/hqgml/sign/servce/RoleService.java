@@ -1,5 +1,6 @@
 package com.hqgml.sign.servce;
 
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Role;
 
 import java.util.List;
@@ -12,16 +13,17 @@ public interface RoleService{
 
    List<Role> selectRoleListByUid(Integer id);
 
-   void insertObe(Role role);
-
-   void deleteById(Integer id);
+   void insertOne(Role role);
 
    void updateRole(Role role);
 
-   List<Role> findAll();
+   MyPageInfo<Role> findAll(String roleName, Integer page, Integer limit);
 
    void desRole(Integer[] rid, Integer mid);
 
    List<Role> findRoleDes(Integer id);
 
+   Role findById(String id);
+
+   void deleteRole(Integer[] ids);
 }

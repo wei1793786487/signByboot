@@ -1,7 +1,10 @@
 package com.hqgml.sign.servce.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,27 +42,31 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void insertObe(Role role) {
-
-    }
-
-    @Override
-    public void deleteById(Integer id) {
-
+    public void insertOne(Role role) {
+        int i = roleMapper.insertSelective(role);
+        if (i!=1){
+            throw new XxException(ExceptionEnums.INSERT_ERROR);
+        }
     }
 
     @Override
     public void updateRole(Role role) {
-
+        int i = roleMapper.updateById(role, role.getId());
+        if (i!=1){
+            throw new XxException(ExceptionEnums.UPDATE_ERROR);
+        }
     }
 
     @Override
-    public List<Role> findAll() {
-        List<Role> roles = roleMapper.selectAll();
+    public MyPageInfo<Role> findAll(String roleName, Integer page, Integer limit) {
+        PageHelper.startPage(page,limit);
+        List<Role> roles = roleMapper.selectAll(roleName);
         if (roles.size()==0){
             throw new XxException(ExceptionEnums.ROLE_NOT_FIND);
         }
-        return roles;
+        PageInfo<Role> brandPageInfo = new PageInfo<>(roles);
+
+        return new MyPageInfo<Role>(brandPageInfo.getTotal(),roles);
     }
 
 
@@ -79,5 +86,21 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<Role> findRoleDes(Integer id) {
         return  roleMapper.selectAllById(id);
+    }
+
+    @Override
+    public Role findById(String id) {
+        Role role = roleMapper.findById(Integer.parseInt(id));
+        if (role==null){
+            throw new XxException(ExceptionEnums.ROLE_NOT_FIND);
+        }
+        return role;
+    }
+
+    @Override
+    public void deleteRole(Integer[] ids) {
+        for (Integer id : ids) {
+            roleMapper.deleteById(id);
+        }
     }
 }

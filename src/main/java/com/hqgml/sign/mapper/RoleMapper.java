@@ -21,7 +21,7 @@ public interface RoleMapper  {
 
 	int deleteById(@Param("id")Integer id);
 
-	List<Role> selectAll();
+	List<Role> selectAll(@Param("roleName") String roleName);
 
     void desRole(@Param("rid")int rid,@Param("mid") int mid);
 
@@ -34,6 +34,12 @@ public interface RoleMapper  {
      * @return
      */
     int cleanRole(@Param("mid")Integer mid);
+
+  Role findById(@Param("id")Integer id);
+
+
+  int updateById(@Param("updated")Role updated,@Param("id")Integer id);
+
 
 
 
