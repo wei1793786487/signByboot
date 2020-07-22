@@ -59,6 +59,13 @@ public enum ExceptionEnums {
     UPDATEPASSWORD_ERROR(400, "密码错误"),
     UPDATEUSER_ERROR(400, "更新用户出现错误"),
     MENU_NOT_FIND(404, "菜单没找到"),
+    AUTH_ERROR(1000, "认证失败"),
+    UPDATA_ERROR(500, "更新异常"),
+    OPENID_ERROR(500, "opneid错误"),
+    NOT_DAND(400,"没有绑定"),
+    PSERSON_NOt_FIND(400,"人员没找到"),
+    PHONE_ERROR(400, "联系方式不匹配"),
+    CODE_ERROR(400, "code非法"),
     USER_NOT_USE(403, "用户不可用");
     private int code;
     private String Msg;

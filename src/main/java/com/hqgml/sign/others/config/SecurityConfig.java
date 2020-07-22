@@ -101,6 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         String[] swagger = {"/swagger-ui.html", "/swagger-resources/**", "/images/**", "/webjars/**",
                 "/v2/api-docs", "/configuration/ui", "/configuration/security"
         };
+        String[] wxLogin={"/vx/login"};
         //如果需要验证码 将下面这段放入即可
         //"/verifyCode.jpg",放行这个url
         //addFilterBefore(new CustomizeValidateCodeFilter(redisTemplate,errorFailureHandler), UsernamePasswordAuthenticationFilter.class)
@@ -109,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(allowUrl).permitAll()
                 .antMatchers(swagger).permitAll()
+                .antMatchers(wxLogin).permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
