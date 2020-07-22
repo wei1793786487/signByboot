@@ -39,7 +39,7 @@ public class MiniUserServiceImpl implements MiniUserService {
     private VxUserMapper vxUserMapper;
 
     @Autowired
-   private JwtProperties jwtProperties;
+    private JwtProperties jwtProperties;
 
 
     @Override
