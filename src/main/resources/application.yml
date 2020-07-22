@@ -70,6 +70,7 @@ hqgml:
     cookieName: auth
     tokenName: Authorization
     preToken : Bearer
+    prevxToken: VXBearer
 
   redis:
     tokenPre : Refresh_KEY-

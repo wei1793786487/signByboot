@@ -9,14 +9,17 @@ import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Devil
@@ -41,6 +44,13 @@ public class MiniUserServiceImpl implements MiniUserService {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Autowired
+    private RedisProperties redisProperties;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+
 
     @Override
     public String getUserInfo(String code) {
@@ -64,12 +74,16 @@ public class MiniUserServiceImpl implements MiniUserService {
                         VxUser vxUser = new VxUser ();
                         vxUser.setOpenid(openid);
                         vxUser.setCreateTime(DateUtil.now());
+                        vxUser.setLastTime(DateUtil.now());
                         int id = vxUserMapper.insertSelective(vxUser);
                         vxUser.setId(id);
                         log.info("用户不存在新建");
                         String token = JwtUtils.generateTokenExpireInMinutes(vxUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
+                        redisTemplate.opsForValue().set(redisProperties.getTokenPre()+"vx"+vxUser.getId(),vxUser.getOpenid(),redisProperties.getRedisCache(), TimeUnit.MINUTES);
                         return  token;
                     } else {
+                        user.setLastTime(DateUtil.now());
+                        redisTemplate.opsForValue().set(redisProperties.getTokenPre()+"vx"+user.getId(),user.getOpenid(),redisProperties.getRedisCache(), TimeUnit.MINUTES);
                         return JwtUtils.generateTokenExpireInMinutes(user, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
                     }
                 } else {

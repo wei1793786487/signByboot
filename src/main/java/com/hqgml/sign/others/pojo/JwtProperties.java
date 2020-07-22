@@ -35,7 +35,7 @@ public class JwtProperties {
 
     private String preToken;//token前缀
 
-
+    private String prevxToken;//token前缀
 
 
 

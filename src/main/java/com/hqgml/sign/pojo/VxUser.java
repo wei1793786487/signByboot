@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author Devil
- * @date 2020/7/22 21:40
+ * @date 2020/7/22 23:03
  */
 @Data
 @AllArgsConstructor
@@ -25,6 +25,9 @@ public class VxUser implements Serializable {
 
     @Column(name = "openid")
     private String openid;
+
+    @Column(name = "last_time")
+    private String lastTime;
 
     @Column(name = "create_time")
     private String createTime;
