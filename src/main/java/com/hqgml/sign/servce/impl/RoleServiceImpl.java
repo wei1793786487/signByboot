@@ -103,4 +103,16 @@ public class RoleServiceImpl implements RoleService {
             roleMapper.deleteById(id);
         }
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void desUserRole(Integer[] rids, Integer uid) {
+        int i = roleMapper.cleanUserRole(uid);
+        if (i==0){
+            logger.warn("没有要移除的角色");
+        }
+        for (Integer rid : rids) {
+            roleMapper.desUserRole(rid,uid);
+        }
+    }
 }

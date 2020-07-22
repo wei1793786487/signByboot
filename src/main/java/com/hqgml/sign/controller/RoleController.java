@@ -38,7 +38,7 @@ public class RoleController {
      * @param mid
      * @return
      */
-    @PostMapping("des")
+    @PostMapping("meta/des")
     @ApiOperation(value = "分配角色")
     public ResponseEntity<Common<String>> desRole(
             @RequestParam("rid") Integer rid[],
@@ -48,6 +48,24 @@ public class RoleController {
         Common<String> common = new Common<>("添加成功");
         return ResponseEntity.ok(common);
     }
+
+
+    /**
+     * 给user绑user
+     * @param
+     * @return
+     */
+    @PostMapping("user/des")
+    @ApiOperation(value = "分配角色")
+    public ResponseEntity<Common<String>> desUserRole(
+            @RequestParam("rid") Integer rid[],
+            @RequestParam("uid") Integer uid
+    ) {
+        roleService.desUserRole(rid, uid);
+        Common<String> common = new Common<>("添加成功");
+        return ResponseEntity.ok(common);
+    }
+
 
 
     @GetMapping("menu/{rid}")
@@ -131,6 +149,9 @@ public class RoleController {
         Common common = new Common("添加成功");
         return ResponseEntity.ok(common);
     }
+
+
+
 
 
 }

@@ -24,17 +24,29 @@ public interface RoleMapper  {
 
     void desRole(@Param("rid")int rid,@Param("mid") int mid);
 
+
+    void desUserRole(@Param("rid")int rid,@Param("uid") int uid);
+
+
     List<Role> selectAllById(@Param("id")Integer id);
 
 
     /**
-     * 清除所有的角色绑定信息
+     * 清除所有的菜单角色绑定信息
      * @param mid
      * @return
      */
     int cleanRole(@Param("mid")Integer mid);
 
-  Role findById(@Param("id")Integer id);
+
+    /**
+     * 清除所有的账号角色绑定信息
+     * @param
+     * @return
+     */
+    int cleanUserRole(@Param("uid")Integer uid);
+
+     Role findById(@Param("id")Integer id);
 
 
     int updateById(@Param("updated")Role updated,@Param("id")Integer id);

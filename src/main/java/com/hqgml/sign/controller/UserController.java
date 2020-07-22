@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
@@ -53,8 +54,13 @@ public class UserController {
     @Autowired
     private PersonsService personsService;
 
+
     @Autowired
-    private JwtProperties jwtProperties;
+    private StringRedisTemplate stringRedisTemplate;
+
+
+    @Autowired
+    private RedisProperties redisProperties;
 
     /**
      * 获取用户上次的参数
@@ -113,13 +119,10 @@ public class UserController {
             @RequestParam("old_password") String oldPassword,
             @RequestParam("new_password") String newPassword,
             HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User userDetails = (User) auth.getPrincipal();
-        sysUserService.updateUserPasswordByUserName(oldPassword, newPassword, userDetails.getUsername());
+        SysUser userByToken = UserUtils.getUserByToken(request);
+        sysUserService.updateUserPasswordByUserName(oldPassword, newPassword,userByToken.getUsername());
         //清除用户信息
-        new SecurityContextLogoutHandler().logout(request, response, auth);
-        CookieUtils.deleteCookie(request, response, "username");
-        CookieUtils.deleteCookie(request, response, "remember");
+        stringRedisTemplate.delete(redisProperties.getTokenPre()+userByToken.getId());
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }

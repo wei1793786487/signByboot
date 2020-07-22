@@ -26,4 +26,6 @@ public interface RoleService{
    Role findById(String id);
 
    void deleteRole(Integer[] ids);
+
+   void desUserRole(Integer[] rid, Integer uid);
 }
