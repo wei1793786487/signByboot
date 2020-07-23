@@ -54,6 +54,11 @@ public class Persons implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
+    /**
+     * 绑定类型，0为管理员添加，1为小程序用户自己添加
+     */
+    private Integer bandType;
+
 
     @Transient
     @ApiModelProperty(hidden = true)

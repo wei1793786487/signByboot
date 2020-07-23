@@ -4,6 +4,7 @@ import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.VxUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,4 +34,17 @@ public class UserUtils {
         Payload<SysUser> user = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), SysUser.class);
         return user.getUserInfo();
     }
+
+    public static VxUser getVxUserByToken(HttpServletRequest request){
+        //获取请求头
+        String header = request.getHeader(jwtProperties.getPrevxToken());
+        if (request.getRequestURI().contains("login")){
+            return null;
+        }
+        String token = header.replaceAll(jwtProperties.getPrevxToken(), "");
+        Payload<VxUser> info = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), VxUser.class);
+        return info.getUserInfo();
+    }
+
+
 }

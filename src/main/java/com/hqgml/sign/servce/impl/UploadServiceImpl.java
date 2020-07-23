@@ -129,6 +129,7 @@ public class UploadServiceImpl implements UploadService {
                     persons.setAddId(userByToken.getId());
                     persons.setPhone("");
                     persons.setUuid(uuid);
+                    persons.setBandType(0);
                     //创建人员
                     personsService.createPersion(persons);
                 }

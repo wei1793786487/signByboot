@@ -70,7 +70,6 @@ public class PersonController {
     @ApiOperation(value = "更新人员信息")
     public ResponseEntity<Common> updatePersonNameById(Persons persons){
        personsService.updatePersonById(persons);
-
         Common common = new Common("更新成功");
         return ResponseEntity.ok(common);
     }

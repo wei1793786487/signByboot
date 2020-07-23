@@ -1,22 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hqgml.sign.mapper.PersonsMapper">
-    <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.Persons">
-        <!--@mbg.generated generated on Thu Jan 16 23:08:44 CST 2020.-->
-        <!--@Table persons-->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="add_id" jdbcType="INTEGER" property="addId"/>
-        <result column="url" jdbcType="VARCHAR" property="url"/>
-        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="add_time" jdbcType="VARCHAR" property="addTime"/>
-        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
-        <result column="isCheck" jdbcType="INTEGER" property="isCheck"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated generated on Thu Jan 16 23:08:44 CST 2020.-->
-        id, add_id, url, person_name, phone, add_time, uuid
-    </sql>
+  <resultMap id="BaseResultMap" type="com.hqgml.sign.pojo.Persons">
+    <!--@mbg.generated-->
+    <!--@Table persons-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="add_id" jdbcType="INTEGER" property="addId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="person_name" jdbcType="VARCHAR" property="personName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="band_type" jdbcType="INTEGER" property="bandType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, add_id, url, person_name, phone, add_time, uuid, band_type
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from persons
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from persons
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hqgml.sign.pojo.Persons" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into persons (add_id, url, person_name, 
+      phone, add_time, uuid, 
+      band_type)
+    values (#{addId,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR}, #{uuid,jdbcType=VARCHAR}, 
+      #{bandType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hqgml.sign.pojo.Persons" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into persons
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="addId != null">
+        add_id,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="personName != null">
+        person_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="bandType != null">
+        band_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="addId != null">
+        #{addId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null">
+        #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="bandType != null">
+        #{bandType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hqgml.sign.pojo.Persons">
+    <!--@mbg.generated-->
+    update persons
+    <set>
+      <if test="addId != null">
+        add_id = #{addId,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="personName != null">
+        person_name = #{personName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="bandType != null">
+        band_type = #{bandType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hqgml.sign.pojo.Persons">
+    <!--@mbg.generated-->
+    update persons
+    set add_id = #{addId,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      person_name = #{personName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      band_type = #{bandType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
     <!--auto generated by MybatisCodeHelper on 2020-01-09-->
     <select id="countByAddId" resultType="java.lang.Integer">
@@ -34,7 +145,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-13-->
     <select id="selectOneByPersonName" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where person_name=#{personName,jdbcType=VARCHAR}
     </select>
@@ -42,7 +153,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-14-->
     <select id="findAllByAddId" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where add_id=#{addId,jdbcType=INTEGER}
 
@@ -61,7 +172,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-14-->
     <select id="selectById" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where id=#{id,jdbcType=INTEGER}
     </select>
@@ -69,7 +180,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-19-->
     <select id="selectByPersonName" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where person_name=#{personName,jdbcType=VARCHAR}
     </select>
@@ -88,7 +199,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-24-->
     <select id="selectBelongAllByMid" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         WHERE id IN(SELECT pid FROM meeting_persion WHERE MID =#{mid,jdbcType=INTEGER})
     </select>
@@ -96,7 +207,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-01-25-->
     <select id="selectOneByUuid" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where uuid=#{uuid,jdbcType=VARCHAR}
     </select>
@@ -110,7 +221,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-06-26-->
     <select id="selectByUrl" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where url=#{url,jdbcType=VARCHAR}
     </select>
@@ -118,7 +229,7 @@
     <!--auto generated by MybatisCodeHelper on 2020-07-17-->
     <select id="findBelong" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM persons WHERE id IN
         (SELECT pid FROM `meeting_persion`WHERE mid=#{mid,jdbcType=VARCHAR} )
          AND add_id =#{addId,jdbcType=VARCHAR}
@@ -129,7 +240,7 @@
     <select id="findNotBelong" resultMap="BaseResultMap">
 
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         FROM persons WHERE id not IN
         (SELECT pid FROM `meeting_persion`WHERE mid=#{mid,jdbcType=VARCHAR} )
         AND add_id =#{addId,jdbcType=VARCHAR}
@@ -139,7 +250,7 @@
 <!--auto generated by MybatisCodeHelper on 2020-07-17-->
     <select id="selectAllByMid" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List" />
         from persons
         where id=#{id,jdbcType=INTEGER}
     </select>
@@ -148,7 +259,7 @@
     <delete id="romovePerson">
         delete from meeting_persion
         where pid in
-        <foreach collection="ids" item="id" open="(" separator="," close=")">
+        <foreach close=")" collection="ids" item="id" open="(" separator=",">
         #{id}
         </foreach> and mid =#{mid,jdbcType=INTEGER}
     </delete>

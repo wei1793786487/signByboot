@@ -100,6 +100,13 @@ public class MiniUserServiceImpl implements MiniUserService {
 
 
 
+    @Override
+    public Map getBrand() {
+
+        return null;
+    }
+
+
 }
 
 
