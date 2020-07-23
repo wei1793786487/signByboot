@@ -38,8 +38,7 @@ public class VxController {
     @GetMapping("band")
     public ResponseEntity<Common> getband(HttpServletRequest request) {
         VxUser vxUser = UserUtils.getVxUserByToken(request);
-
-        Map band= MiniUserService.getBrand();
+        Map band= MiniUserService.getBrand(vxUser);
         return ResponseEntity.ok(new Common<>(band));
     }
 

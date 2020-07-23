@@ -1,5 +1,7 @@
 package com.hqgml.sign.servce;
 
+import com.hqgml.sign.pojo.VxUser;
+
 import java.util.Map;
 
 /**
@@ -10,7 +12,7 @@ public interface MiniUserService {
     String getUserInfo(String code);
 
 
-    Map getBrand();
+    Map getBrand(VxUser vxUser);
 
 }
 

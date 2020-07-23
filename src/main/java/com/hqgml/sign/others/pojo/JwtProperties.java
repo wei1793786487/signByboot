@@ -37,7 +37,7 @@ public class JwtProperties {
 
     private String prevxToken;//token前缀
 
-
+    private String vxtokenName;//token的名字
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProperties.class);
 

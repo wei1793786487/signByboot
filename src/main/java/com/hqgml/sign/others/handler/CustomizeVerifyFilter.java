@@ -57,14 +57,11 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader(jwtProperties.getTokenName());
-        String vxheader = request.getHeader(jwtProperties.getPrevxToken());
+        String vxheader = request.getHeader(jwtProperties.getVxtokenName());
 
         if (header == null && vxheader == null ) {
             chain.doFilter(request, response);
-        } else if (!header.startsWith(jwtProperties.getPreToken())&&!vxheader.startsWith(jwtProperties.getPrevxToken())) {
-     //如果携带的是错误的token 进行下面过滤器 说明也不是vx用户
-            chain.doFilter(request, response);
-        } else {
+        }  else {
             //如果这两个都存在 也说明登录错误
             if (header != null && vxheader != null) {
                 chain.doFilter(request, response);
@@ -107,7 +104,7 @@ public class CustomizeVerifyFilter extends BasicAuthenticationFilter {
             }
             if (vxheader != null) {
                 //微信小程序
-                String token = header.replace(jwtProperties.getPrevxToken(), "");
+                String token = vxheader.replace(jwtProperties.getPrevxToken(), "");
                 try {
                     Payload<VxUser> vxUer = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), VxUser.class);
                     VxUser vxUser = vxUer.getUserInfo();

@@ -71,6 +71,7 @@ hqgml:
     tokenName: Authorization
     preToken : Bearer
     prevxToken: VXBearer
+    vxtokenName: vxAuthorization
 
   redis:
     tokenPre : Refresh_KEY-

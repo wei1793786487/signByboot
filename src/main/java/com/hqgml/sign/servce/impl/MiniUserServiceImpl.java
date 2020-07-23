@@ -10,8 +10,10 @@ import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.RedisProperties;
+import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
+import com.hqgml.sign.servce.PersonsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -50,6 +52,8 @@ public class MiniUserServiceImpl implements MiniUserService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    @Autowired
+    private PersonsService personsService;
 
 
     @Override
@@ -101,11 +105,23 @@ public class MiniUserServiceImpl implements MiniUserService {
 
 
     @Override
-    public Map getBrand() {
-
-        return null;
+    public Map getBrand(VxUser vxUser) {
+        Map<String,String> band=new HashMap<>();
+        VxUser vx = vxUserMapper.findById(vxUser.getId());
+        if (vx.getPId()==null){
+            band.put("person_band","0");
+            band.put("face_band","0");
+        }else {
+            band.put("person_band","1");
+            Persons person = personsService.selectById(vx.getPId());
+            if (person.getUrl()==null){
+                band.put("face_band","0");
+            }else {
+                band.put("face_band","1");
+            }
+        }
+        return band;
     }
-
 
 }
 

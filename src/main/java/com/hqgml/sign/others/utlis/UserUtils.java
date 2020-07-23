@@ -37,7 +37,7 @@ public class UserUtils {
 
     public static VxUser getVxUserByToken(HttpServletRequest request){
         //获取请求头
-        String header = request.getHeader(jwtProperties.getPrevxToken());
+        String header = request.getHeader(jwtProperties.getVxtokenName());
         if (request.getRequestURI().contains("login")){
             return null;
         }
