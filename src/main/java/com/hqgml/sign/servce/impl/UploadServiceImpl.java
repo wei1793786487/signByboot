@@ -55,6 +55,11 @@ public class UploadServiceImpl implements UploadService {
     private MeetingService meetingService;
 
     @Autowired
+    private MiniUserService miniUserService;
+
+
+
+    @Autowired
     private MeetingPersionMapper meetingPersionMapper;
 
     @Autowired
@@ -276,15 +281,18 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public List<String> uploadFace(MultipartFile files, VxUser user) throws IOException {
-
+    public void uploadFace(MultipartFile files, VxUser user) throws IOException, TencentCloudSDKException, InterruptedException {
         if (files.getSize() == 0) {
             throw new XxException(ExceptionEnums.FIlE_IS_NULL);
         }
         String suffix = FileUtils.suffix(files.getOriginalFilename());
         StorePath storePath = storageClient.uploadFile(files.getInputStream(), files.getSize(), suffix, null);
         System.out.println(storePath.getFullPath());
-        return null;
+        VxUser byid = miniUserService.findByid(user.getId());
+        Persons persons = personsService.selectById(byid.getPId());
+        tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
+        persons.setUrl(storePath.getFullPath());
+        personsService.updatePersonById(persons);
     }
 
 

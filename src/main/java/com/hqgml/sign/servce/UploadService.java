@@ -42,5 +42,5 @@ public interface UploadService {
      * @param
      * @return
      */
-    List<String> uploadFace(MultipartFile files, VxUser user) throws IOException;
+    void uploadFace(MultipartFile files, VxUser user) throws IOException, TencentCloudSDKException, InterruptedException;
 }

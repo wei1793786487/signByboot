@@ -73,7 +73,7 @@ public class TenlentServiceImpl implements TenlentService {
 
     @Override
     public SearchPersonsResponse search(String groupId, String image) throws TencentCloudSDKException {
-        String params = "{\"GroupIds\":[\""+groupId+"\"],\"Image\":\""+image+"\",\"MaxPersonNum\":1}";
+        String params = "{\"GroupIds\":[\""+groupId+"\",'0'],\"Image\":\""+image+"\",\"MaxPersonNum\":1}";
         SearchPersonsRequest req = SearchPersonsRequest.fromJsonString(params, SearchPersonsRequest.class);
         return client.SearchPersons(req);
     }

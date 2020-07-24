@@ -6,6 +6,7 @@ import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.UploadService;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -87,17 +88,16 @@ public class UploadController {
      * 上传人脸
      */
     @PostMapping("face")
-    @ControllerLog(describe = "上传人脸")
     @ApiOperation(value = "上传的人脸")
     @ApiImplicitParam(name = "imgStr",value = "人脸的base64编码")
     public ResponseEntity<Common> uploadPhone(
             @RequestParam(value = "file") MultipartFile files,
             HttpServletRequest request
 
-    ) throws IOException {
+    ) throws IOException, TencentCloudSDKException, InterruptedException {
         VxUser user = UserUtils.getVxUserByToken(request);
-        List<String> message = uploadService.uploadFace(files, user);
-        return ResponseEntity.ok(new Common(message));
+         uploadService.uploadFace(files, user);
+        return ResponseEntity.ok(new Common("上传成功"));
     }
 
 

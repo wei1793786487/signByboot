@@ -152,6 +152,11 @@ public class MiniUserServiceImpl implements MiniUserService {
          return returnInfo;
     }
 
+    @Override
+    public VxUser findByid(Integer id) {
+         return vxUserMapper.findById(id);
+    }
+
 }
 
 
