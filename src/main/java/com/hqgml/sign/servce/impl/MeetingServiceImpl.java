@@ -29,7 +29,6 @@ import java.util.List;
  */
 @Service
 @Slf4j
-@Transactional(rollbackFor = Exception.class)
 public class MeetingServiceImpl implements MeetingService {
 
     @Resource

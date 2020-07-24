@@ -66,6 +66,7 @@ public enum ExceptionEnums {
     PSERSON_NOt_FIND(400,"人员没找到"),
     PHONE_ERROR(400, "联系方式不匹配"),
     CODE_ERROR(400, "code非法"),
+    NOT_BAND_PERSON(800, "没有该用户"),
     USER_NOT_USE(403, "用户不可用");
     private int code;
     private String Msg;

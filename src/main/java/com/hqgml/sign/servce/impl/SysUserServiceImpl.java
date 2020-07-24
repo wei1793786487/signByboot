@@ -40,7 +40,6 @@ import java.util.regex.Pattern;
  */
 
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class SysUserServiceImpl implements SysUserService {
 

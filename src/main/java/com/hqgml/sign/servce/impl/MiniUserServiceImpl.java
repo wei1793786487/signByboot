@@ -1,6 +1,7 @@
 package com.hqgml.sign.servce.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -64,9 +65,7 @@ public class MiniUserServiceImpl implements MiniUserService {
         parms.put("secret", SECUERT);
         parms.put("grant_type", GRANDT_TYPE);
         parms.put("js_code", code);
-
         String response = HttpUtil.get(WX_AUTO_URL, parms);
-
         try {
             jsonObject = JSON.parseObject(response);
             if (jsonObject.getInteger(ERRCODE) == null) {
@@ -79,8 +78,7 @@ public class MiniUserServiceImpl implements MiniUserService {
                         vxUser.setOpenid(openid);
                         vxUser.setCreateTime(DateUtil.now());
                         vxUser.setLastTime(DateUtil.now());
-                        int id = vxUserMapper.insertSelective(vxUser);
-                        vxUser.setId(id);
+                        vxUserMapper.insertSelective(vxUser);
                         log.info("用户不存在新建");
                         String token = JwtUtils.generateTokenExpireInMinutes(vxUser, jwtProperties.getPrivateKey(), jwtProperties.getExpire());
                         redisTemplate.opsForValue().set(redisProperties.getTokenPre()+"vx"+vxUser.getId(),vxUser.getOpenid(),redisProperties.getRedisCache(), TimeUnit.MINUTES);
@@ -121,6 +119,36 @@ public class MiniUserServiceImpl implements MiniUserService {
             }
         }
         return band;
+    }
+
+
+
+    @Override
+    public void setBand(VxUser vxUser, String personName, String phone) {
+        VxUser vx = vxUserMapper.findById(vxUser.getId());
+         if (vx.getPId()==null||vx.getPId()==0){
+             throw new XxException(ExceptionEnums.NOT_DAND);
+         }
+
+
+        Persons one = personsService.selectOneByUsername(personName);
+         if (one==null){
+             Persons persons=new Persons();
+             persons.setAddId(0);
+             persons.setPersonName(personName);
+             persons.setPhone(phone);
+             persons.setBandType(1);
+             persons.setUuid(IdUtil.simpleUUID());
+             persons.setAddTime(DateUtil.now());
+             personsService.insertOne(persons);
+             throw new XxException(ExceptionEnums.NOT_BAND_PERSON);
+         }
+
+
+
+
+
+
     }
 
 }

@@ -25,7 +25,6 @@ import java.util.List;
  * @date 2019/12/31 10:48
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class UserLogServiceImpl implements UserLogService {
 

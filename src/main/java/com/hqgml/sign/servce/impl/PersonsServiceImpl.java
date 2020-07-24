@@ -7,8 +7,6 @@ import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
-import com.hqgml.sign.pojo.VxUser;
-import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.TenlentService;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
@@ -24,7 +22,6 @@ import javax.validation.Valid;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
 import org.springframework.transaction.annotation.Transactional;
-import sun.security.provider.MD2;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -35,7 +32,6 @@ import java.util.regex.Pattern;
  * @date 2019/12/31 10:47
  */
 @Service
-@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class PersonsServiceImpl implements PersonsService {
 
@@ -48,8 +44,7 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private TenlentService tenlentServices;
 
-    @Resource
-    private SysUserService userService;
+
 
 
     @Override
@@ -173,6 +168,14 @@ public class PersonsServiceImpl implements PersonsService {
             persons = personsMapper.findBelong(mid, user.getId() + "");
         }
         return persons;
+    }
+
+    @Override
+    public void insertOne(Persons persons) {
+        int i = personsMapper.insertSelective(persons);
+        if (i!=1){
+            throw new XxException(ExceptionEnums.INSERT_ERROR);
+        }
     }
 
 

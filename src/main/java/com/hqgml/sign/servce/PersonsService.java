@@ -2,7 +2,6 @@ package com.hqgml.sign.servce;
 
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Persons;
-import com.hqgml.sign.pojo.VxUser;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,6 +102,9 @@ public interface PersonsService {
      */
     List<Persons> findPersonBelong(Integer type, String mid, HttpServletRequest request);
 
+
+
+    void insertOne(Persons persons);
 
 
 }
