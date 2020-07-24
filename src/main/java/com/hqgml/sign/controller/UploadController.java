@@ -93,7 +93,6 @@ public class UploadController {
     public ResponseEntity<Common> uploadPhone(
             @RequestParam(value = "file") MultipartFile files,
             HttpServletRequest request
-
     ) throws IOException, TencentCloudSDKException, InterruptedException {
         VxUser user = UserUtils.getVxUserByToken(request);
          uploadService.uploadFace(files, user);
