@@ -64,5 +64,6 @@ public interface MeetingMapper extends Mapper<Meeting> {
     List<Meeting> selectAllByMeetingNameLike(@Param("likeMeetingName")String likeMeetingName);
 
 
+    List<Meeting> findMeetingByPerson(@Param("id")Integer id);
 
 }

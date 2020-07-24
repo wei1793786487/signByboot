@@ -3,7 +3,10 @@ package com.hqgml.sign.controller;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Meeting;
+import com.hqgml.sign.pojo.Persons;
+import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 /**
@@ -157,7 +161,7 @@ public class MeetingController {
      * @param id 会议的id
      *
      */
-    @ApiOperation(value = "根据用户的id查询单个会议信息，这个接口不需要登录")
+    @ApiOperation(value = "根据会议的id查询单个会议信息")
     @ApiImplicitParam(name = "mid",value = "要搜索的会议的id",required = true)
     @GetMapping("/information/{id}")
     public ResponseEntity<Common> selectMeetingByid(@PathVariable("id") Integer id) {
@@ -201,6 +205,20 @@ public class MeetingController {
     }
 
 
+
+
+    /**
+     * 根据人员的id查询所属的会议
+     *
+     */
+    @GetMapping("belong")
+    @ApiOperation(value = "根据人员的id查询所属的会议")
+    public ResponseEntity<Common>findPersonMeeting(HttpServletRequest request){
+        VxUser user = UserUtils.getVxUserByToken(request);
+        List<Meeting> meetings = meetingService.findMeetingByPerson(user.getPId());
+        return ResponseEntity.ok(new Common(meetings));
+
+    }
 
 
 }

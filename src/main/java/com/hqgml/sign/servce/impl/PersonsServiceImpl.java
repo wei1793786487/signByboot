@@ -7,6 +7,7 @@ import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.TenlentService;
 import com.hqgml.sign.others.exception.ExceptionEnums;
@@ -173,8 +174,6 @@ public class PersonsServiceImpl implements PersonsService {
         }
         return persons;
     }
-
-
 
 
 }

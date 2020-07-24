@@ -209,6 +209,15 @@ public class MeetingServiceImpl implements MeetingService {
         personsMapper.romovePerson(ids,mid);
     }
 
+    @Override
+    public List<Meeting> findMeetingByPerson(Integer pId) {
+        List<Meeting> meetings = meetingMapper.findMeetingByPerson(pId);
+        if (meetings.size()==0){
+            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
+        }
+        return meetings;
+    }
+
 }
 
 

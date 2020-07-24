@@ -97,7 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] allowUrl = {"/meeting/winformation/**", "/meeting/information/**", "/findAddress", "/face/search"};
+        String[] allowUrl = {"/meeting/winformation/**", "/findAddress"};
         String[] swagger = {"/swagger-ui.html", "/swagger-resources/**", "/images/**", "/webjars/**",
                 "/v2/api-docs", "/configuration/ui", "/configuration/security"
         };

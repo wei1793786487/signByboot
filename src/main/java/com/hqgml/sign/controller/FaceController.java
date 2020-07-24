@@ -67,13 +67,10 @@ public class FaceController {
         Object x = transform.get("x");
         double lng2 = Double.parseDouble(x.toString());
         double lat2 = Double.parseDouble(y.toString());
-
         double distance = Distance.getDistance(lng, lat,lng2 ,lat2);
-
          if (distance>source){
              return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,100米之内可签到"));
          }
-
         if (!StringUtils.equals(mid,"")&&!StringUtils.equals(imgStr,"")){
             Map<String, Object> face = faceService.face(imgStr, mid);
             String message = (String) face.get("message");

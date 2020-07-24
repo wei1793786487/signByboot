@@ -5,8 +5,10 @@ import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.Persons;
+import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
@@ -104,7 +106,7 @@ public class PersonController {
      *
      */
     @GetMapping("{type}/{mid}")
-    @ApiOperation(value = "根据会议的名字模糊查询")
+    @ApiOperation(value = "查询属于该用户的会议")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "type",value = "要查询的类型，0是不属于此会议的人员，1是属于次会议的人员,2是所有人员",required = true),
             @ApiImplicitParam(name = "mid",value = "会议的id"),
@@ -118,6 +120,11 @@ public class PersonController {
         return ResponseEntity.ok(new Common(personBelong));
 
     }
+
+
+
+
+
 
 }
 
