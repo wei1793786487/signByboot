@@ -124,13 +124,13 @@ public class MiniUserServiceImpl implements MiniUserService {
 
 
     @Override
-    public void setBand(VxUser vxUser, String personName, String phone) {
+    public Integer setBand(VxUser vxUser, String personName, String phone) {
         VxUser vx = vxUserMapper.findById(vxUser.getId());
-         if (vx.getPId()==null||vx.getPId()==0){
-             throw new XxException(ExceptionEnums.NOT_DAND);
-         }
-
-
+        if (vx.getPId()!=null){
+            throw new XxException(ExceptionEnums.PERSON_BAND);
+        }
+        int returnInfo=0;
+        Integer bandId=0;
         Persons one = personsService.selectOneByUsername(personName);
          if (one==null){
              Persons persons=new Persons();
@@ -140,15 +140,16 @@ public class MiniUserServiceImpl implements MiniUserService {
              persons.setBandType(1);
              persons.setUuid(IdUtil.simpleUUID());
              persons.setAddTime(DateUtil.now());
-             personsService.insertOne(persons);
-             throw new XxException(ExceptionEnums.NOT_BAND_PERSON);
+             bandId = personsService.insertOne(persons);
+             returnInfo=1;
+         }else {
+             bandId=one.getId();
          }
-
-
-
-
-
-
+        int i = vxUserMapper.updatePIdByOpenid(bandId, vx.getOpenid());
+       if (i!=1){
+         throw new XxException(ExceptionEnums.INSERT_ERROR);
+        }
+         return returnInfo;
     }
 
 }

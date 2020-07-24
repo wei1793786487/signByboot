@@ -12,6 +12,7 @@ public interface VxUserMapper  {
     VxUser findByOpenid(@Param("openid") String openid);
     int insertSelective(VxUser vxUser);
     VxUser findById(@Param("id")Integer id);
+   int updatePIdByOpenid(@Param("updatedPId")Integer updatedPId,@Param("openid")String openid);
 
 
 

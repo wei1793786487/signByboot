@@ -14,7 +14,7 @@ public interface MiniUserService {
 
     Map getBrand(VxUser vxUser);
 
-    void setBand(VxUser vxUser, String personName, String phone);
+    Integer setBand(VxUser vxUser, String personName, String phone);
 }
 
 

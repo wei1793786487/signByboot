@@ -10,10 +10,7 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.Meeting;
-import com.hqgml.sign.pojo.MeetingPersion;
-import com.hqgml.sign.pojo.Persons;
-import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.*;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
@@ -171,8 +168,6 @@ public class UploadServiceImpl implements UploadService {
 
 
 
-
-
     /**
      * 将人员添加进会员
      *
@@ -278,6 +273,18 @@ public class UploadServiceImpl implements UploadService {
 
         }
         return list;
+    }
+
+    @Override
+    public List<String> uploadFace(MultipartFile files, VxUser user) throws IOException {
+
+        if (files.getSize() == 0) {
+            throw new XxException(ExceptionEnums.FIlE_IS_NULL);
+        }
+        String suffix = FileUtils.suffix(files.getOriginalFilename());
+        StorePath storePath = storageClient.uploadFile(files.getInputStream(), files.getSize(), suffix, null);
+        System.out.println(storePath.getFullPath());
+        return null;
     }
 
 

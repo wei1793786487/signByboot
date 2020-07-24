@@ -1,9 +1,11 @@
 package com.hqgml.sign.servce;
 
+import com.hqgml.sign.pojo.VxUser;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,4 +33,14 @@ public interface UploadService {
      * @return
      */
     List<String> uploadPhone(MultipartFile file);
+
+
+
+
+    /**
+     * 上传人脸
+     * @param
+     * @return
+     */
+    List<String> uploadFace(MultipartFile files, VxUser user) throws IOException;
 }

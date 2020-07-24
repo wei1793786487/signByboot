@@ -23,7 +23,7 @@ public enum ExceptionEnums {
     USER_ISHAVE(401, "该用户已经存在"),
     READ_ERROR(400, "读取文件异常"),
     PERSON_NOT_FIND(400, "无人员信息"),
-    INSERT_ERROR(400, "无人员信息"),
+    INSERT_ERROR(400, "插入异常"),
     FILED_ERROR(400, "参数不允许"),
     META_NOT_FIND(404, "meta未找到"),
     ROLE_NOT_FIND(400,"角色信息没找到"),
@@ -51,6 +51,7 @@ public enum ExceptionEnums {
     ADD_MEAN_ERROR(500, "添加菜单异常"),
     SERVER_ERROR(500, "服务器异常"),
     FIlE_IS_NULL(400, "文件为空"),
+    PERSON_BAND(400, "人员已经绑定"),
     PERSON_NAME_IS_TOO_LONG(400, "文件名字过长"),
     FIlENAME_IS_NULL(400, "文件名为空"),
     SELECT_ERROR(400, "查询异常"),
@@ -66,7 +67,6 @@ public enum ExceptionEnums {
     PSERSON_NOt_FIND(400,"人员没找到"),
     PHONE_ERROR(400, "联系方式不匹配"),
     CODE_ERROR(400, "code非法"),
-    NOT_BAND_PERSON(800, "没有该用户"),
     USER_NOT_USE(403, "用户不可用");
     private int code;
     private String Msg;

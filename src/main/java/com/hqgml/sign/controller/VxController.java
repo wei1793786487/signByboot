@@ -46,9 +46,12 @@ public class VxController {
             @RequestParam("phone") String phone
             ) {
         VxUser vxUser = UserUtils.getVxUserByToken(request);
-          MiniUserService.setBand(vxUser,personName,phone);
-        return ResponseEntity.ok(new Common<>("绑定成功"));
+        //0代表绑定管理员添加的人脸,1代表绑定了但是为绑定人脸
+        Integer info = MiniUserService.setBand(vxUser, personName, phone);
+        return ResponseEntity.ok(new Common<>(info));
     }
+
+
 
 
 }

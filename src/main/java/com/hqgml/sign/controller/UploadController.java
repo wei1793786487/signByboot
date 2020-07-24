@@ -1,8 +1,11 @@
 package com.hqgml.sign.controller;
 
 import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.utlis.UserUtils;
+import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.UploadService;
 import com.hqgml.sign.others.annotation.ControllerLog;
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -76,6 +80,29 @@ public class UploadController {
         return ResponseEntity.ok(new Common(message));
 
     }
+
+
+
+    /**
+     * 上传人脸
+     */
+    @PostMapping("face")
+    @ControllerLog(describe = "上传人脸")
+    @ApiOperation(value = "上传的人脸")
+    @ApiImplicitParam(name = "imgStr",value = "人脸的base64编码")
+    public ResponseEntity<Common> uploadPhone(
+            @RequestParam(value = "file") MultipartFile files,
+            HttpServletRequest request
+
+    ) throws IOException {
+        VxUser user = UserUtils.getVxUserByToken(request);
+        List<String> message = uploadService.uploadFace(files, user);
+        return ResponseEntity.ok(new Common(message));
+    }
+
+
+
+
 
 
 }

@@ -21,7 +21,6 @@ import javax.validation.Valid;
 
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.servce.PersonsService;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -171,11 +170,12 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public void insertOne(Persons persons) {
+    public Integer insertOne(Persons persons) {
         int i = personsMapper.insertSelective(persons);
         if (i!=1){
             throw new XxException(ExceptionEnums.INSERT_ERROR);
         }
+        return persons.getId();
     }
 
 

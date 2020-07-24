@@ -104,7 +104,7 @@ public interface PersonsService {
 
 
 
-    void insertOne(Persons persons);
+    Integer insertOne(Persons persons);
 
 
 }
