@@ -13,7 +13,8 @@ spring:
     url: jdbc:mysql://39.96.44.100:3306/meeting?&serverTimezone=GMT%2b8
     username: meeting
     password: i37LXLrspy68cC3a
-
+    hikari:
+      connection-timeout: 100000
   thymeleaf:
       check-template-location: false
 
