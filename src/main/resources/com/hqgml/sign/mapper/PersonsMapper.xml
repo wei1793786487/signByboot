@@ -155,7 +155,7 @@
         select
         <include refid="Base_Column_List" />
         from persons
-        where add_id=#{addId,jdbcType=INTEGER} or id=0
+        where add_id=#{addId,jdbcType=INTEGER} or add_id=0
         <if test="personName != null">
             and person_name like concat('%', #{personName,jdbcType=VARCHAR},'%')
         </if>
