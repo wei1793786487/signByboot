@@ -7,7 +7,10 @@ import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.others.pojo.RedisProperties;
+import com.hqgml.sign.others.utlis.AddressUtils;
+import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.servce.MeetingService;
 import com.tencentcloudapi.tci.v20190318.models.Person;
 import javafx.scene.chart.XYChart;
 import org.apache.commons.collections4.SplitMapUtils;
@@ -17,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.constraints.NotNull;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
@@ -36,6 +40,11 @@ class SignApplicationTests {
 
     @Autowired
     private RoleController roleController;
+
+
+    @Autowired
+    private MeetingService meetingService;
+
 
     @Test
     void contextLoads() {
@@ -91,5 +100,13 @@ class SignApplicationTests {
     }
     @Test
     void Person(){
+    }
+
+    @Test
+    void tara(){
+        Meeting meeting = meetingService.selectById(92);
+        @NotNull Double lat = meeting.getLat();
+        @NotNull Double lng = meeting.getLng();
+        AddressUtils.BaiduTransformTen(lat+","+lng);
     }
 }

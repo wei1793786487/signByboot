@@ -23,7 +23,7 @@ import java.util.Map;
 public class AddressUtils {
 
     static final String AK = "3rGQd0yzSDSm2SAYiA38mgCmBglpBMUY";
-
+     static  final String tenAK="N4NBZ-5IFWK-NH7JH-AK7LS-77W77-LMBVI";
 
     public static String GetAddress(HttpServletRequest request) {
 
@@ -161,6 +161,35 @@ public class AddressUtils {
             throw new XxException(ExceptionEnums.ADDRESS_ERROR);
         }
     }
+
+
+    //百度坐标转换腾讯
+    public static Map<String,String> BaiduTransformTen(String gpslocation) {
+        String url = "https://apis.map.qq.com/ws/coord/v1/translate";
+        Map parm = new HashMap();
+        parm.put("locations", gpslocation);
+        parm.put("type", "3");
+        parm.put("key", tenAK);
+        try {
+            String response = HttpUtil.get(url, parm);
+            System.out.println(response);
+            JSONObject jsonObject = JSON.parseObject(response);
+
+            return  null;
+//            if (jsonObject.getInteger("status")==0){
+//                Map result = (Map) jsonObject.getJSONArray("result").get(0);
+//                return result;
+//            }else {
+//                log.error("地点检索出现问题");
+//                throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("地点检索出现问题");
+            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+        }
+    }
+
 
 
 }
