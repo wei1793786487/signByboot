@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.rmi.runtime.Log;
 
 import java.util.Map;
 
@@ -58,16 +59,8 @@ public class FaceController {
         //看看是不是超过了100米
         double source= 100d;
         Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
-        //获取格式转换的所需要的坐标
-        String parm=longitude+","+latitude;
-        Map<String, String> transform = AddressUtils.Transform(parm);
-        Double lat = meeting.getLat();
-        Double lng = meeting.getLng();
-        Object y = transform.get("y");
-        Object x = transform.get("x");
-        double lng2 = Double.parseDouble(x.toString());
-        double lat2 = Double.parseDouble(y.toString());
-        double distance = Distance.getDistance(lng, lat,lng2 ,lat2);
+        double distance = AddressUtils.getDistance(latitude+","+longitude,meeting.getLat()+","+meeting.getLng());
+        System.out.println("距离是"+distance);
          if (distance>source){
              return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,100米之内可签到"));
          }

@@ -1,4 +1,4 @@
-package com.hqgml.sign.others.pojo;
+package com.hqgml.sign.others.pojo.baiduAddress;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * 百度云的地点对象
  */
 @Data
-public class Address {
+public class AddressBaidu {
     private String name;
     private Map<String, Double> location;
     private String uid;

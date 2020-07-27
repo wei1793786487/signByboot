@@ -24,6 +24,7 @@ public enum ExceptionEnums {
     READ_ERROR(400, "读取文件异常"),
     PERSON_NOT_FIND(400, "无人员信息"),
     INSERT_ERROR(400, "插入异常"),
+    ERROR(500, "服务异常"),
     FILED_ERROR(400, "参数不允许"),
     META_NOT_FIND(404, "meta未找到"),
     ROLE_NOT_FIND(400,"角色信息没找到"),

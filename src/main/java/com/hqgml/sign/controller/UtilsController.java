@@ -2,15 +2,10 @@ package com.hqgml.sign.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.hqgml.sign.others.pojo.Address;
-import com.hqgml.sign.others.pojo.BaiduResult;
+import com.hqgml.sign.others.pojo.QQAddress.QQAddress;
+import com.hqgml.sign.others.pojo.baiduAddress.BaiduResult;
 import com.hqgml.sign.others.pojo.Common;
-import com.hqgml.sign.others.pojo.LayUi;
-import com.hqgml.sign.pojo.Menu;
-import com.hqgml.sign.pojo.SysUser;
-import com.hqgml.sign.servce.MenuService;
 import com.hqgml.sign.servce.MsgServices;
-import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.others.utlis.AddressUtils;
 import com.hqgml.sign.others.utlis.CookieUtils;
 import com.hqgml.sign.others.utlis.IdWorker;
@@ -25,9 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -137,7 +129,8 @@ public class UtilsController {
         return ResponseEntity.ok(new Common("发送完成"));
     }
 
-    @GetMapping("findAddress")
+
+    @GetMapping("findAddressBaidu")
     @ResponseBody
     @ApiOperation(value = "模糊插叙地点")
     @ApiImplicitParam(name = "keyword",value = "要查询的关键字")
@@ -156,5 +149,26 @@ public class UtilsController {
         return ResponseEntity.ok(common);
 
     }
+
+    @GetMapping("findAddressQQ")
+    @ResponseBody
+    @ApiOperation(value = "模糊插叙地点腾讯地图版本")
+    @ApiImplicitParam(name = "keyword",value = "要查询的关键字")
+    public ResponseEntity<Common> findAddressQQ(
+            @RequestParam("keyword") String keyword,
+            HttpServletRequest request
+    ) {
+        Common common=null;
+        String qq = AddressUtils.getCoordinateQQ(keyword, null, request);
+        QQAddress address = JSON.parseObject(qq, QQAddress.class);
+        if (address.getStatus()==0){
+            common=new Common(address.getData());
+        }else {
+            log.error("地点检索异常，原因是{},请求的id是",address.getMessage(),address.getRequestId());
+        }
+        return ResponseEntity.ok(common);
+
+    }
+
 
 }

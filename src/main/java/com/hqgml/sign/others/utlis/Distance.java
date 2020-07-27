@@ -34,21 +34,7 @@ public class Distance {
     }
 
 
-    /**
-     * test
-     * @param args
-     */
-    public static void main(String[] args){
-//        double distance = getDistance(118.363007,35.10964,118.35646,35.10465);
-//        System.out.println(distance);
 
-//        String coordinate = AddressUtils.getCoordinate("日照职业技术", "",null);
-//        System.out.println(coordinate);
-//        35.10465
-//        118.35646
-//        Map<String, String> transform = AddressUtils.Transform("118.75382995605469,35.289093017578125");
-//        System.out.println(transform);
-//
-    }
+
 
 }

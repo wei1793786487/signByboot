@@ -5,12 +5,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.others.pojo.QQDistance.distance;
+import com.hqgml.sign.servce.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 ;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.channels.NonWritableChannelException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,7 +97,7 @@ public class AddressUtils {
 
 
     /**
-     * 地点监所
+     * 地点检索
      *
      * @return
      */
@@ -135,6 +138,50 @@ public class AddressUtils {
 
     }
 
+    /**
+     * 地点检索
+     *
+     * @return
+     */
+
+    public static String getCoordinateQQ(String query, String region, HttpServletRequest request) {
+        String response = "";
+
+        /**
+         * 区域数据召回限制，为true时，仅召回region对应区域内数据。
+         */
+        Boolean city_limit = false;
+        String url = "https://apis.map.qq.com/ws/place/v1/suggestion";
+
+        if (StringUtils.equals(region, "") || region == null) {
+            try {
+                region = GetAddress(request);
+            } catch (Exception e) {
+                region = "北京";
+            }
+        }
+
+
+        Map parm = new HashMap();
+        parm.put("keyword", query);
+        parm.put("region", region);
+        parm.put("key", tenAK);
+
+
+        try {
+            response = HttpUtil.get(url, parm);
+        } catch (Exception e) {
+            log.error("地点检索出现问题");
+            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+        }
+        return response;
+
+    }
+
+
+
+
+
     //gps转换为百度坐标
     public static Map<String,String> Transform(String gpslocation) {
 //        gpslocation为经度在前，纬度在后
@@ -162,34 +209,42 @@ public class AddressUtils {
         }
     }
 
-
-    //百度坐标转换腾讯
+    //gps坐标转换腾讯
     public static Map<String,String> BaiduTransformTen(String gpslocation) {
         String url = "https://apis.map.qq.com/ws/coord/v1/translate";
         Map parm = new HashMap();
         parm.put("locations", gpslocation);
-        parm.put("type", "3");
+        parm.put("type", "1");
         parm.put("key", tenAK);
-        try {
+
             String response = HttpUtil.get(url, parm);
             System.out.println(response);
             JSONObject jsonObject = JSON.parseObject(response);
 
             return  null;
-//            if (jsonObject.getInteger("status")==0){
-//                Map result = (Map) jsonObject.getJSONArray("result").get(0);
-//                return result;
-//            }else {
-//                log.error("地点检索出现问题");
-//                throw new XxException(ExceptionEnums.ADDRESS_ERROR);
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("地点检索出现问题");
-            throw new XxException(ExceptionEnums.ADDRESS_ERROR);
+    }
+
+    public static double getDistance(String from,String to){
+        String url = "https://apis.map.qq.com/ws/distance/v1/matrix?parameters";
+        Map parm = new HashMap();
+        parm.put("mode", "walking");
+        parm.put("from", from);
+        parm.put("to", to);
+        parm.put("key", tenAK);
+        String response = HttpUtil.get(url, parm);
+        distance distance = JSON.parseObject(response, distance.class);
+        if (distance.getStatus()!=0){
+            log.info("距离计算异常，原因是{}",distance.getMessage());
+            throw new XxException(ExceptionEnums.ERROR);
+        }else {
+         return  distance.getResult().getRows().get(0).getElements().get(0).getDistance();
         }
     }
 
+
+    public static void main(String[] args) {
+        getDistance("35.42545,119.46242","35.463332248,119.539841124");
+    }
 
 
 }

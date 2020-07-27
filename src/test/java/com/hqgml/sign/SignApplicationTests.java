@@ -104,9 +104,18 @@ class SignApplicationTests {
 
     @Test
     void tara(){
-        Meeting meeting = meetingService.selectById(92);
-        @NotNull Double lat = meeting.getLat();
-        @NotNull Double lng = meeting.getLng();
-        AddressUtils.BaiduTransformTen(lat+","+lng);
+//        Meeting meeting = meetingService.selectById(93);
+//        @NotNull Double lat = meeting.getLat();
+//        @NotNull Double lng = meeting.getLng();
+//        System.out.println(lat+","+lng);
+          AddressUtils.BaiduTransformTen("35.4635124206543,119.53459167480469");
     }
+    @Test
+    void getAddress(){
+        String qq = AddressUtils.getCoordinateQQ("日照职业技术学院", "日照", null);
+        System.out.println(qq);
+    }
+
+
+
 }
