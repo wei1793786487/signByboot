@@ -8,19 +8,15 @@ import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.others.utlis.AddressUtils;
-import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MeetingService;
-import com.tencentcloudapi.tci.v20190318.models.Person;
-import javafx.scene.chart.XYChart;
-import org.apache.commons.collections4.SplitMapUtils;
+import com.hqgml.sign.servce.MiniUserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 
-import javax.validation.constraints.NotNull;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
@@ -45,6 +41,9 @@ class SignApplicationTests {
     @Autowired
     private MeetingService meetingService;
 
+
+    @Autowired
+    private MiniUserService miniUserService;
 
     @Test
     void contextLoads() {
@@ -100,6 +99,7 @@ class SignApplicationTests {
     }
     @Test
     void Person(){
+//        miniUserService.setUnBand("o8o2v4k6ePvEwXJma99DFatP6hR4");
     }
 
     @Test

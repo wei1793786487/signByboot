@@ -32,5 +32,8 @@ public class VxUser implements Serializable {
     @Column(name = "create_time")
     private String createTime;
 
+    private Persons persons;
+
+
     private static final long serialVersionUID = 1L;
 }

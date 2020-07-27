@@ -1,17 +1,24 @@
 package com.hqgml.sign.controller;
 
 
+import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
+import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.VxLoginToken;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.MalformedInputException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,6 +58,32 @@ public class VxController {
         return ResponseEntity.ok(new Common<>(info));
     }
 
+
+    @PostMapping("unband/{openid}/{type}")
+    public ResponseEntity<Common> setUnBand(
+            @PathVariable("openid") String openid,
+            @PathVariable(value = "type") Integer type
+    ) {
+        MiniUserService.setUnBand(openid,type);
+        return ResponseEntity.ok(new Common<>("解绑成功"));
+    }
+
+
+
+
+    @GetMapping
+    @ControllerLog(describe = "查询小程序人员")
+    @ApiOperation(value = "查询小程序人员")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page",value = "当前页",defaultValue = "1",type = "Integer"),
+            @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer"),
+    })
+    public MyPageInfo getMiniAll(
+            @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
+    ) {
+        return MiniUserService.selectAll(page,limit);
+    }
 
 
 

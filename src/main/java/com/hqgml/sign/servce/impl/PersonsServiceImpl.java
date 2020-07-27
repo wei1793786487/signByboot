@@ -103,7 +103,6 @@ public class PersonsServiceImpl implements PersonsService {
                 Persons persons = selectById(id);
                 storageClient.deleteFile(persons.getUrl());
                 log.info("删除服务器图片信息");
-
                 tenlentServices.deletePerson(persons.getUuid());
                 log.info("删除腾讯云");
 

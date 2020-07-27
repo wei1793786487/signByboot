@@ -5,22 +5,27 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.mapper.VxUserMapper;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
+import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
 import com.hqgml.sign.servce.PersonsService;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -155,6 +160,36 @@ public class MiniUserServiceImpl implements MiniUserService {
     @Override
     public VxUser findByid(Integer id) {
          return vxUserMapper.findById(id);
+    }
+
+    @Override
+    public MyPageInfo selectAll(Integer page, Integer limit) {
+        PageHelper.startPage(page, limit);
+        List<VxUser> all = vxUserMapper.findAll();
+        if (all.size()==0){
+            throw new XxException(ExceptionEnums.VX_USER_NOT_FIND);
+        }
+        PageInfo<VxUser> brandPageInfo = new PageInfo<>(all);
+        return new MyPageInfo<>(brandPageInfo.getTotal(),all);
+    }
+
+    @Override
+    public void setUnBand(String openid, Integer type) {
+        VxUser vxUser = vxUserMapper.findByOpenid(openid);
+
+        int i = vxUserMapper.updatePIdByOpenid(null, openid);
+        if (i!=1){
+            throw new XxException(ExceptionEnums.UPDATE_ERROR);
+        }
+        if (type==1){
+            try {
+                Integer[] id={vxUser.getPId()};
+                personsService.deleteByids(id,null);
+            } catch (TencentCloudSDKException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }
