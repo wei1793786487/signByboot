@@ -243,7 +243,8 @@ public class AddressUtils {
 
 
     public static void main(String[] args) {
-        getDistance("35.42545,119.46242","35.463332248,119.539841124");
+        double distance = getDistance("35.463531494140625,119.5345687866211", "35.463332248,119.539841124");
+        System.out.println(distance);
     }
 
 
