@@ -66,7 +66,7 @@ public class TodoController {
     @ApiOperation(value = "更新TODO信息")
     public ResponseEntity<Common<String>> update(
             @PathVariable("id") Integer id,
-            @Valid Todos todos
+            Todos todos
     ) {
         todosService.updateTodo(todos, id);
         Common<String> common = new Common<>("修改成功");
