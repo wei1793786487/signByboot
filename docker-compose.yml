@@ -1,0 +1,45 @@
+
+version: '3.8'
+
+services:
+  meeting:
+    build: .
+    image: meeting
+    depends_on:
+      - redis
+      - mysql
+      - nginx
+    ports:
+      - "8080:8080"
+    restart: always
+    links:
+      - redis
+      - mysql
+      - nginx
+
+  redis:
+    image: "docker.io/redis"
+    container_name: redis
+    restart: always
+
+  mysql:
+    container_name: mysql
+    image: mysql
+    build:
+      context: .
+      dockerfile: ./DockerfileSql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    restart: always
+
+  nginx:
+    container_name: some-ngins
+    image: nginx:1.13
+    ports:
+      - 80:80
+    # - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./log:/var/log/nginx
