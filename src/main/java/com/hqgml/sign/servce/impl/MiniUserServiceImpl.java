@@ -192,6 +192,16 @@ public class MiniUserServiceImpl implements MiniUserService {
 
     }
 
+    @Override
+    public VxUser findByPid(Integer pid) {
+       return vxUserMapper.findByPId(pid);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        vxUserMapper.deleteById(id);
+    }
+
 }
 
 

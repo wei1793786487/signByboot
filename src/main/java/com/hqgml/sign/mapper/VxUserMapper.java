@@ -1,8 +1,8 @@
 package com.hqgml.sign.mapper;
-import java.util.List;
-
 import com.hqgml.sign.pojo.VxUser;
-import org.apache.ibatis.annotations.Param;import tk.mybatis.mapper.common.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author Devil
@@ -14,6 +14,10 @@ public interface VxUserMapper  {
     VxUser findById(@Param("id")Integer id);
      int updatePIdByOpenid(@Param("updatedPId")Integer updatedPId,@Param("openid")String openid);
      List<VxUser> findAll();
+
+   VxUser findByPId(@Param("pId")Integer pId);
+
+  int deleteById(@Param("id")Integer id);
 
 
 

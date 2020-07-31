@@ -5,10 +5,10 @@ import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.Meeting;
-import com.hqgml.sign.pojo.VxLoginToken;
+import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
+import com.hqgml.sign.servce.SysUserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.MalformedInputException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,6 +25,9 @@ public class VxController {
     @Autowired
     private MiniUserService MiniUserService;
 
+
+    @Autowired
+    private SysUserService sysUserService;
     /**
      * 登录
      * @param code
@@ -69,8 +70,6 @@ public class VxController {
     }
 
 
-
-
     @GetMapping
     @ControllerLog(describe = "查询小程序人员")
     @ApiOperation(value = "查询小程序人员")
@@ -85,9 +84,16 @@ public class VxController {
         return MiniUserService.selectAll(page,limit);
     }
 
-
-
-
+    /**
+     * 骗微信小程序的
+     * @param
+     * @return
+     */
+    @DeleteMapping()
+    public ResponseEntity<Common> delete() {
+        SysUser name = sysUserService.findUserByUserName("小王八");
+        return ResponseEntity.ok(new Common<>("你好"));
+    }
 
 
 }

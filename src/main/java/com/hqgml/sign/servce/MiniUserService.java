@@ -21,6 +21,10 @@ public interface MiniUserService {
    MyPageInfo selectAll(Integer page, Integer limit);
 
     void setUnBand(String openid, Integer type);
+
+    VxUser findByPid(Integer pid);
+
+    void  deleteById(Integer id);
 }
 
 

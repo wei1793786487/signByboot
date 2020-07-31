@@ -2,14 +2,16 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqgml.sign.mapper.SysUserMapper;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.RoleService;
+import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.servce.TenlentService;
-import com.hqgml.sign.others.exception.ExceptionEnums;
-import com.hqgml.sign.others.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.hqgml.sign.mapper.SysUserMapper;
-import com.hqgml.sign.servce.SysUserService;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -95,6 +91,7 @@ public class SysUserServiceImpl implements SysUserService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             username = (String) principal;
         }
+
         SysUser user = sysUserMapper.findOneByUsername(username);
         if (user == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
