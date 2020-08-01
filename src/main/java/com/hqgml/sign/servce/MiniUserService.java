@@ -25,6 +25,8 @@ public interface MiniUserService {
     VxUser findByPid(Integer pid);
 
     void  deleteById(Integer id);
+
+    Integer findCount();
 }
 
 

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.event.IIOReadProgressListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +201,11 @@ public class MiniUserServiceImpl implements MiniUserService {
     @Override
     public void deleteById(Integer id) {
         vxUserMapper.deleteById(id);
+    }
+
+    @Override
+    public Integer findCount() {
+        return vxUserMapper.count();
     }
 
 }

@@ -1,15 +1,17 @@
 package com.hqgml.sign.controller;
 
-import com.hqgml.sign.others.pojo.*;
-import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.*;
-import com.hqgml.sign.servce.MeetingService;
-import com.hqgml.sign.servce.PersonsService;
-import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.others.utlis.CookieUtils;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.others.pojo.Common;
+import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.pojo.RedisProperties;
+import com.hqgml.sign.others.utlis.UserUtils;
+import com.hqgml.sign.pojo.Role;
+import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.servce.MeetingService;
+import com.hqgml.sign.servce.PersonsService;
+import com.hqgml.sign.servce.SysUserService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,19 +22,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -239,5 +235,15 @@ public class UserController {
         SysUser findsUser = sysUserService.findUserById(userId);
         return ResponseEntity.ok(new Common(findsUser));
     }
+
+
+    @GetMapping("bashboard")
+    public ResponseEntity<Common> findBashBoard(HttpServletRequest request) {
+        SysUser user = UserUtils.getUserByToken(request);
+         Map<String,Integer> info= sysUserService.findBashBoard(user);
+         return ResponseEntity.ok(new Common(info));
+    }
+
+
 
 }

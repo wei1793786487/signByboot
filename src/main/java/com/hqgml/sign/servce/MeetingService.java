@@ -3,6 +3,7 @@ package com.hqgml.sign.servce;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.Meeting;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public interface MeetingService {
 
     void addMeeting(Meeting meeting);
 
-    MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String personName);
+    MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String personName, HttpServletRequest request);
 
     void updateMeeting(Meeting meeting);
 
@@ -47,7 +48,7 @@ public interface MeetingService {
      *
      * @return
      */
-    Integer slectCount();
+    Integer slectCount(Integer addId);
 
 
     /**

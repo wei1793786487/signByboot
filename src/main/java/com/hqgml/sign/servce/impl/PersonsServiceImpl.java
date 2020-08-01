@@ -70,8 +70,14 @@ public class PersonsServiceImpl implements PersonsService {
     @Override
     public MyPageInfo<Persons> selectAllByusername(String username, Integer page, Integer limit, String personName, HttpServletRequest request) {
         SysUser sysUser = UserUtils.getUserByToken(request);
-        PageHelper.startPage(page, limit);
-        List<Persons> persons = personsMapper.findAllByAddId(sysUser.getId(), personName);
+        Boolean isAdmin = UserUtils.isAdmin(sysUser.getRoles());
+        List<Persons> persons;
+        if (isAdmin){
+            persons = personsMapper.findAll(personName);
+        }else {
+            PageHelper.startPage(page, limit);
+            persons = personsMapper.findAllByAddId(sysUser.getId(), personName);
+        }
         if (persons == null || persons.size() == 0) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }
@@ -157,9 +163,8 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public Integer selectCount() {
-
-        return personsMapper.count();
+    public Integer selectCount(Integer addId) {
+        return personsMapper.count(addId);
     }
 
     @Override

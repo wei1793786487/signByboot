@@ -6,6 +6,7 @@ import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @author Devil
@@ -81,6 +82,15 @@ public interface SysUserService extends UserDetailsService {
      * @param request
      */
     void updateState(Integer userId, Integer state, HttpServletRequest request);
+
+    /**
+     * 查询控制台
+     * @return
+     * @param user
+     */
+     Map<String, Integer> findBashBoard(SysUser user);
+
+
 }
 
 
