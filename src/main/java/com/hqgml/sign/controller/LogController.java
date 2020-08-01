@@ -1,19 +1,20 @@
 package com.hqgml.sign.controller;
 
+import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.impl.UserLogServiceImpl;
-import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Devil
@@ -40,11 +41,12 @@ public class LogController {
             @ApiImplicitParam(name = "limit",value = "每页的大小",defaultValue = "15",type = "Integer")
     })
     public MyPageInfo<UserLog> selectByAddId(
+            HttpServletRequest request,
             @RequestParam(name = "serch", required = false) String serch,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit
     ) {
-        return userLogService.selectLog(serch, page, limit);
+        return userLogService.selectLog(serch, page, limit,request);
     }
 
 
@@ -66,7 +68,6 @@ public class LogController {
      * @param limit 每页的大小
      */
     @GetMapping("all")
-    @Secured("ROLE_ADMIN")
     @ControllerLog(describe = "超管查询日志")
     @ApiOperation(value = "查询所有的日志，用户必须有admin角色")
     @ApiImplicitParams({

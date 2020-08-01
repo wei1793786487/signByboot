@@ -73,6 +73,7 @@ public class PersonsServiceImpl implements PersonsService {
         Boolean isAdmin = UserUtils.isAdmin(sysUser.getRoles());
         List<Persons> persons;
         if (isAdmin){
+            PageHelper.startPage(page, limit);
             persons = personsMapper.findAll(personName);
         }else {
             PageHelper.startPage(page, limit);

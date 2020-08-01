@@ -2,22 +2,21 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqgml.sign.mapper.UserLogMapper;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.UserLog;
 import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.others.exception.ExceptionEnums;
-import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.servce.UserLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import com.hqgml.sign.mapper.UserLogMapper;
-import com.hqgml.sign.servce.UserLogService;
-import org.springframework.transaction.annotation.Transactional;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -55,10 +54,18 @@ public class UserLogServiceImpl implements UserLogService {
     }
 
     @Override
-    public MyPageInfo<UserLog> selectLog(String serch, Integer page, Integer limit) {
-        SysUser user =SysUserService.findUserByUserName(null);
-        PageHelper.startPage(page, limit);
-        List<UserLog> userLogs = userLogMapper.selectByAddId(user.getId(), serch);
+    public MyPageInfo<UserLog> selectLog(String serch, Integer page, Integer limit, HttpServletRequest request) {
+        SysUser user = SysUserService.findUserById(UserUtils.getUserByToken(request).getId());
+        Boolean admin = UserUtils.isAdmin(user.getRoles());
+        List<UserLog> userLogs;
+        if (admin){
+            PageHelper.startPage(page, limit);
+           userLogs = userLogMapper.selectAllLog(serch);
+        }else {
+            PageHelper.startPage(page, limit);
+             userLogs= userLogMapper.selectByAddId(user.getId(), serch);
+        }
+
         if (userLogs == null || userLogs.size() == 0) {
             log.error("日志未找到");
             throw new XxException(ExceptionEnums.LOG_NOT_FIND);
