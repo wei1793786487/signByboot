@@ -67,7 +67,7 @@ public class MeetingServiceImpl implements MeetingService {
         Boolean isAdmin = UserUtils.isAdmin(userById.getRoles());
         if (isAdmin) {
             PageHelper.startPage(page, limit);
-            meetings = meetingMapper.selectAll(meetingName);
+            meetings = meetingMapper.selectAllAdmin(meetingName);
         } else {
             PageHelper.startPage(page, limit);
             meetings = meetingMapper.selectAllByAddId(sysUser.getId(), meetingName);

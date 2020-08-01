@@ -7,7 +7,6 @@ import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MeetingService;
 import com.hqgml.sign.servce.PersonsService;
@@ -18,7 +17,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -73,20 +71,7 @@ public class UserController {
         String lasttime = (String) session.getAttribute("lasttime");
         String lastaddress = (String) session.getAttribute("address");
         SysUser user = sysUserService.findUserByUserName(username);
-        //如果是超管，那么就获取所有的会议以及人员的数量
 
-        boolean isAdmin = false;
-        for (Role role : user.getRoles()) {
-            if (StringUtils.equals("ADMIN", role.getRoleName())) {
-                isAdmin = true;
-            }
-        }
-        if (isAdmin) {
-            Integer mCount = meetingService.slectCount();
-            Integer pCount = personsService.selectCount();
-            user.setMeetingcount(mCount);
-            user.setPersoncount(pCount);
-        }
         if (lastaddress != null && lasttime != null) {
             log.debug("设置上次登录的时间与地点");
             user.setAddress(lastaddress);

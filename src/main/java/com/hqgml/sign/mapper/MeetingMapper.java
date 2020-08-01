@@ -66,7 +66,7 @@ public interface MeetingMapper extends Mapper<Meeting> {
 
     List<Meeting> findMeetingByPerson(@Param("id")Integer id);
 
-    List<Meeting> selectAll(@Param("meetingName") String meetingName);
+    List<Meeting> selectAllAdmin(@Param("meetingName") String meetingName);
 
 
 
