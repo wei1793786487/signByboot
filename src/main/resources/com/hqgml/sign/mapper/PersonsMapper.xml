@@ -216,7 +216,7 @@
         select count(1)
         from persons
         <if test="_parameter != null">
-            and add_id=#{addId,jdbcType=INTEGER} or add_id=0
+            where add_id=#{addId,jdbcType=INTEGER} or add_id=0
         </if>
     </select>
 

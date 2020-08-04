@@ -86,7 +86,7 @@
         select count(1)
         from meeting
         <if test="_parameter != null">
-            and add_id=#{addId,jdbcType=INTEGER}
+            where add_id=#{addId,jdbcType=INTEGER}
         </if>
     </select>
 
