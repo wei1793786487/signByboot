@@ -76,7 +76,14 @@ public class Meeting implements Serializable {
     @Column(name = "information")
     private String information;
 
+
+    @Transient
+    @ApiModelProperty(hidden = true)
+    private Integer isCheck;
+
+
     private static final long serialVersionUID = 1L;
+
     @Transient
     @ApiModelProperty(hidden = true)
     private Integer persionNumber;

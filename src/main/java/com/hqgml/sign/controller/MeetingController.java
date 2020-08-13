@@ -1,14 +1,12 @@
 package com.hqgml.sign.controller;
 
+import com.hqgml.sign.others.annotation.ControllerLog;
 import com.hqgml.sign.others.pojo.Common;
-import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Meeting;
-import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MeetingService;
-import com.hqgml.sign.others.annotation.ControllerLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -68,12 +66,13 @@ public class MeetingController {
             @ApiImplicitParam(name = "meetingName",value = "搜索的会议的名字，仅支持会议的名字"),
     })
     public ResponseEntity<MyPageInfo> getAllByUser(
+            HttpServletRequest request,
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
             @RequestParam(name = "limit", required = false, defaultValue = "15") Integer limit,
             @RequestParam(name = "meetingName", required = false) String meetingName
     ) {
-        MyPageInfo<Meeting> meeting = meetingService.getMeetingByUser(username, page, limit, meetingName);
+        MyPageInfo<Meeting> meeting = meetingService.getMeetingByUser(username, page, limit, meetingName,request);
         return ResponseEntity.ok(meeting);
     }
 

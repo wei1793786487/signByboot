@@ -4,16 +4,17 @@ server:
     session:
       cookie:
         http-only: false
-        domain: wukaka.com
+        domain: hqgml.com
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://39.96.44.100:3306/meeting?&serverTimezone=GMT%2b8
+    url: jdbc:mysql://49.232.54.164:3306/meeting?&serverTimezone=GMT%2b8
     username: meeting
-    password: i37LXLrspy68cC3a
-
+    password: NDrBaHYdhk4ZbL7t
+    hikari:
+      connection-timeout: 100000
   thymeleaf:
       check-template-location: false
 

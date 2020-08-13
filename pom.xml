@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.hqgml</groupId>
     <artifactId>sign</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>sign</name>
     <description>Demo project for Spring Boot</description>
 

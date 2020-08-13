@@ -3,12 +3,15 @@ package com.hqgml.sign.others.utlis;
 import com.hqgml.sign.others.jwt.JwtUtils;
 import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
+import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.VxUser;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author Devil
@@ -44,6 +47,19 @@ public class UserUtils {
         String token = header.replaceAll(jwtProperties.getPrevxToken(), "");
         Payload<VxUser> info = JwtUtils.getInfoFromToken(token, jwtProperties.getPublicKey(), VxUser.class);
         return info.getUserInfo();
+    }
+
+    public static Boolean isAdmin(List<Role> roles){
+        if (roles.size()==0){
+            return  false;
+        }
+        boolean isAdmin=false;
+        for (Role role : roles) {
+            if (StringUtils.containsIgnoreCase(role.getRoleName(),"ADMIN")){
+                isAdmin=true;
+            }
+        }
+        return isAdmin;
     }
 
 

@@ -2,14 +2,14 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqgml.sign.mapper.SysUserMapper;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Role;
 import com.hqgml.sign.pojo.SysUser;
-import com.hqgml.sign.servce.RoleService;
-import com.hqgml.sign.servce.TenlentService;
-import com.hqgml.sign.others.exception.ExceptionEnums;
-import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.servce.*;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -22,16 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.hqgml.sign.mapper.SysUserMapper;
-import com.hqgml.sign.servce.SysUserService;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -55,6 +51,16 @@ public class SysUserServiceImpl implements SysUserService {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private PersonsService personsService;
+
+    @Resource
+    private MeetingService meetingService;
+
+    @Resource
+    private MiniUserService miniUserService;
+
+
     /**
      * spring security的认证的方法
      *
@@ -75,7 +81,7 @@ public class SysUserServiceImpl implements SysUserService {
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
 
         for (Role role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRoleName()));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
         }
         User user = new User(sysUser.getUsername(), sysUser.getPassword(), sysUser.getIsenabled().equals(0) ? true : false, true, true, true, grantedAuthorities);
         return user;
@@ -95,6 +101,7 @@ public class SysUserServiceImpl implements SysUserService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             username = (String) principal;
         }
+
         SysUser user = sysUserMapper.findOneByUsername(username);
         if (user == null) {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
@@ -209,7 +216,7 @@ public class SysUserServiceImpl implements SysUserService {
             throw new XxException(ExceptionEnums.USER_NOT_FIND);
         }
         PageInfo<SysUser> brandPageInfo = new PageInfo<>(sysUsers);
-          return  new MyPageInfo<SysUser>(brandPageInfo.getTotal(),sysUsers);
+        return new MyPageInfo<SysUser>(brandPageInfo.getTotal(), sysUsers);
     }
 
     @Override
@@ -226,12 +233,29 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser user = UserUtils.getUserByToken(request);
         SysUser byId = sysUserMapper.findOneById(userId);
         for (Role role : byId.getRoles()) {
-            if (StringUtils.containsIgnoreCase(role.getRoleName(),"ADMIN")){
+            if (StringUtils.containsIgnoreCase(role.getRoleName(), "ADMIN")) {
                 throw new XxException(ExceptionEnums.UODATE_SUPER_ERROE);
             }
         }
         sysUserMapper.updateIsenabledById(state, userId);
 
+    }
+
+    @Override
+    public Map<String, Integer> findBashBoard(SysUser user) {
+        SysUser one = sysUserMapper.findOneById(user.getId());
+        Boolean aBoolean = UserUtils.isAdmin(one.getRoles());
+        Map<String, Integer> info = new HashMap<>();
+        Integer vxcount = miniUserService.findCount();
+        info.put("vxcount", vxcount);
+        if (aBoolean) {
+            info.put("meetingCount", meetingService.slectCount(null));
+            info.put("personCount", personsService.selectCount(null));
+        } else {
+            info.put("meetingCount", meetingService.slectCount(user.getId()));
+            info.put("personCount", personsService.selectCount(user.getId()));
+        }
+        return info;
     }
 }
 

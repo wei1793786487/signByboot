@@ -3,23 +3,22 @@ package com.hqgml.sign.servce.impl;
 import cn.hutool.core.util.IdUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqgml.sign.mapper.MeetingMapper;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
-import com.hqgml.sign.others.pojo.MyPageInfo;
-import com.hqgml.sign.pojo.*;
-import com.hqgml.sign.servce.PersonsService;
-import com.hqgml.sign.servce.SysUserService;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
+import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.UserUtils;
+import com.hqgml.sign.pojo.*;
+import com.hqgml.sign.servce.MeetingService;
+import com.hqgml.sign.servce.PersonsService;
+import com.hqgml.sign.servce.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-
-import com.hqgml.sign.mapper.MeetingMapper;
-import com.hqgml.sign.servce.MeetingService;
-import org.springframework.transaction.annotation.Transactional;
-
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,20 +60,25 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String meetingName) {
-        SysUser sysUser;
-        if (username == null) {
-            sysUser = sysUserService.findUserByUserName(null);
+    public MyPageInfo<Meeting> getMeetingByUser(String username, Integer page, Integer limit, String meetingName, HttpServletRequest request) {
+        List<Meeting> meetings;
+        SysUser sysUser = UserUtils.getUserByToken(request);
+        SysUser userById = sysUserService.findUserById(sysUser.getId());
+        Boolean isAdmin = UserUtils.isAdmin(userById.getRoles());
+        if (isAdmin) {
+            PageHelper.startPage(page, limit);
+            meetings = meetingMapper.selectAllAdmin(meetingName);
         } else {
-            sysUser = sysUserService.findUserByUserName(username);
+            PageHelper.startPage(page, limit);
+            meetings = meetingMapper.selectAllByAddId(sysUser.getId(), meetingName);
         }
-        PageHelper.startPage(page, limit);
-        List<Meeting> meetings = meetingMapper.selectAllByAddId(sysUser.getId(), meetingName);
+
         if (meetings == null || meetings.size() == 0) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
+
         PageInfo<Meeting> brandPageInfo = new PageInfo<>(meetings);
-        return new MyPageInfo<Meeting>(brandPageInfo.getTotal(),meetings);
+        return new MyPageInfo<>(brandPageInfo.getTotal(), meetings);
 
     }
 
@@ -190,28 +194,29 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public Integer slectCount() {
-        Integer count = meetingMapper.count();
+    public Integer slectCount(Integer addId) {
+        Integer count = meetingMapper.count(addId);
         return count;
     }
 
     @Override
     public List<Meeting> selectLikeMeetingName(String meetingname) {
         List<Meeting> meetings = meetingMapper.selectAllByMeetingNameLike(meetingname);
-        if (meetings.size()==0){
+        if (meetings.size() == 0) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return meetings;
     }
+
     @Override
     public void removePerson(Integer[] ids, Integer mid) {
-        personsMapper.romovePerson(ids,mid);
+        personsMapper.romovePerson(ids, mid);
     }
 
     @Override
     public List<Meeting> findMeetingByPerson(Integer pId) {
         List<Meeting> meetings = meetingMapper.findMeetingByPerson(pId);
-        if (meetings.size()==0){
+        if (meetings.size() == 0) {
             throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
         }
         return meetings;

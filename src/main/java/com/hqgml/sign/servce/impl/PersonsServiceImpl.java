@@ -3,13 +3,17 @@ package com.hqgml.sign.servce.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.hqgml.sign.mapper.PersonsMapper;
+import com.hqgml.sign.others.exception.ExceptionEnums;
+import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.VxUser;
+import com.hqgml.sign.servce.MiniUserService;
+import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.servce.TenlentService;
-import com.hqgml.sign.others.exception.ExceptionEnums;
-import com.hqgml.sign.others.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,10 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.hqgml.sign.mapper.PersonsMapper;
-import com.hqgml.sign.servce.PersonsService;
-
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +43,9 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private TenlentService tenlentServices;
 
+
+    @Resource
+    private MiniUserService miniUserService;
 
 
 
@@ -67,8 +70,15 @@ public class PersonsServiceImpl implements PersonsService {
     @Override
     public MyPageInfo<Persons> selectAllByusername(String username, Integer page, Integer limit, String personName, HttpServletRequest request) {
         SysUser sysUser = UserUtils.getUserByToken(request);
-        PageHelper.startPage(page, limit);
-        List<Persons> persons = personsMapper.findAllByAddId(sysUser.getId(), personName);
+        Boolean isAdmin = UserUtils.isAdmin(sysUser.getRoles());
+        List<Persons> persons;
+        if (isAdmin){
+            PageHelper.startPage(page, limit);
+            persons = personsMapper.findAll(personName);
+        }else {
+            PageHelper.startPage(page, limit);
+            persons = personsMapper.findAllByAddId(sysUser.getId(), personName);
+        }
         if (persons == null || persons.size() == 0) {
             throw new XxException(ExceptionEnums.PERSON_NOT_FIND);
         }
@@ -101,19 +111,23 @@ public class PersonsServiceImpl implements PersonsService {
         if (ids != null) {
             for (Integer id : ids) {
                 Persons persons = selectById(id);
-                storageClient.deleteFile(persons.getUrl());
-                log.info("删除服务器图片信息");
-
-                tenlentServices.deletePerson(persons.getUuid());
-                log.info("删除腾讯云");
-
+                if (persons.getUrl()!=null&&persons.getUrl()!=""){
+                    storageClient.deleteFile(persons.getUrl());
+                    log.info("删除服务器图片信息");
+                    tenlentServices.deletePerson(persons.getUuid());
+                    log.info("删除腾讯云");
+                }
+                VxUser vxUser = miniUserService.findByPid(id);
+                if (vxUser!=null){
+                  miniUserService.setUnBand(vxUser.getOpenid(),2);
+                }
                 int isdelect = personsMapper.deleteById(id);
                 if (isdelect != 1) {
                     log.error("数据库删除id为" + id + "失败");
                 }
             }
         }
-        if (url != null) {
+        if (url != null&& !url.equals("")) {
             Persons persons = personsMapper.selectByUrl(url);
             storageClient.deleteFile(persons.getUrl());
             tenlentServices.deletePerson(persons.getUuid());
@@ -150,9 +164,8 @@ public class PersonsServiceImpl implements PersonsService {
     }
 
     @Override
-    public Integer selectCount() {
-
-        return personsMapper.count();
+    public Integer selectCount(Integer addId) {
+        return personsMapper.count(addId);
     }
 
     @Override

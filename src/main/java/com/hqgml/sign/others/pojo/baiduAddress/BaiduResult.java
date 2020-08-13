@@ -1,4 +1,4 @@
-package com.hqgml.sign.others.pojo;
+package com.hqgml.sign.others.pojo.baiduAddress;
 
 import lombok.Data;
 
@@ -13,5 +13,5 @@ import java.util.List;
 public class BaiduResult {
     private Integer status;
     private String message;
-    private List<Address> result;
+    private List<AddressBaidu> result;
 }

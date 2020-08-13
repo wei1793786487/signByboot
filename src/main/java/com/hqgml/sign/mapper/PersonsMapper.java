@@ -62,7 +62,7 @@ public interface PersonsMapper {
      *
      * @return
      */
-    Integer count();
+    Integer count(Integer add_id);
 
     /**
      * 查询属于这个会议的人
@@ -83,4 +83,8 @@ public interface PersonsMapper {
     Persons selectAllByMid(@Param("id") Integer id);
 
     int romovePerson(@Param("ids") Integer[] ids, @Param("mid") Integer mid);
+
+    List<Persons> findAll(@Param("personName") String personName);
+
+
 }

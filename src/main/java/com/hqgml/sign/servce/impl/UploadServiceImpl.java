@@ -290,10 +290,12 @@ public class UploadServiceImpl implements UploadService {
         System.out.println(storePath.getFullPath());
         VxUser byid = miniUserService.findByid(user.getId());
         Persons persons = personsService.selectById(byid.getPId());
-        tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
         persons.setUrl(storePath.getFullPath());
         personsService.updatePersonById(persons);
+        tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
+
     }
+
 
 
 }

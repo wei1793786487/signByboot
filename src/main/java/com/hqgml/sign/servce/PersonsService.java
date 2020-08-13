@@ -91,7 +91,7 @@ public interface PersonsService {
      * 查询总的数量
      * @return
      */
-    Integer selectCount();
+    Integer selectCount(Integer addId);
 
     /**
      * 查询某个会议的参加情况
