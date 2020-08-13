@@ -8,9 +8,11 @@ import com.hqgml.sign.others.pojo.JwtProperties;
 import com.hqgml.sign.others.pojo.Payload;
 import com.hqgml.sign.others.pojo.RedisProperties;
 import com.hqgml.sign.others.utlis.AddressUtils;
+import com.hqgml.sign.others.utlis.COSUtils;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.servce.MeetingService;
+import com.qcloud.cos.model.Bucket;
 import com.tencentcloudapi.tci.v20190318.models.Person;
 import javafx.scene.chart.XYChart;
 import org.apache.commons.collections4.SplitMapUtils;
@@ -21,6 +23,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotNull;
+import java.io.PipedReader;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
@@ -40,6 +44,10 @@ class SignApplicationTests {
 
     @Autowired
     private RoleController roleController;
+
+    @Autowired
+    private COSUtils cosUtils;
+
 
 
     @Autowired
@@ -108,5 +116,13 @@ class SignApplicationTests {
         @NotNull Double lat = meeting.getLat();
         @NotNull Double lng = meeting.getLng();
         AddressUtils.BaiduTransformTen(lat+","+lng);
+    }
+
+    @Test
+    void but(){
+        List<Bucket> buckets = cosUtils.getBuckets();
+        for (Bucket bucket : buckets) {
+            System.out.println(bucket.getName());
+        }
     }
 }

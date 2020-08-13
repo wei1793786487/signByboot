@@ -174,15 +174,9 @@ public class AddressUtils {
             String response = HttpUtil.get(url, parm);
             System.out.println(response);
             JSONObject jsonObject = JSON.parseObject(response);
-
+              //todo 未完成不需要了
             return  null;
-//            if (jsonObject.getInteger("status")==0){
-//                Map result = (Map) jsonObject.getJSONArray("result").get(0);
-//                return result;
-//            }else {
-//                log.error("地点检索出现问题");
-//                throw new XxException(ExceptionEnums.ADDRESS_ERROR);
-//            }
+
         } catch (Exception e) {
             e.printStackTrace();
             log.error("地点检索出现问题");

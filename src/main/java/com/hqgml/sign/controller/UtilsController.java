@@ -6,17 +6,16 @@ import com.hqgml.sign.others.pojo.Address;
 import com.hqgml.sign.others.pojo.BaiduResult;
 import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.others.pojo.LayUi;
+import com.hqgml.sign.others.utlis.*;
 import com.hqgml.sign.pojo.Menu;
 import com.hqgml.sign.pojo.SysUser;
+import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MenuService;
 import com.hqgml.sign.servce.MsgServices;
 import com.hqgml.sign.servce.SysUserService;
-import com.hqgml.sign.others.utlis.AddressUtils;
-import com.hqgml.sign.others.utlis.CookieUtils;
-import com.hqgml.sign.others.utlis.IdWorker;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
-import com.hqgml.sign.others.utlis.getverUtils;
+import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -30,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -53,9 +53,12 @@ public class UtilsController {
     private StringRedisTemplate redisTemplate;
 
 
-
     @Autowired
     private IdWorker idWorker;
+
+
+    @Autowired
+    private COSUtils COSUtils;
 
     @Autowired
     private MsgServices msgServices;
@@ -156,5 +159,17 @@ public class UtilsController {
         return ResponseEntity.ok(common);
 
     }
+
+
+    /**
+     * 测速
+     */
+    @PostMapping("demo")
+    public ResponseEntity<Common> uploadPhone(@RequestParam(value = "file") MultipartFile files) throws IOException {
+        COSUtils.addObject("1.png",files.getInputStream(),files.getSize());
+
+        return ResponseEntity.ok(new Common("上传成功"));
+    }
+
 
 }

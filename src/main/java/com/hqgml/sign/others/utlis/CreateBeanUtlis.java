@@ -1,6 +1,12 @@
 package com.hqgml.sign.others.utlis;
 
 import com.hqgml.sign.others.config.KeyProperties;
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.BasicSessionCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.region.Region;
 import com.tencentcloudapi.common.Credential;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
@@ -75,15 +81,22 @@ public class CreateBeanUtlis {
     }
 
 
-
     @Bean
-    public PersistentTokenRepository persistentTokenRepository(){
+    public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         //数据源设置
         tokenRepository.setDataSource(dataSource);
         //启动的时候创建表，这里只执行一次，第二次就注释掉，否则每次启动都重新创建表
         //tokenRepository.setCreateTableOnStartup(true);
         return tokenRepository;
+    }
+
+    @Bean
+    public COSClient createCOS() {
+        COSCredentials cred = new BasicCOSCredentials(keyProperties.getSecretId(),keyProperties.getSecretKey());
+        Region region = new Region("ap-beijing");
+        ClientConfig clientConfig = new ClientConfig(region);
+        return new COSClient(cred, clientConfig);
     }
 
 }
