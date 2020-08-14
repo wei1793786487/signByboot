@@ -282,7 +282,7 @@ public class UploadServiceImpl implements UploadService {
         log.info("文件上传路径是{}",url);
         VxUser byid = miniUserService.findByid(user.getId());
         Persons persons = personsService.selectById(byid.getPId());
-        persons.setUrl(key);
+        persons.setUrl(url);
         personsService.updatePersonById(persons);
         tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
 
