@@ -4,7 +4,6 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.model.Bucket;
 import com.qcloud.cos.model.ObjectMetadata;
-import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-import java.io.*;
-import java.net.URL;
-import java.util.Date;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -32,6 +28,7 @@ public class COSUtils {
 
     @Value("${tenlent.cos.bucketName}")
     private String bucketName;
+
 
 
     public  List<Bucket>  getBuckets(){

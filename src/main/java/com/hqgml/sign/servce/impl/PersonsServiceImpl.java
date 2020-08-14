@@ -18,8 +18,8 @@ import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -49,7 +49,11 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private MiniUserService miniUserService;
 
+    @Value("${tenlent.cos.bucketName}")
+    private String bucketName;
 
+    @Value("${tenlent.region}")
+    private String region;
 
     @Override
     public void createPersion(Persons persons) {
@@ -113,8 +117,9 @@ public class PersonsServiceImpl implements PersonsService {
         if (ids != null) {
             for (Integer id : ids) {
                 Persons persons = selectById(id);
-                if (persons.getUrl()!=null&&persons.getUrl()!=""){
-                    COSUtils.deleteObject(persons.getUuid());
+                if (persons.getUrl()!=null&& !persons.getUrl().equals("")){
+                    String key = persons.getUrl().replaceAll("https://" + bucketName + ".cos." + region + ".myqcloud.com/", "");
+                    COSUtils.deleteObject(key);
                     log.info("删除服务器图片信息");
                     tenlentServices.deletePerson(persons.getUuid());
                     log.info("删除腾讯云");

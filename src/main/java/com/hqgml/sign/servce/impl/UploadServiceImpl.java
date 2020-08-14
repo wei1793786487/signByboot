@@ -67,6 +67,10 @@ public class UploadServiceImpl implements UploadService {
     @Value("${tenlent.cos.bucketName}")
     private String bucketName;
 
+    @Value("${tenlent.region}")
+    private String region;
+
+
     private final static List<String> ALLOWS = Arrays.asList("jpg", "png", "JPEG", "xls", "xlsx");
     private Boolean isAllow = false;
 
@@ -104,13 +108,11 @@ public class UploadServiceImpl implements UploadService {
                 //数据库是否有该姓名人员
                 if (person != null) {
                     throw new XxException(ExceptionEnums.PERSON_EXIST);
-
                 }
 
                 if (personname.length() > 10) {
                     throw new XxException(ExceptionEnums.PERSON_EXIST);
                 }
-
                 //后缀是否允许
                 for (String allow : ALLOWS) {
                     if (StringUtils.contains(suffix, allow)) {
@@ -123,18 +125,17 @@ public class UploadServiceImpl implements UploadService {
                 if (StringUtils.equals(suffix, "zip")) {
                     //TODO 为zip的操作，暂时不做完成
                 } else {
-                    String key = IdUtil.simpleUUID() + "." + suffix;
+                    String uuid = IdUtil.simpleUUID();
+                    String key=uuid+ "."+ suffix;
                     COSUtils.addObject(key,file.getInputStream(),file.getSize());
-                    String url="https://"+bucketName+".cos.ap-beijing.myqcloud.com/"+key;
+                    String url="https://"+bucketName+".cos."+region+".myqcloud.com/"+key;
                     log.info("文件上传路径是{}",url);
-//                  StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), suffix, null);
-//                  log.info("文件上传的路径是" + storePath.getFullPath());
                     persons.setPersonName(personname);
                     persons.setUrl(url);
                     persons.setAddTime(DateUtil.now());
                     persons.setAddId(userByToken.getId());
                     persons.setPhone("");
-                    persons.setUuid(key);
+                    persons.setUuid(uuid);
                     persons.setBandType(0);
                     //创建人员
                     personsService.createPersion(persons);
@@ -147,7 +148,8 @@ public class UploadServiceImpl implements UploadService {
                 tenlentServices.createPerson(sysUser.getId().toString(), persons.getPersonName(), persons.getUuid(),  persons.getUrl());
             } catch (TencentCloudSDKException e) {
                 //先对异常进行处理
-                COSUtils.deleteObject(persons.getUuid());
+                String key = persons.getUrl().replaceAll("https://" + bucketName + ".cos." + region + ".myqcloud.com/", "");
+                COSUtils.deleteObject(key);
                 personsService.delectByuuid(persons.getUuid());
                 //这里抛出去是因为要丢给springmvc去处理异常；
                 throw e;
@@ -273,19 +275,18 @@ public class UploadServiceImpl implements UploadService {
             throw new XxException(ExceptionEnums.FIlE_IS_NULL);
         }
         String suffix = FileUtils.suffix(files.getOriginalFilename());
-        String key = IdUtil.simpleUUID() + "." + suffix;
+        String uuid = IdUtil.simpleUUID();
+        String key=uuid+ "."+ suffix;
         COSUtils.addObject(key,files.getInputStream(),files.getSize());
-        String url="https://"+bucketName+".cos.ap-beijing.myqcloud.com/"+key;
+        String url="https://"+bucketName+".cos."+region+".myqcloud.com/"+key;
         log.info("文件上传路径是{}",url);
         VxUser byid = miniUserService.findByid(user.getId());
         Persons persons = personsService.selectById(byid.getPId());
-        persons.setUrl(url);
+        persons.setUrl(key);
         personsService.updatePersonById(persons);
         tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
 
     }
-
-
 
 }
 

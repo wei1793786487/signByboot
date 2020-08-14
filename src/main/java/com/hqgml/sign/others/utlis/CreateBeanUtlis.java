@@ -4,7 +4,6 @@ import com.hqgml.sign.others.config.KeyProperties;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
-import com.qcloud.cos.auth.BasicSessionCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.region.Region;
 import com.tencentcloudapi.common.Credential;
@@ -12,6 +11,7 @@ import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.iai.v20180301.IaiClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +39,9 @@ public class CreateBeanUtlis {
     @Resource
     private DataSource dataSource;
 
+    @Value("${tenlent.region}")
+    private String region;
+
     @Autowired
     private KeyProperties keyProperties;
 
@@ -54,7 +57,7 @@ public class CreateBeanUtlis {
         httpProfile.setEndpoint("iai.tencentcloudapi.com");
         ClientProfile clientProfile = new ClientProfile();
         clientProfile.setHttpProfile(httpProfile);
-        IaiClient client = new IaiClient(cred, "ap-beijing", clientProfile);
+        IaiClient client = new IaiClient(cred, region, clientProfile);
         return client;
     }
 
@@ -94,7 +97,7 @@ public class CreateBeanUtlis {
     @Bean
     public COSClient createCOS() {
         COSCredentials cred = new BasicCOSCredentials(keyProperties.getSecretId(),keyProperties.getSecretKey());
-        Region region = new Region("ap-beijing");
+        Region region = new Region(this.region);
         ClientConfig clientConfig = new ClientConfig(region);
         return new COSClient(cred, clientConfig);
     }
