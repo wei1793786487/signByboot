@@ -18,7 +18,6 @@ spring:
   thymeleaf:
       check-template-location: false
 
-
   redis:
     database: 0 #索引
     host: 127.0.0.1
@@ -37,8 +36,10 @@ tenlent:
   keys:
     SecretId: AKIDsZ5NYYlQ4X3Rdntq5Nh0CD7ED9xfYk1E
     SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8
-  sms:
+  cos:
 
+    bucketName: faces-1259231187
+  sms:
     appId: 1400401687
     appKey: b6f6fa209ba35122f5f3986e7fa827cf
 #    签名
@@ -54,13 +55,6 @@ tenlent:
 #      hibernate:
 #        SQL: DEBUG
 #    com.hqgml.sign.mapper: debug
-
-fdfs:
-  so-timeout: 1501 # 超时时间
-  connect-timeout: 601 # 连接超时时间
-  tracker-list: # tracker地址：你的服务器地址+端口（默认是22122）
-  - 49.232.54.164 :22122
-
 
 hqgml:
   jwt:

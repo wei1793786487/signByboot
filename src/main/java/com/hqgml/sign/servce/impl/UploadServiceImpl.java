@@ -5,10 +5,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
-import com.github.tobato.fastdfs.domain.fdfs.StorePath;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.mapper.MeetingPersionMapper;
 import com.hqgml.sign.mapper.PersonsMapper;
+import com.hqgml.sign.others.utlis.COSUtils;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.*;
 import com.hqgml.sign.servce.*;
@@ -19,6 +18,7 @@ import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +39,6 @@ import java.util.Map;
 @Slf4j
 public class UploadServiceImpl implements UploadService {
 
-    @Autowired
-    private FastFileStorageClient storageClient;
 
     @Autowired
     private PersonsService personsService;
@@ -57,7 +55,8 @@ public class UploadServiceImpl implements UploadService {
     @Autowired
     private MiniUserService miniUserService;
 
-
+    @Autowired
+    private COSUtils COSUtils;
 
     @Autowired
     private MeetingPersionMapper meetingPersionMapper;
@@ -65,9 +64,12 @@ public class UploadServiceImpl implements UploadService {
     @Autowired
     private PersonsMapper personsMapper;
 
+    @Value("${tenlent.cos.bucketName}")
+    private String bucketName;
 
     private final static List<String> ALLOWS = Arrays.asList("jpg", "png", "JPEG", "xls", "xlsx");
     private Boolean isAllow = false;
+
 
     /**
      * 人员添加
@@ -78,7 +80,6 @@ public class UploadServiceImpl implements UploadService {
      */
     @Override
     public String uploadPersion(MultipartFile file, HttpServletRequest request) throws TencentCloudSDKException {
-
 
         SysUser userByToken = UserUtils.getUserByToken(request);
         SysUser sysUser = sysUserService.findUserById(userByToken.getId());
@@ -100,7 +101,7 @@ public class UploadServiceImpl implements UploadService {
                 String personname = StrUtil.removeSuffixIgnoreCase(filename, suffix);
                 Persons person = personsService.selectOneByUsername(personname);
 
-                //数据库是否有人员
+                //数据库是否有该姓名人员
                 if (person != null) {
                     throw new XxException(ExceptionEnums.PERSON_EXIST);
 
@@ -122,15 +123,18 @@ public class UploadServiceImpl implements UploadService {
                 if (StringUtils.equals(suffix, "zip")) {
                     //TODO 为zip的操作，暂时不做完成
                 } else {
-                    StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), suffix, null);
-                    log.info("文件上传的路径是" + storePath.getFullPath());
-                    String uuid = IdUtil.simpleUUID();
+                    String key = IdUtil.simpleUUID() + "." + suffix;
+                    COSUtils.addObject(key,file.getInputStream(),file.getSize());
+                    String url="https://"+bucketName+".cos.ap-beijing.myqcloud.com/"+key;
+                    log.info("文件上传路径是{}",url);
+//                  StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), suffix, null);
+//                  log.info("文件上传的路径是" + storePath.getFullPath());
                     persons.setPersonName(personname);
-                    persons.setUrl(storePath.getFullPath());
+                    persons.setUrl(url);
                     persons.setAddTime(DateUtil.now());
                     persons.setAddId(userByToken.getId());
                     persons.setPhone("");
-                    persons.setUuid(uuid);
+                    persons.setUuid(key);
                     persons.setBandType(0);
                     //创建人员
                     personsService.createPersion(persons);
@@ -140,34 +144,17 @@ public class UploadServiceImpl implements UploadService {
                 throw new XxException(ExceptionEnums.SERVER_ERROR);
             }
             try {
-                //防止节点读取异常
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
-        try {
-            //防止图片还没上传到服务器，腾讯云就开始下载文件了
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //将数组的人脸添加进去
-            try {
-                tenlentServices.createPerson(sysUser.getId().toString(), persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
+                tenlentServices.createPerson(sysUser.getId().toString(), persons.getPersonName(), persons.getUuid(),  persons.getUrl());
             } catch (TencentCloudSDKException e) {
                 //先对异常进行处理
-                storageClient.deleteFile(persons.getUrl());
+                COSUtils.deleteObject(persons.getUuid());
                 personsService.delectByuuid(persons.getUuid());
                 //这里抛出去是因为要丢给springmvc去处理异常；
                 throw e;
             } catch (InterruptedException e) {
                 e.printStackTrace();
-
         }
         return persons.getUrl();
-
         }
 
 
@@ -286,11 +273,13 @@ public class UploadServiceImpl implements UploadService {
             throw new XxException(ExceptionEnums.FIlE_IS_NULL);
         }
         String suffix = FileUtils.suffix(files.getOriginalFilename());
-        StorePath storePath = storageClient.uploadFile(files.getInputStream(), files.getSize(), suffix, null);
-        System.out.println(storePath.getFullPath());
+        String key = IdUtil.simpleUUID() + "." + suffix;
+        COSUtils.addObject(key,files.getInputStream(),files.getSize());
+        String url="https://"+bucketName+".cos.ap-beijing.myqcloud.com/"+key;
+        log.info("文件上传路径是{}",url);
         VxUser byid = miniUserService.findByid(user.getId());
         Persons persons = personsService.selectById(byid.getPId());
-        persons.setUrl(storePath.getFullPath());
+        persons.setUrl(url);
         personsService.updatePersonById(persons);
         tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
 

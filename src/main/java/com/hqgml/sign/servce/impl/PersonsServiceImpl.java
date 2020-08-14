@@ -2,11 +2,11 @@ package com.hqgml.sign.servce.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.hqgml.sign.mapper.PersonsMapper;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.MyPageInfo;
+import com.hqgml.sign.others.utlis.COSUtils;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.Persons;
 import com.hqgml.sign.pojo.SysUser;
@@ -17,6 +17,7 @@ import com.hqgml.sign.servce.TenlentService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,8 +38,9 @@ public class PersonsServiceImpl implements PersonsService {
     @Resource
     private PersonsMapper personsMapper;
 
-    @Resource
-    private FastFileStorageClient storageClient;
+    @Autowired
+    private COSUtils COSUtils;
+
 
     @Resource
     private TenlentService tenlentServices;
@@ -112,7 +114,7 @@ public class PersonsServiceImpl implements PersonsService {
             for (Integer id : ids) {
                 Persons persons = selectById(id);
                 if (persons.getUrl()!=null&&persons.getUrl()!=""){
-                    storageClient.deleteFile(persons.getUrl());
+                    COSUtils.deleteObject(persons.getUuid());
                     log.info("删除服务器图片信息");
                     tenlentServices.deletePerson(persons.getUuid());
                     log.info("删除腾讯云");
@@ -129,7 +131,7 @@ public class PersonsServiceImpl implements PersonsService {
         }
         if (url != null&& !url.equals("")) {
             Persons persons = personsMapper.selectByUrl(url);
-            storageClient.deleteFile(persons.getUrl());
+            COSUtils.deleteObject(persons.getUuid());
             tenlentServices.deletePerson(persons.getUuid());
             log.info("删除腾讯云");
             personsMapper.deleteById(persons.getId());
