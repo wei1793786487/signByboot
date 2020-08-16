@@ -284,7 +284,7 @@ public class UploadServiceImpl implements UploadService {
         Persons persons = personsService.selectById(byid.getPId());
         persons.setUrl(url);
         personsService.updatePersonById(persons);
-        tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), "http://www.hqgml.com/" + persons.getUrl());
+        tenlentServices.createPerson("0", persons.getPersonName(), persons.getUuid(), persons.getUrl());
 
     }
 
