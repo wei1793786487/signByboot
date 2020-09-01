@@ -99,7 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         String[] allowUrl = {"/meeting/winformation/**", "/findAddress","/demo"};
         String[] swagger = {"/swagger-ui.html", "/swagger-resources/**", "/images/**", "/webjars/**",
-                "/v2/api-docs", "/configuration/ui", "/configuration/security"
+                "/v2/api-docs", "/configuration/ui", "/configuration/security","/doc.html"
         };
         String[] wxLogin={"/vx/login"};
         //如果需要验证码 将下面这段放入即可
