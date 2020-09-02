@@ -40,6 +40,10 @@ public class RoleController {
      */
     @PostMapping("meta/des")
     @ApiOperation(value = "分配角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "rid",value = "角色id"),
+            @ApiImplicitParam(name = "mid",value = "mata的id"),
+    })
     public ResponseEntity<Common<String>> desRole(
             @RequestParam("rid") Integer rid[],
             @RequestParam("mid") Integer mid
@@ -57,6 +61,10 @@ public class RoleController {
      */
     @PostMapping("user/des")
     @ApiOperation(value = "分配角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "rid",value = "角色id"),
+            @ApiImplicitParam(name = "mid",value = "用户id"),
+    })
     public ResponseEntity<Common<String>> desUserRole(
             @RequestParam("rid") Integer rid[],
             @RequestParam("uid") Integer uid
@@ -70,6 +78,7 @@ public class RoleController {
 
     @GetMapping("menu/{rid}")
     @ApiOperation(value = "获取菜单绑定的角色")
+    @ApiImplicitParam(name = "rid", value = "要获取的角色id")
     public ResponseEntity<Common> getDes(@PathVariable("rid") Integer rid) {
         List<Role> des = roleService.findRoleDes(rid);
         return ResponseEntity.ok(new Common(des));

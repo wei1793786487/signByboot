@@ -5,6 +5,8 @@ import com.hqgml.sign.others.pojo.Common;
 import com.hqgml.sign.pojo.Meta;
 import com.hqgml.sign.servce.MetaService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping("meta")
-@Api(tags = "meta界面,与菜单相关联")
+@Api(tags = "与菜单相关联meta界面")
 public class MetaController {
 
     @Autowired
@@ -37,6 +39,7 @@ public class MetaController {
 
     @DeleteMapping()
     @ControllerLog(describe = "删除菜单信息")
+    @ApiImplicitParam(name = "ids",value = "要删除的meta的id的数组",required = true)
     public ResponseEntity<Common<String>> deleteMenu(@RequestParam("id") Integer id) {
         metaService.deleteMeta(id);
         Common<String> common = new Common<>("删除成功");

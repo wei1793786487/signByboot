@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.hqgml.sign.mapper.UserLogMapper;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
-import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
 import com.hqgml.sign.others.utlis.UserUtils;
 import com.hqgml.sign.pojo.SysUser;
@@ -83,20 +82,6 @@ public class UserLogServiceImpl implements UserLogService {
         }
     }
 
-    @Override
-    public LayUi selectAllLog(String search, Integer page, Integer limit) {
-        PageHelper.startPage(page, limit);
-        List<UserLog> userLogs = userLogMapper.selectAllLog(search);
-        if (userLogs == null || userLogs.size() == 0) {
-            log.error("日志未找到");
-            throw new XxException(ExceptionEnums.LOG_NOT_FIND);
-        }
-        PageInfo<UserLog> brandPageInfo = new PageInfo<>(userLogs);
-        LayUi<UserLog> layUi = new LayUi<>();
-        layUi.setCount(brandPageInfo.getTotal());
-        layUi.setData(userLogs);
-        return layUi;
-    }
 
 
 }

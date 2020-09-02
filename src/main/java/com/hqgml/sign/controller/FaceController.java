@@ -27,7 +27,6 @@ import java.util.Map;
 @RequestMapping("face")
 @RestController
 @Api(tags = "人员识别接口")
-
 public class FaceController {
 
 

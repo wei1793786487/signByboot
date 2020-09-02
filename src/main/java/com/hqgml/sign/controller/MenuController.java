@@ -41,6 +41,7 @@ public class MenuController {
     @GetMapping("{type}")
     @ResponseBody
     @ApiOperation(value = "获取菜单信息")
+    @ApiImplicitParam(name = "type",value = "要获取的菜单的类型，0为list排列，1为tree排列",required = true)
     public ResponseEntity<Common> loadMeau(@PathVariable("type") Integer type) {
         List<Menu> menu = menuService.findMenu(type);
         Common common = new Common(menu);
@@ -51,7 +52,7 @@ public class MenuController {
     @DeleteMapping()
     @ControllerLog(describe = "删除菜单信息")
     @ApiOperation(value = "删除菜单信息")
-    @ApiImplicitParam(name = "id", value = "要删除的菜单的id")
+    @ApiImplicitParam(name = "ids", value = "要删除的菜单的ids")
     public ResponseEntity<Common<String>> deleteMenu(@RequestParam("ids") Integer[] ids) {
         menuService.deleteMenu(ids);
         Common<String> common = new Common<>("删除成功");
@@ -63,6 +64,7 @@ public class MenuController {
     @PutMapping("{id}")
     @ControllerLog(describe = "更新菜单信息")
     @ApiOperation(value = "更新菜单信息")
+    @ApiImplicitParam(name = "id", value = "要更新的菜单的id")
     public ResponseEntity<Common<String>> update(
             @PathVariable("id") Integer id,
             @Valid Menu menu

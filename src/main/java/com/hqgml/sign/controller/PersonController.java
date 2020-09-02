@@ -3,27 +3,20 @@ package com.hqgml.sign.controller;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.hqgml.sign.others.pojo.Common;
-import com.hqgml.sign.others.pojo.LayUi;
 import com.hqgml.sign.others.pojo.MyPageInfo;
-import com.hqgml.sign.others.utlis.UserUtils;
-import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.pojo.Persons;
-import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.PersonsService;
 import com.hqgml.sign.others.annotation.ControllerLog;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
-import com.tencentcloudapi.tci.v20190318.models.Person;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.URL;
 import java.util.List;
 
 /**

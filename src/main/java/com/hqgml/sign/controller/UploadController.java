@@ -83,7 +83,6 @@ public class UploadController {
 
 
 
-
     /**
      * 上传人脸
      */
@@ -98,8 +97,6 @@ public class UploadController {
          uploadService.uploadFace(files, user);
         return ResponseEntity.ok(new Common("上传成功"));
     }
-
-
 
 
 

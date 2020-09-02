@@ -9,6 +9,7 @@ import com.hqgml.sign.pojo.SysUser;
 import com.hqgml.sign.pojo.VxUser;
 import com.hqgml.sign.servce.MiniUserService;
 import com.hqgml.sign.servce.SysUserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("vx")
+@Api(tags = "微信小程序用户相关")
 public class VxController {
     @Autowired
     private MiniUserService MiniUserService;
@@ -35,12 +37,14 @@ public class VxController {
      * @return
      */
     @GetMapping("login")
+    @ApiOperation(value = "小程序人员登录")
     public ResponseEntity<Common> login(@RequestParam String code) {
         String token = MiniUserService.getUserInfo(code);
         return ResponseEntity.ok(new Common<>(token));
     }
 
     @GetMapping("bandinfo")
+    @ApiOperation(value = "小程序人员绑定信息")
     public ResponseEntity<Common> getbandinfo(HttpServletRequest request) {
         VxUser vxUser = UserUtils.getVxUserByToken(request);
         Map band= MiniUserService.getBrand(vxUser);
@@ -48,6 +52,7 @@ public class VxController {
     }
 
     @PostMapping("band")
+    @ApiOperation(value = "小程序人员绑定")
     public ResponseEntity<Common> setBand(
             HttpServletRequest request,
             @RequestParam("pname") String personName,
@@ -61,6 +66,7 @@ public class VxController {
 
 
     @PostMapping("unband/{openid}/{type}")
+    @ApiOperation(value = "小程序人员解绑")
     public ResponseEntity<Common> setUnBand(
             @PathVariable("openid") String openid,
             @PathVariable(value = "type") Integer type

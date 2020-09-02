@@ -15,8 +15,6 @@ import lombok.Data;
  */
 @Data
 @Table(name = "persons")
-@ApiModel(value="人员请求参数" )
-
 public class Persons implements Serializable {
     @Id
     @Column(name = "id")

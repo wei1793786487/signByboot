@@ -137,7 +137,6 @@ public class MeetingController {
     @ControllerLog(describe = "添加该用户下所有人员进入会议")
     @ApiOperation(value = "将登录用户所属的所有的人员添加到该会议")
     @ApiImplicitParam(name = "mid",value = "要添加的会议的id",required = true)
-
     public ResponseEntity<Common> addPerson(@RequestParam("mid") Integer mid) {
         List<String> message = meetingService.addMeetingAllPeople(mid);
         return ResponseEntity.ok(new Common(message));
