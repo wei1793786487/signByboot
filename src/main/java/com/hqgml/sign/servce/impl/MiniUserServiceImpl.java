@@ -149,6 +149,8 @@ public class MiniUserServiceImpl implements MiniUserService {
              bandId = personsService.insertOne(persons);
              returnInfo=1;
          }else {
+             one.setBandType(0);
+             personsService.updatePersonById(one);
              bandId=one.getId();
          }
         int i = vxUserMapper.updatePIdByOpenid(bandId, vx.getOpenid());
@@ -206,6 +208,20 @@ public class MiniUserServiceImpl implements MiniUserService {
     @Override
     public Integer findCount() {
         return vxUserMapper.count();
+    }
+
+    @Override
+    public Integer getNameStatus(String personName) {
+        Integer status=0;
+        Persons persons = personsService.selectByName(personName);
+        if (persons!=null){
+            if (persons.getBandType()==0){
+                status=2;
+            }else  {
+               status=1;
+            }
+        }
+        return status;
     }
 
 }

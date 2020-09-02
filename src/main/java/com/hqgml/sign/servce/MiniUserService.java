@@ -27,6 +27,9 @@ public interface MiniUserService {
     void  deleteById(Integer id);
 
     Integer findCount();
+
+    Integer getNameStatus(String personName);
+
 }
 
 

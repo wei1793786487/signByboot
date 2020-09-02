@@ -111,7 +111,6 @@ public class PersonController {
             ){
         List<Persons> personBelong = personsService.findPersonBelong(type, mid, request);
         return ResponseEntity.ok(new Common(personBelong));
-
     }
 
 

@@ -154,11 +154,7 @@ public class PersonsServiceImpl implements PersonsService {
 
     @Override
     public Persons selectByName(String name) {
-        Persons persons = personsMapper.selectOneByPersonName(name);
-        if (persons == null) {
-            throw new XxException(ExceptionEnums.MEETING_NOT_FIND);
-        }
-        return persons;
+       return personsMapper.selectOneByPersonName(name);
     }
 
     @Override

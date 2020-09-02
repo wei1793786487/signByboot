@@ -67,6 +67,10 @@ public class VxController {
 
     @PostMapping("unband/{openid}/{type}")
     @ApiOperation(value = "小程序人员解绑")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "openid",value = "微信小程序的openid"),
+            @ApiImplicitParam(name = "type",value = "绑定的类型"),
+    })
     public ResponseEntity<Common> setUnBand(
             @PathVariable("openid") String openid,
             @PathVariable(value = "type") Integer type
@@ -90,6 +94,23 @@ public class VxController {
         return MiniUserService.selectAll(page,limit);
     }
 
+    /**
+     * 查看人员的绑定信息的
+     * @param
+     * @return
+     */
+    @GetMapping("username")
+    @ApiOperation(value = "查看要绑定用户的情况")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pname", value = "绑定的姓名"),
+    })
+    public ResponseEntity<Common> getNameStatus(
+            @RequestParam("pname") String personName
+            ) {
+        // 2为绑定微信用户，1为管理员添加 0为没有人员存在
+        Integer status = MiniUserService.getNameStatus(personName);
+        return ResponseEntity.ok(new Common<>(status));
+    }
     /**
      * 骗微信小程序的
      * @param
