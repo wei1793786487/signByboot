@@ -1,7 +1,6 @@
 package com.hqgml.sign.mapper;
 
 import com.hqgml.sign.pojo.Menu;
-import com.hqgml.sign.pojo.Meta;
 import com.hqgml.sign.servce.MenuService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

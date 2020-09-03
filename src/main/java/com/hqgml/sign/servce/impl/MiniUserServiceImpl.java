@@ -149,11 +149,11 @@ public class MiniUserServiceImpl implements MiniUserService {
              bandId = personsService.insertOne(persons);
              returnInfo=1;
          }else {
-             one.setBandType(0);
+             one.setBandType(1);
              personsService.updatePersonById(one);
              bandId=one.getId();
          }
-        int i = vxUserMapper.updatePIdByOpenid(bandId, vx.getOpenid());
+         int i = vxUserMapper.updatePIdByOpenid(bandId, vx.getOpenid());
        if (i!=1){
          throw new XxException(ExceptionEnums.INSERT_ERROR);
         }
@@ -216,9 +216,14 @@ public class MiniUserServiceImpl implements MiniUserService {
         Persons persons = personsService.selectByName(personName);
         if (persons!=null){
             if (persons.getBandType()==0){
-                status=2;
+                status=1;
             }else  {
-               status=1;
+                VxUser byPId = vxUserMapper.findByPId(persons.getId());
+                if (byPId!=null){
+                    status=2;
+                }else {
+                    status=1;
+                }
             }
         }
         return status;
