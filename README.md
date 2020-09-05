@@ -2,7 +2,12 @@
 
 ## 前言
 
-* 现在主分支为layui版本的前台代码的，本项目现在正在开发VUE版本的后端接口，由于VUE版本与layui版本具有较大的差异，所以项目结构会有很大的区别，目前VUE版本正在开发，如果有兴趣查看开发进度，请切换至vue分支
+* ~~现在主分支为layui版本的前台代码的，本项目现在正在开发VUE版本的后端接口，由于VUE版本与layui版本具有较大的差异，所以项目结构会有很大的区别，目前VUE版本正在开发，如果有兴趣查看开发进度，请切换至vue分支~~
+* vue版本以及开发完毕,主分支现为vue,使用layui版本请切换至layui分支。
+
+
+
+
 
 ## 项目介绍
 
@@ -37,9 +42,9 @@
 | Redis             | 缓存                         | https://redis.io/                                    |
 | hikari            | 数据库连接池                 | http://www.m-hikari.com/                             |
 | Lombok            | 简化对象封装工具             | https://github.com/rzwitserloot/lombok               |
-| 腾讯云            | 腾讯云人脸识别以及腾讯云短信  | https://console.cloud.tencent.com                    |
-| 百度地图开放平台  | 坐标转换                     | http://lbsyun.baidu.com/                         |
-| fastDFS           | 轻量级分布式文件系统         | https://github.com/happyfish100/fastdfs              |
+| 腾讯云      | 腾讯云人脸识别，短信服务以及对象云存储 | https://console.cloud.tencent.com                    |
+| ~~百度地图开放平台~~ | ~~坐标转换~~                 | http://lbsyun.baidu.com/                     |
+| ~~fastDFS~~       | ~~轻量级分布式文件系统~~     | https://github.com/happyfish100/fastdfs          |
 
 ## 项目结构
 
