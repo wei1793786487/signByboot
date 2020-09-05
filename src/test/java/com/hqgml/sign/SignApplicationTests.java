@@ -21,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.PipedReader;
 import java.util.List;
@@ -48,6 +50,8 @@ class SignApplicationTests {
     @Autowired
     private COSUtils cosUtils;
 
+    @Resource
+    private PasswordEncoder passwordEncode;
 
 
     @Autowired
@@ -67,7 +71,9 @@ class SignApplicationTests {
 
     @Test
     void  testJwt(){
-        System.out.println(jwtProperties.getExpire());
+//        System.out.println(jwtProperties.getExpire());
+        String encode = passwordEncode.encode("123456");
+        System.out.println(encode);
     }
 
     @Test
