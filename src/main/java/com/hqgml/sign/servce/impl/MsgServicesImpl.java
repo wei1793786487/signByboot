@@ -60,7 +60,7 @@ public class MsgServicesImpl implements MsgServices {
                 log.debug("{}用户没有手机号", person.getPersonName());
             } else {
                 String[] parms = {person.getPersonName(), meeting.getMeetingName(),
-                        subsTime, subeTime, meeting.getMeetingName()};
+                        subsTime, subeTime, meeting.getAddressName()};
                 SmsSingleSenderResult result = msgUtils.sendAllNotice(person.getPhone(), parms);
                 System.out.println(result);
                 if (result.result == 0) {
