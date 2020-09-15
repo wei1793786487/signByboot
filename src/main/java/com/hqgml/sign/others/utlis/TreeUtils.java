@@ -21,7 +21,7 @@ public class TreeUtils {
             }
         }
         for (Menu menu : retList) {
-            //如果这个哥们是最上级，并且他的子类不是空的，那么设置他redirect的子类的路径
+            //如果这个是最上级，并且他的子类不是空的，那么设置他redirect的子类的路径
             if (menu.getParent().equals(0)){
                 List<Menu> children = menu.getChildren();
                 if (children.size()!=0){

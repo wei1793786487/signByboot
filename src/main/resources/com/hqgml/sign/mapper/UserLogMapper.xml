@@ -30,14 +30,14 @@
     from user_log
     where `user`=#{user,jdbcType=VARCHAR}
     <if test="serch != null and serch != '' ">
-      and name like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or type like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or url like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or requestType like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or requestParam like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or ipInfo like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or ip like concat('%', #{serch,jdbcType=VARCHAR},'%')
-      or create_time like concat('%', #{serch,jdbcType=VARCHAR},'%')
+      and name  like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or type like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or url like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or requestType like binary   concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or requestParam like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or ipInfo like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or ip like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
+      or create_time like binary  concat('%', #{serch,jdbcType=VARCHAR},'%')
     </if>
 
   </select>
