@@ -51,12 +51,12 @@ tenlent:
 #      通知单个
     sendOneTemplateId: 667080
 
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: DEBUG
-#    com.hqgml.sign.mapper: debug
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+    com.hqgml.sign.mapper: debug
 
 hqgml:
   jwt:
