@@ -1,11 +1,12 @@
 package com.hqgml.sign.servce.impl;
 
+
 import com.hqgml.sign.servce.TenlentService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
-import com.tencentcloudapi.iai.v20180301.IaiClient;
-import com.tencentcloudapi.iai.v20180301.models.*;
+
+import com.tencentcloudapi.iai.v20200303.IaiClient;
+import com.tencentcloudapi.iai.v20200303.models.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,5 +77,15 @@ public class TenlentServiceImpl implements TenlentService {
         String params = "{\"GroupIds\":[\""+groupId+"\",'0'],\"Image\":\""+image+"\",\"MaxPersonNum\":1}";
         SearchPersonsRequest req = SearchPersonsRequest.fromJsonString(params, SearchPersonsRequest.class);
         return client.SearchPersons(req);
+    }
+
+    @Override
+    public Boolean detectionFace(String str) throws TencentCloudSDKException {
+        DetectLiveFaceRequest req = new DetectLiveFaceRequest();
+        req.setImage(str);
+        req.setFaceModelVersion("3.0");
+        DetectLiveFaceResponse resp = client.DetectLiveFace(req);
+        log.info(resp.toString());
+        return resp.getIsLiveness();
     }
 }

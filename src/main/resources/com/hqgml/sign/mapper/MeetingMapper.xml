@@ -111,7 +111,9 @@
         select
         <include refid="Base_Column_List"/>
         from meeting
-
+      <if test="meetingName != null">
+          where meeting_name like concat('%', #{meetingName,jdbcType=VARCHAR},'%')
+      </if>
     </select>
 
 

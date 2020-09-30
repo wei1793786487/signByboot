@@ -1,7 +1,7 @@
 package com.hqgml.sign.servce;
 
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
-import com.tencentcloudapi.iai.v20180301.models.SearchPersonsResponse;
+import com.tencentcloudapi.iai.v20200303.models.SearchPersonsResponse;
 
 /**
  * @author Devil
@@ -54,6 +54,13 @@ public interface TenlentService {
      * @param image
      */
     SearchPersonsResponse search(String groupId, String image)throws TencentCloudSDKException;
+
+    /**
+     静态人脸活体检测
+     * @param str
+     * @return
+     */
+     Boolean detectionFace(String str) throws TencentCloudSDKException;
 }
 
 

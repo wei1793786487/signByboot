@@ -5,6 +5,7 @@ import com.hqgml.sign.others.utlis.AddressUtils;
 import com.hqgml.sign.pojo.Meeting;
 import com.hqgml.sign.servce.FaceService;
 import com.hqgml.sign.servce.MeetingService;
+import com.hqgml.sign.servce.TenlentService;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,6 +35,9 @@ public class FaceController {
     private FaceService faceService;
 
     @Autowired
+    private TenlentService TenlentService;
+
+    @Autowired
     private MeetingService meetingService;
     /**
      * 人脸搜索
@@ -48,7 +52,6 @@ public class FaceController {
             @ApiImplicitParam(name = "imgStr",value = "人脸的base64编码"),
             @ApiImplicitParam(name = "lat",value = "签到的纬度,请传入gps的纬度"),
             @ApiImplicitParam(name = "long",value = "签到的经度,请传入gps的纬度")
-
     })
     public ResponseEntity<Common> face(
             @RequestParam("mid") String mid,
@@ -56,21 +59,27 @@ public class FaceController {
             @RequestParam("lat") String latitude,
             @RequestParam("long") String longitude
     ) throws TencentCloudSDKException {
-        //看看是不是超过了100米
-        double source= 100d;
-        Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
-        double distance = AddressUtils.getDistance(latitude+","+longitude,meeting.getLat()+","+meeting.getLng());
-        System.out.println("距离是"+distance);
-         if (distance>source){
-             return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,100米之内可签到"));
-         }
-        if (!StringUtils.equals(mid,"")&&!StringUtils.equals(imgStr,"")){
-            Map<String, Object> face = faceService.face(imgStr, mid);
-            String message = (String) face.get("message");
-            return ResponseEntity.ok(new Common(message));
+        Boolean isface = TenlentService.detectionFace(imgStr);
+        if (isface){
+            //看看是不是超过了100米
+            double source= 100d;
+            Meeting meeting = meetingService.selectById(Integer.parseInt(mid));
+            double distance = AddressUtils.getDistance(latitude+","+longitude,meeting.getLat()+","+meeting.getLng());
+            System.out.println("距离是"+distance);
+            if (distance>source){
+                return ResponseEntity.ok(new Common(400,"与签到地点相差"+distance+"米,100米之内可签到"));
+            }
+            if (!StringUtils.equals(mid,"")&&!StringUtils.equals(imgStr,"")){
+                Map<String, Object> face = faceService.face(imgStr, mid);
+                String message = (String) face.get("message");
+                return ResponseEntity.ok(new Common(message));
+            }else {
+                return ResponseEntity.ok(new Common("参数缺少"));
+            }
         }else {
-            return ResponseEntity.ok(new Common("参数缺少"));
+           return ResponseEntity.ok(new Common(400,"请勿翻拍"));
         }
+
 
     }
 }

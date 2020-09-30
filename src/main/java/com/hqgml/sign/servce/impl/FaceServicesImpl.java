@@ -9,9 +9,10 @@ import com.hqgml.sign.others.utlis.TimeUtils;
 import com.hqgml.sign.others.exception.ExceptionEnums;
 import com.hqgml.sign.others.exception.XxException;
 import com.tencentcloudapi.common.exception.TencentCloudSDKException;
-import com.tencentcloudapi.iai.v20180301.models.Candidate;
-import com.tencentcloudapi.iai.v20180301.models.Result;
-import com.tencentcloudapi.iai.v20180301.models.SearchPersonsResponse;
+
+import com.tencentcloudapi.iai.v20200303.models.Candidate;
+import com.tencentcloudapi.iai.v20200303.models.Result;
+import com.tencentcloudapi.iai.v20200303.models.SearchPersonsResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
