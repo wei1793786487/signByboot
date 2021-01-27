@@ -2,44 +2,62 @@
 version: '3.8'
 
 services:
-  meeting:
-    build: .
-    image: meeting
+
+  meeting_application:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: meetingapplication
     depends_on:
-      - redis
-      - mysql
+      - redis_server
+      - mysql_server
       - nginx
     ports:
       - "8080:8080"
     restart: always
     links:
-      - redis
-      - mysql
-      - nginx
+      - mysql_server
+    networks:
+      - appnet
 
-  redis:
+
+  redis_server:
     image: "docker.io/redis"
-    container_name: redis
+    container_name: redisserver
     restart: always
+    networks:
+      - appnet
 
-  mysql:
-    container_name: mysql
-    image: mysql
+  mysql_server:
+    container_name: mysqlserver
     build:
-      context: .
-      dockerfile: ./DockerfileSql
+      context: ./
+      dockerfile: DockerfileSql
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     restart: always
+    networks:
+      - appnet
 
   nginx:
-    container_name: some-ngins
-    image: nginx:1.13
+    container_name: nginx
+    build:
+      context: ./
+      dockerfile: DockerfileNginx
+    volumes:
+     -  /ngxin/conf.d:/etc/nginx/conf.d
+     -  /ngxin/log:/var/log/nginx
+     -  /ngxin//www:/var/www
+     -  /etc/letsencrypt:/etc/letsencrypt
+
     ports:
       - 80:80
-    # - 443:443
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./log:/var/log/nginx
+      - 443:443
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge

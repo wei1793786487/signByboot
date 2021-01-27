@@ -47,9 +47,11 @@ public class JwtProperties {
     @PostConstruct
     public void init() {
         try {
+
             File pubKey = new File(pubKeyPath);
             File priKey = new File(priKeyPath);
             if (!pubKey.exists() || !priKey.exists()) {
+
                 // 生成公钥和私钥
                 RsaUtils.generateKey(pubKeyPath, priKeyPath, secret, 2048);
             }

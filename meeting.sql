@@ -17,6 +17,10 @@
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP database IF EXISTS meeting;
+create database meeting;
+use meeting;
+
 -- ----------------------------
 -- Table structure for meeting
 -- ----------------------------
