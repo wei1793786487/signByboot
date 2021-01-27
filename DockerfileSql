@@ -2,4 +2,4 @@ FROM mysql:5.7
 
 COPY ./meeting.sql  /docker-entrypoint-initdb.d
 
-ENV MYSQL_ROOT_PASSWORD shdsadsakldjksajdsad55555*
+ENV MYSQL_ROOT_PASSWORD root
