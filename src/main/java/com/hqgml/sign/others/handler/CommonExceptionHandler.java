@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 
@@ -85,6 +86,10 @@ public class CommonExceptionHandler {
              */
             e.printStackTrace();
             return ResponseEntity.status(400).body(new ExceptionResult(400, "数据库参数错误,请按照接口要求调用数据"));
+        }else  if (e instanceof MaxUploadSizeExceededException){
+            long maxUploadSize = ((MaxUploadSizeExceededException) e).getMaxUploadSize();
+
+            return ResponseEntity.status(200).body(new ExceptionResult(400, "超过文件最大上传上限"+maxUploadSize));
         }
 
         else {
