@@ -30,6 +30,35 @@ hqgml:
     disparity: 2880 #多少时间内没有登录刷新token失效 单位分钟
 
 
+tenlent:
+  #  所处地域
+  region:
+  keys:
+    SecretId:
+    SecretKey:
+  cos:
+    bucketName:
+
+  sms:
+    appId:
+    appKey:
+    #    签名
+    sign: hqgml
+    #      通知全体
+    sendAllTemplateId:
+    #      通知单个
+    sendOneTemplateId:
+
+
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#    com.hqgml.sign.mapper: debug
+
+
+
 spring:
   profiles:
     active: local

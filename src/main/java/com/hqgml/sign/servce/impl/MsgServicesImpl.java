@@ -60,7 +60,7 @@ public class MsgServicesImpl implements MsgServices {
                 log.debug("{}用户没有手机号", person.getPersonName());
             } else {
                 String[] parms = {person.getPersonName(), meeting.getMeetingName(),
-                        subsTime, subeTime, meeting.getMeetingName()};
+                        subsTime, subeTime, meeting.getMeetingAddress()};
                 SmsSingleSenderResult result = msgUtils.sendAllNotice(person.getPhone(), parms);
                 System.out.println(result);
                 if (result.result == 0) {
@@ -93,9 +93,9 @@ public class MsgServicesImpl implements MsgServices {
         int endIndex = endTime.indexOf("-");
         String subeTime = endTime.substring(endIndex + 1);
 
-        String[] parm={meeting.getMeetingName(),subeTime};
+        String[] param={meeting.getMeetingName(),subeTime};
         log.info("给{}发送单独消息",persons.getPersonName());
-        SmsSingleSenderResult smsSingleSenderResult = msgUtils.sendOneNotice(persons.getPhone(), parm);
+        SmsSingleSenderResult smsSingleSenderResult = msgUtils.sendOneNotice(persons.getPhone(), param);
 
         if (smsSingleSenderResult.result == 0) {
             log.info("给{}发送单独消息",persons.getPersonName());
