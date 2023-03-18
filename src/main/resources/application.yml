@@ -1,3 +1,36 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        http-only: false
+        domain: hqgml.com
+
+
+
+mybatis:
+  type-aliases-package: com.hqgml.sign.pojo
+
+
+hqgml:
+  jwt:
+    secret: dqdq@token(Auth}*^31)&hwwww% # 登录校验的密钥
+    pubKeyPath: D:\rsa.pub # 公钥地址
+    priKeyPath: D:\rsa.pri # 私钥地址
+    expire: 130 #过期时间,单位分钟
+    cookieName: auth
+    tokenName: Authorization
+    preToken : Bearer
+    prevxToken: VXBearer
+    vxtokenName: vxAuthorization
+
+  redis:
+    tokenPre : Refresh_KEY-
+    redisCache: 43200 #redis缓存token的过期时间 单位分钟 30天*
+    disparity: 2880 #多少时间内没有登录刷新token失效 单位分钟
+
+
 spring:
   profiles:
-    active: dev
+    active: local
+

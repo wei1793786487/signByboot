@@ -3,9 +3,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://49.232.54.164:3306/meeting?&serverTimezone=GMT%2b8
-    username: meeting
-    password: NDrBaHYdhk4ZbL7t
+    url: jdbc:mysql://127.0.0.1:3306/meeting?&serverTimezone=GMT%2b8
+    username: root
+    password: root
     hikari:
       connection-timeout: 100000
   thymeleaf:
@@ -21,7 +21,6 @@ spring:
         max-active: 8 #最大连接数
         max-idle: 8 #最大空闲连接
         min-idle: 0 #最小空闲连接
-
 
 
 tenlent:
@@ -42,10 +41,3 @@ tenlent:
     sendAllTemplateId: 667078
 #      通知单个
     sendOneTemplateId: 667080
-
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        SQL: DEBUG
-#    com.hqgml.sign.mapper: debug

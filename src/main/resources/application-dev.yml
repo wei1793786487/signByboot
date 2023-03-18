@@ -1,10 +1,5 @@
-server:
-  port: 8080
-  servlet:
-    session:
-      cookie:
-        http-only: false
-        domain: hqgml.com
+
+
 
 spring:
   datasource:
@@ -29,8 +24,7 @@ spring:
         max-idle: 8 #最大空闲连接
         min-idle: 0 #最小空闲连接
 
-mybatis:
-  type-aliases-package: com.hqgml.sign.pojo
+
 
 tenlent:
 #  所处地域
@@ -40,7 +34,6 @@ tenlent:
     SecretKey: 2vstqNktrWyEJDwVv8Ayd5LOVP7VijW8
   cos:
     bucketName: faces-1259231187
-
   sms:
     appId: 1400401687
     appKey: b6f6fa209ba35122f5f3986e7fa827cf
@@ -58,19 +51,3 @@ tenlent:
 #        SQL: DEBUG
 #    com.hqgml.sign.mapper: debug
 
-hqgml:
-  jwt:
-    secret: dqdq@token(Auth}*^31)&hwwww% # 登录校验的密钥
-    pubKeyPath: c:\rsa.pub # 公钥地址
-    priKeyPath: c:\rsa.pri # 私钥地址
-    expire: 130 #过期时间,单位分钟
-    cookieName: auth
-    tokenName: Authorization
-    preToken : Bearer
-    prevxToken: VXBearer
-    vxtokenName: vxAuthorization
-
-  redis:
-    tokenPre : Refresh_KEY-
-    redisCache: 43200 #redis缓存token的过期时间 单位分钟 30天*
-    disparity: 2880 #多少时间内没有登录刷新token失效 单位分钟
